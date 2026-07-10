@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Selectors</title>
+    <style>
+        /* Element Selector */
+        /* div{
+            background-color: red;
+        } */
+
+        /* Class Selector */
+        .red{
+            background-color: red;
+        }
+
+        /* ID Selector */
+        #greenyellow{
+            background-color: greenyellow;
+        }
+
+        /* Child Selectors */
+        div >p{
+            color: blue;
+            background-color: hotpink;
+        }
+
+        /* Descendant Selector */
+        /* div have p inside it whether in header etc. */
+        div p{
+            color: rosybrown;
+            background-color: yellow;
+        }
+
+        /* Universal Selector */
+        *{
+            margin: 0;
+            padding:0;
+        }
+
+        /*Pseudo Selector */
+        a:visited{
+            color:orange;
+        }
+
+        a:link{
+            color:darkmagenta;
+        }
+
+        a:active{
+            background-color: gold;;
+        }
+
+        a:hover{
+            background-color: magenta;
+        }
+
+        p:first-child{
+            background-color: skyblue;
+        }
+    </style>
+</head>
+<body>
+    <main class="one">
+        <p>First</p>
+        <p>Second</p>
+    </main>
+    <!-- Only do those class have red -->
+    <div class="red">
+        I am a div
+    </div>
+
+    <div>
+        I am another div
+        <p>
+            I am a child of div and using child selectors
+        </p>
+    </div>
+
+    <div id="greenyellow">
+        Greenyellow
+    </div>
+
+    <a href="https://www.gymshark.com">Go to Gymshark</a>
+    <a href="https://www.semrush.com">Go to Semrush</a>
+</body>
+</html>
