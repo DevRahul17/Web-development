@@ -1,0 +1,69 @@
+<!-- Quick Quiz  
+    ---Create a website which shows videos of different category and audios of different categories.
+    You can use YouTube videos in an iframe using YouTube's embedding feature --->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Website</title>
+</head>
+<body>
+
+    <h1>🎬 Media Website</h1>
+
+    <hr>
+
+    <!-- Local Videos -->
+    <h2>Educational Video</h2>
+
+    <video width="400" controls>
+        <source src="education.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <br><br>
+
+    <h2>Nature Video</h2>
+
+    <video width="400" controls>
+        <source src="nature.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <hr>
+
+    <!-- Local Audio -->
+    <h2>Song</h2>
+
+    <audio controls>
+        <source src="sachin.mp3" type="audio/mpeg">
+        Your browser does not support the audio tag.
+    </audio>
+
+    <br><br>
+
+    <h2>Podcast</h2>
+
+    <audio controls>
+        <source src="podcast.mp3" type="audio/mpeg">
+        Your browser does not support the audio tag.
+    </audio>
+
+    <hr>
+
+    <!-- YouTube Video -->
+    <h2>YouTube Video</h2>
+
+
+    <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/HcOc7P5BMi4"
+        title="YouTube video"
+        frameborder="0"
+        allowfullscreen>
+    </iframe>
+
+</body>
+</html>
