@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 2</title>
+
+    <style>
+        /* First paragraph inside every div */
+        div p:first-child{
+            color: red;
+            background-color: yellow;
+        }
+
+        /* All other paragraph inside evry div */
+        div p:not(:first-child){
+            color: white;
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+    <!--Write html and css code to style a paragraph inside a div which contains other paragraphs. The first paragraph must have background color yellow and text color red. The other paragraphs must have background color blue and text color white. The HTML is written below for your reference. Do not change this html and without class.-->
+
+    <div>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit incidunt vel omnis maiores molestias quisquam accusamus quam iure rem! Vitae libero deserunt, rem magnam sed molestias? Aliquam eaque commodi dolores?</p>
+        <p>I am second paragraph</p>
+        <p>I am third paragraph</p>
+    </div>
+
+    <div>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit incidunt vel omnis maiores molestias quisquam accusamus quam iure rem! Vitae libero deserunt, rem magnam sed molestias? Aliquam eaque commodi dolores?</p>
+        <p>I am second paragraph</p>
+        <p>I am third paragraph</p>
+    </div>
+</body>
+</html>
+
+<!-- div p:first-child selects the first <p> inside each <div>.
+div p:not(:first-child) selects all other <p> elements inside the same <div>. -->
