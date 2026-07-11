@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Fonts, Text & Color Properties</title>
+
+    <!-- Include font by google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <style>
+        h1{
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        p{
+            font-family:'Times New Roman', Times, serif;
+            font-family: "Roboto", sans-serif;
+            /* Copy from google font upper*/
+            font-size: 17px;
+            line-height: 4;
+            font-style:italic;
+            font-weight: 700;
+            text-decoration: underline;
+            
+        }
+
+        h2{
+            text-align: center;
+            text-transform: capitalize;
+            text-decoration: underline;
+            text-decoration-color: blue;
+            text-decoration-style: dotted;
+            text-decoration-thickness: 7px;
+            /* text-indent: 20px; */
+            text-overflow: ellipsis;
+        }
+
+        .lorem{
+            border: 3px solid red;
+            width: 100px;
+            text-overflow: ellipsis;
+            overflow: hiddden;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Font</h1>
+        <h2>about Fonts</h2>
+        <p>This is a paragraph and today is 11th july,2026</p>
+        <p class="lorem">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur rerum aliquam eos dolorum, voluptate cum nisi culpa deleniti minima dolor perferendis optio sapiente molestiae inventore fuga facilis, eius ratione nostrum?</p>
+    </div>
+</body>
+</html>
