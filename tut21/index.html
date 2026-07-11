@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Specificity & Cascade</title>
+
+    <style>
+        /* Specificity of element selector is 1 */
+        h1{
+        color: aqua;
+    }
+
+    /* Specificity of class selector is 1 + 10 =11*/
+    h1.yellow{
+        color: yellow;
+    }
+
+    /* Specificity of class selector is 10 */
+    .cred{
+        color: red;
+    }
+
+    /* Specificity of class selector is 10 */
+    .cpink{
+        color: pink;
+    }
+    
+
+    /* Attribute Selector is 10*/
+    [dat-x=a]{
+        background-color: royalblue;
+    }
+
+    /* Quiz sepecificity of this is 1+10+10+10+10 = 41*/
+    a.harryclass.rohan-class[href]:hover{
+        color: crimson;
+    }
+    /* Last one is prefer if .class are same */
+    </style>
+</head>
+<body>
+    <div>
+        <h1 class="yellow cred cpink" data-x="a">CSS Specificity</h1>
+        <h2 style="color: fuchsia">Inline</h2>
+    </div>
+</body>
+</html>
+
+<!-- !important
+      ↓
+Inline Style
+      ↓
+ID Selector (#id)
+      ↓
+Class, Attribute, Pseudo-class (.class, [attr], :hover)
+      ↓
+Element & Pseudo-element (div, p, ::before)
+      ↓
+Universal Selector (*)
+      ↓
+If still tied → The rule written later wins. -->
