@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Sizing Units - px, rem, em, vh, vw, % & more</title>
+    <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        html{
+            font-size: 12px;
+        }
+        .box{
+            border: 2px solid black;
+            /* width: 2048px; */
+            width: 100vw;
+            height: 10vh;
+            /* 100vw automatically take full width of a device */
+            background-color: aqua;
+        }
+
+        .container{
+            box-sizing: border-box;
+            border: 2px;
+            width: 80vw;
+            height: 80vh;
+            min-height: 80vh;
+            margin: 23px auto;
+            font-size: 16px;
+            background-color: violet;
+        }
+
+        .container p{
+            font-size: 1.5em;
+            /* font-size: 2rem; */
+            /* em does 1.5x inherit of paragraph size */
+            /* rem root font size 2 x */
+            width: 50%;
+            /* It means do 50% width of parent paragraph */ 
+        }
+
+        .mycontainer p{
+            border: 2px;
+            font-size: 22epx;
+            color: fuchsia;
+            box-sizing: border-box;
+            width: 100vw;
+            /* vmin for height in device */
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        This is a box
+    </div>
+
+    <div class="container">
+        <p>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quidem quasi accusantium cupiditate neque deleniti. Numquam sed nemo ullam dolorem praesentium quaerat nisi, vitae obcaecati, atque cupiditate molestias, vel culpa sequi.
+        </p>
+    </div>
+
+    <div class="mycontainer">
+        <p>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quidem quasi accusantium cupiditate neque deleniti. Numquam sed nemo ullam dolorem praesentium quaerat nisi, vitae obcaecati, atque cupiditate molestias, vel culpa sequi.
+        </p>
+    </div>
+</body>
+</html>
