@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Variables</title>
+    <style>
+        :root{
+            /* Global Variable */
+            --color: rgb(248, 9, 248);
+            --secondcolor: rgb(189, 66, 185);
+            --defpad: 17px;
+        }
+
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav{
+            /* background-color: aqua; */
+            background-color: var(--color);
+        }
+
+        .container{
+            /* background-color: rgb(141, 227, 227); */
+            background-color: var(--secondcolor);
+        }
+
+        ul{
+            display: flex;
+        }
+        
+        ul li{
+            list-style: none;
+            margin: 7px;
+            padding: var(--defpad);
+        }
+
+        ul li:first-child{
+            /* Local Variable */
+            --color: rgb(33, 188, 64);
+            background-color: var(--color);
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <ul>
+            <li>Home</li>
+            <li>About</li>
+            <li>Contact Us</li>
+        </ul>
+    </div>
+
+    <div class="container">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste vero voluptates, illum dicta laudantium doloribus distinctio quibusdam minus perspiciatis iure quis. Ipsam nemo labore quibusdam architecto iste ab, error repudiandae ipsa hic ex dignissimos dolorem maiores eum laborum voluptas atque consectetur doloremque molestias corrupti debitis.
+    </div>
+</body>
+</html>
+
+/* CSS Variable can not only for color but it i also for padding,opacity and value. */
