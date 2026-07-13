@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Shadows and Outlines</title>
+    <style>
+        .box {
+            border: 5px solid black;
+            padding: 32px;
+            box-shadow: 5px 15px 5px 2px  red;
+        }
+
+        .text-shadow{
+            text-shadow: 5px 3px 3px aqua;
+            outline: 7px solid maroon;
+            border: 7px solid chartreuse;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        I am a box
+    </div>
+
+    <p class="text-shadow">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi iste error saepe unde dolorem exercitationem, voluptate, dolorum esse dolor nihil asperiores vero perspiciatis pariatur soluta officia quidem veritatis reiciendis voluptatem!
+    </p>
+</body>
+</html>
+
+<!-- Syntax:
+box-shadow: h-offset v-offset blue spread color inset;
+
+text-shadow: h-offset v-offset blur color;
+
+Outline outside border inside
+
+Parameter Breakdown
+h-offset (Required): The horizontal distance. Positive values move the shadow to the right, negative to the left.
+
+v-offset (Required): The vertical distance. Positive values move the shadow down, negative move it up.
+
+blur (Optional): The blur radius. The higher the number, the more blurred and spread out the shadow becomes. Defaults to
+0 (sharp edge).
+
+spread (Optional): The spread radius. Positive values cause the shadow to grow larger in all directions; negative values
+cause it to shrink. Defaults to 0.
+
+color (Optional): The color of the shadow (HEX, RGB, RGBA, or named colors). If omitted, it defaults to the text color
+of the element.
+
+inset (Optional): Changes the shadow from an outer shadow (drop shadow) to an inner shadow. 
+-->
