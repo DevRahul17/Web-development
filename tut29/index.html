@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Card Design</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        body{
+            background-color: gray;
+            padding: 45px;
+        }
+
+        .card{
+            background-color: white;
+            width: 198px;
+            border-radius: 7px;
+            height: 75vh;
+            padding: 0 0 34px 0;
+            /* padding: top right bottom left; */
+            margin: 4px;
+        }
+
+        .image{
+            padding: 5px;
+        }
+
+        .image img{
+            border-radius: 7px;
+        }
+
+        .capsules{
+           padding-left: 55px;
+        }
+
+        .capsules span{
+            border: 1px solid gray;
+            padding: 0px 6px;
+            font-size: 9px;
+            border-radius: 7px;
+            background-color: aliceblue;
+            font-family: "Roboto", sans-serif;
+        }
+
+        .content{
+            padding: 7px 13px;
+        }
+        
+        .button{
+            text-align: center;
+        }
+
+        .button button{
+            padding: 7px 11px;
+            border-radius: 15px;
+            font-size: 10px;
+            color: rgb(35, 112, 178);
+            background-color: rgb(189, 239, 245);
+            padding: 7px 15px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .button button:hover{
+            background-color: rgb(79, 205, 224);
+            color: rgb(75, 106, 194);
+        }
+    </style>
+</head>
+<body>
+    <!-- Card.png is a file which contains a card image. Write html and css code to design this card. -->
+     <div class="card">
+        <div class ="image">
+            <img width="188" src="https://images.pexels.com/photos/9972602/pexels-photo-9972602.jpeg">
+        </div>
+
+        <div class="capsules">
+            <span>Nature</span>
+            <span>Lake</span>
+        </div>
+
+        <div class="content">
+            <h2>Rahul</h2>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisi cing elit. Fugiat porro aliquam facilis ducimus dolore. Aspernatur sint nulla dicta. Iure fugit doloremque quasi vitae alias possimus. Accusamus reiciendis necessitatibus quasi magni ullam, magnam at error! Obcaecati atque consectetur accusamus voluptates itaque error optio. Voluptate nostrum obcaecati placeat odit veniam .
+            </p>
+        </div>
+
+        <div class="button">
+            <button>Read More</button>
+        </div>
+     </div>
+</body>
+</html>
