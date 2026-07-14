@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Media Queries </title>
+    <style>
+        body {
+            background-color: aqua;
+        }
+
+        /* Syntax:
+        @media only screen and (condition) {
+             CSS rules 
+        } */
+
+
+        @media screen and (orientation: landscape){
+            body{
+                border: 2px brown;
+                color: red;
+            }
+        }
+        @media only screen and (max-wodth: 455px) {
+            body {
+                background-color: blueviolet;
+            }
+        }
+
+        .boxes{
+            display: flex;
+        }
+
+        .box {
+            width: 344px;
+            height: 344px;
+            background-color: rgb(248, 40, 213);
+            padding: 3px;
+            margin: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        I am div with theme of Aqua
+    </div>
+
+    <div class="boxes">
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+    </div>
+</body>
+
+</html>
