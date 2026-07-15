@@ -1,0 +1,97 @@
+<!-- Create a simple web page using HTML and CSS with the following requirements:
+
+Use CSS variables to define the primary and secondary colors.
+Set the page background color using a CSS variable.
+Create a navigation bar with three menu items: Home, About, and Address.
+Display the navigation items horizontally using Flexbox.
+Style the navigation bar with a background color, border, rounded corners, and spacing.
+Add a hover effect to the navigation items that changes their background color, text color, border color, and adds a shadow.
+Below the navigation bar, create a content section containing a heading "Rahul" and a paragraph.
+Style the content section with a border, rounded corners, centered text, and a background color. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 4</title>
+    <style>
+        :root{
+            --color: rgb(27, 212, 17);
+            --secondcolor:rgb(209, 217, 57);
+            --def-pad: 10px;
+        }
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            background-color: var(--secondcolor);
+        }
+
+        /* Navigation Styles */
+        .nav{
+            display: flex;
+            list-style: none;
+            background-color: var(--color);
+            padding: var(--def-pad);
+            margin: 12px;
+            border: 2px solid black;
+            border-radius: 18px;
+        }
+
+        .nav li{
+            padding: var(--def-pad);
+            margin: 10px;
+            border: 2px var(--secondcolor);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav li:hover{
+            color: var(--color);
+            background-color: var(--secondcolor);
+            border: 2px solid var(--color);
+            box-shadow:5px 5px 10px rgba(10, 2, 2, 0.5);
+        }
+
+        /* Content Styles */
+        main{
+            background-color: var(--color);
+            text-align: center;
+            border: 2px solid black;
+            border-radius: 8px;
+            margin: 12px auto;
+            padding: 20px;
+            max-width: 800px;/* text not get too wide */
+        }
+
+        main h1{
+            margin-bottom: 15px;
+        }
+
+        main p{
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul class="nav">
+            <li>Home</li>
+            <li>About</li>
+            <li>Address</li>
+        </ul>
+    </nav>
+
+    <main>
+        <h1>Rahul</h1>
+        <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus eum, enim dolore obcaecati, iste ab commodi, quisquam cum sit veritatis aspernatur quis corrupti omnis sunt itaque architecto minus exercitationem ex quaerat error? Molestiae earum, nulla fuga amet fugiat sed commodi a numquam dignissimos, nisi provident deleniti? Porro possimus sequi exercitationem perspiciatis earum dolor accusamus corrupti esse et. Commodi, cupiditate consequuntur voluptatibus voluptatum animi minima magni porro soluta velit fuga, unde officia alias magnam vel corrupti expedita assumenda est repellendus, atque dolor obcaecati! Nam, incidunt, voluptatibus error assumenda deleniti quo, sit numquam aliquid unde itaque inventore enim voluptatem.
+        </p>
+    </main>
+</body>
+</html>
