@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Float & Clear</title>
+    <style>
+        .cards{
+            border: 2px solid black;
+            display: flow-root;/* Put img under carrds border */
+            background-color: pink;
+        }
+
+        img{
+            float: left;
+            /* It allows to put image on left and content at right */
+        }
+
+        .card{
+            border: 2px solid red;;
+        }
+
+        .card:nth-child(3){
+            background-color: aqua;
+            clear: left;
+            /* clear allow to net get iamge at its left */
+        }
+
+        .card:nth-child(4){
+            background-color: rgb(90, 215, 130);
+        }
+
+        .card:nth-child(5){
+            background-color: orange;
+        }
+    </style>
+</head>
+<body>
+    <div class="cards">
+        <img src="https://images.pexels.com/photos/38544394/pexels-photo-38544394.jpeg" width="152px" alt="">
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex ad rem, nemo sunt nulla voluptates eaque esse molestiae voluptate quaerat corporis nihil omnis consequatur doloremque quos eum a odio quae. Minima velit eligendi sequi necessitatibus praesentium accusantium modi aperiam harum, blanditiis hic nam, nemo optio vitae! Magnam laborum quidem vitae ut, eligendi tenetur quasi nulla provident quaerat illum asperiores? Vitae sed vero eaque ipsum aut, dolores, adipisci dolore repellat aperiam ipsam, repudiandae optio qui! Perspiciatis excepturi molestiae, assumenda eaque impedit velit accusamus rem mollitia deserunt repellat adipisci recusandae veritatis dicta doloribus alias. Dolores incidunt eaque quisquam voluptas.</p>
+        <div class="card">Card 1</div>
+        <div class="card">Card 2</div>
+        <div class="card">Card 3</div>
+    </div>
+</body>
+</html>
