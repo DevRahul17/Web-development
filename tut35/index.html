@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>More on CSS </title>
+    <style>
+        .box:first-child{
+            background-color: red;
+        } */
+
+        .box::first-line{
+            color: aqua;
+        }
+
+        .boxes{
+            color: blue;
+            border: 2px solid black;
+        }
+
+        /* [data-color="primary"]{
+            padding-top: 45px;
+        } */
+
+        p, a, .box, [data-color="primary"]{
+            padding-top: 45px;
+            /* For grouping */
+        }
+
+        .box:nth-child(1){
+            background-color: yellow;
+        }
+
+
+        /* .box:nth-last-child(1){
+            background-color: green;
+        } */
+
+        .boxes::before{
+            content: "Go before content";
+            color: brown;
+        } */
+
+        .boxes::after{
+            content: "Come after content";
+            color: fuchsia;
+        }
+
+        /* ::selection{
+            background-color: rgb(112, 48, 48);
+            color: coral;
+        } */
+
+         .box::first-letter{
+            color: hotpink;
+            font-size: 17px;
+        }
+
+        input::placeholder{
+            color:rgb(56, 74, 175);
+        }
+    </style>
+</head>
+<body>
+    <div class="boxes">
+        <div data-color="primary"  class="box">
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. At unde porro, autem error placeat doloremque, eligendi dolorem quam rem blanditiis minima cum illo.</p>
+        </div>
+        <div class="box">I am box 2</div>
+        <div class="box">I am box 3</div>
+        <input type="text" placeholder="Type your name here">
+    </div>
+</body>
+</html>

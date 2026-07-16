@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 5</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: rgb(226, 60, 221);
+        }
+
+        header {
+            background-color: rgb(40, 213, 129);
+            position: sticky;
+            top: 0;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            padding: 3px;
+        }
+
+        ul li {
+            margin: 17px;
+            color: blue;
+            font-weight: bolder;
+        }
+
+        ul li:hover {
+            color: darkorchid;
+            background-color: fuchsia;
+            cursor: pointer;
+        }
+
+        .box {
+            margin: 5px;
+            height: 750px;
+            border: 2px solid black;
+            display: flex;
+            background-color: orangered;
+        }
+
+        .box1 {
+            margin: 45px;
+            background-color: greenyellow;
+            border: 2px solid black;
+            width: 700px;
+        }
+
+        .box2 {
+            background-color: rgb(126, 85, 214);
+        }
+
+        .logo {
+            margin: 11px;
+            display: flex;
+            overflow: auto;
+            justify-content: flex-end;
+        }
+
+        img {
+            position: fixed;
+            bottom: 0;
+        }
+
+        .box3{
+            border: 2px solid black;
+            border-radius: 17px;
+            margin: 7px;
+            height: 70px;
+            background-color: orange;
+            color: blue;
+            /* text-align: center; */
+            font-weight: bolder;
+            /* padding-top: 30px; */
+            font-size: 31px;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        footer{
+            background-color: rgb(220, 226, 96);
+            margin: 0px;
+            padding: 0px;
+            padding-top: 17px;
+            color: rgb(187, 36, 36);
+            font-weight: bolder;
+            height: 50px;
+            font-size: 31px;
+            justify-content: center;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li>Home</li>
+                <li>About</li>
+                <li>Contact US</li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="box">
+            <div class="box1"></div>
+            <div class="box1 box2"></div>
+        </div>
+        <div class="logo">
+            <img src="https://images.unsplash.com/photo-1620288627223-53302f4e8c74?q=80&w=464&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                height="60" alt="logo">
+        </div>
+        <div class="box3">
+            Welcome to this Sigma Web Development Express
+        </div>
+        <footer>
+            This is a Footer
+        </footer>
+    </main>
+</body>
+
+</html>
