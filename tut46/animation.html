@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation In CSS</title>
+    <style>
+        .container{
+            background-color: aqua;
+            width: 70vw;
+            height: 50vh;
+        }
+
+        .box{
+            background-color: fuchsia;
+            width: 11vw;
+            height: 7vh;
+            /* animation-name: rahulanimation;
+            animation-duration: 3s;
+            animation-iteration-count: 3;
+            animation-timing-function: ease-in-out;
+            animation-delay: 1s;
+            animation-direction: normal;
+            animation-play-state: paused; */
+            /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+            animation: rahulanimation 3s ease-in-out 1s 2,
+            animation2 2s cubic-bezier(0.075, 0.82, 0.165, 1) 2s 1;
+        }
+
+        @keyframes rahulanimation {
+            from{
+                background-color: rgb(223, 206, 215);
+            }
+            to{
+                transform: translateX(1000px);
+                background-color: rgb(112, 52, 47);
+            }
+        }
+
+        @keyframes animation2 {
+            0%{
+                transform: rotate(100deg);
+            }
+            20%{
+                transform: rotate(200deg);
+            }
+            50%{
+                transform: rotate(230deg);
+            }
+            80%{
+                transform: rotate(300deg);
+            }
+            100%{
+                transform: rotate(320deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box">Box</div>
+    </div>
+</body>
+</html>
