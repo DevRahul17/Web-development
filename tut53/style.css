@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&family=Martel:wght@200;300;400;600;700;800;900&display=swap');
+
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.main {
+    height: 70vh;
+    background-image: url("assets/images/bg.jpg");
+    background-position: center center;
+    background-size: max(1200px, 100vw);
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.main .box {
+    height: 70vh;
+    width: 100%;
+    opacity: 0.69;
+    position: absolute;
+    top: 0;
+    background-color: black;
+}
+
+body {
+    background-color: black;
+}
+
+nav {
+    max-width: 60vw;
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+    align-items: center;
+    height: 62px;
+}
+
+nav img {
+    color: red;
+    width: 114px;
+    position: relative;
+    z-index: 10;
+}
+
+nav button {
+    position: relative;
+    z-index: 10;
+}
+
+.hero {
+    font-family: "Martel", serif;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 62px);
+    position: relative;
+    gap: 23px;
+    padding: 0 30px;
+}
+
+.hero> :nth-child(1) {
+    /* > used for immediate 1st child */
+    color: white;
+    font-size: 48px;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.hero> :nth-child(2) {
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.hero> :nth-child(3) {
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.seperation{
+    height: 7px;
+    background-color: rgb(50, 49, 49);
+}
+
+.btn{
+    padding: 3px 8px;
+    background-color: white;
+    font-weight: bold;
+}
+
+.btn-red{
+    background-color: red;
+    color: white;
+    padding: 3px 24px;
+    font-size: 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-red-si{
+    background-color: red;
+    color: white;
+    cursor: pointer;
+}
+
+.main input{
+    padding: 7px 101px 8px 14px;
+    font-weight: 900;
+    font-size: 11px;
+    background-color: rgba(36, 34, 34, 0.2);
+    color: white;
+    padding: 3px 24px;
+    border-radius: 4px;
+    border: 1px solid white;
+}
