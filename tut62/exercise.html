@@ -1,0 +1,75 @@
+<!--
+Create a business name generator by combining list of adjectives and shop name and another word:
+
+Adjectives:
+Crazy 
+Amazing
+Fire 
+
+Shop Name:
+Engine
+Foods
+Garments
+
+Another Word:
+Bros
+Limited
+Hub
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let rand = Math.random();//For choosing random number between 0 to 1
+        let first, second, third;
+        //0->0.33 0.33->0.66 0.66->1 We divide it in 3 equal percent that is 33%
+
+        //For First Word
+        if (rand < 0.33) {
+            first = "Crazy";
+        }
+        else if (rand > 0.33 && rand < 0.66) {
+            first = "Amazing";
+        }
+        else {
+            first = "Fire";
+        }
+
+        //For Second Word
+        rand = Math.random();
+        if (rand < 0.33) {
+            second = "Engine";
+        }
+        else if (rand > 0.33 && rand < 0.66) {
+            second = "Foods";
+        }
+        else {
+            second = "Garments";
+        }
+
+        //For Third Word
+        rand = Math.random();
+        if (rand < 0.33) {
+            third = "Bros";
+        }
+        else if (rand > 0.33 && rand < 0.66) {
+            third = "Limited";
+        }
+        else {
+            third = "Hub";
+        }
+
+        console.log(`${first} ${second} ${third}`);
+    </script>
+</body>
+
+</html>
