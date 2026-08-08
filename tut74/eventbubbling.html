@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Bubbling</title>
+    <style>
+        .child {
+            color: black;
+            background-color: aqua;
+            padding: 13px;
+            margin: 13px;
+            border: 2px solid black;
+            cursor: pointer;
+        }
+
+        .father {
+            background-color: rgb(245, 20, 162);
+            padding: 13px;
+            margin: 13px;
+            border: 2px solid black;
+        }
+
+        .grandfather {
+            background-color: rgb(239, 28, 9);
+            padding: 13px;
+            margin: 13px;
+            border: 2px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grandfather">I am a grandfather
+        <section class="father">I am a father
+            <div class="child">I am a child</div>
+        </section>
+    </div>
+
+    <script>
+        document.querySelector(".child").addEventListener("click", (e) => {
+            e.stopPropagation();
+            //stopPropagation() is for to stop only on that particular class
+            alert("Child was clicked!");
+        })
+
+        document.querySelector(".father").addEventListener("click", (e) => {
+            e.stopPropagation();
+            alert("Father was clicked!");
+        })
+
+        document.querySelector(".grandfather").addEventListener("click", (e) => {
+            e.stopPropagation();
+            alert("Grandfather was clicked!");
+        })
+
+        function getrandomcolor(){
+            let color1 = Math.floor(Math.random() * 256);
+            let color2 = Math.floor(Math.random() * 256);
+            let color3 = Math.floor(Math.random() * 256);
+            return `rgb(${color1}, ${color2}, ${color3})`;
+        }
+
+        let a = setInterval(() =>{
+            document.querySelector(".child").style.background = getrandomcolor();
+        }, 1000);
+        //Here 1000 is millisecond means 1 sec
+
+        let b = setInterval(()=>{
+            document.querySelector(".father").style.background = getrandomcolor();
+        }, 1000);
+
+        let c = setInterval(()=>{
+            document.querySelector(".grandfather").style.background = getrandomcolor();
+        }, 1000);
+
+        //For clear in setInterval write clearInterval in console
+
+        let d = setTimeout(() =>{
+            document.querySelector(".father").style.color = getrandomcolor();
+        }, 100);
+
+        //For clear in setTimeout write clearTimeout in console
+    </script>
+</body>
+
+</html>
