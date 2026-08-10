@@ -1,0 +1,41 @@
+<!--- Q1.WAP to load a javascript file in a browser using Promises.use then() to display an alert when the load is
+complete. -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Javascript File</title>
+</head>
+
+<body>
+    <script>
+        function loadScript(src) {
+            return new Promise(function (resolve, reject) {
+                let script = document.createElement("script");
+                script.src = src;
+
+                script.onload = function () {
+                    resolve();
+                };
+
+                script.onerror = function () {
+                    reject();
+                };
+
+                document.head.appendChild(script);
+            });
+        }
+
+        loadScript("script.js")
+            .then(function () {
+                alert("Javascript file loadedsuccessfully!");
+            })
+            .catch(function () {
+                alert("Failed to load Javascript file.");
+            })
+    </script>
+</body>
+
+</html>
