@@ -1,20 +1,45 @@
 // Q1.Write a Javascript program to print Hello World after 2 second delay.
-// setTimeout(() => {
-//     console.log("Hello World");
-// }, 2000);
+setTimeout(() => {
+    console.log("Hello World");
+}, 2000);
 
 // Q2.Write a Javascript program to find average of numbers in an array using spread syntax.
 
-// let numbers = [1, 2, 3, 4, 5];
+let numbers = [1, 2, 3, 4, 5];
 
-// let average = (...nums) => {
-//     let sum = nums.reduce((total, num) => total + num, 0);
-//     return sum / nums.length;
-// }
+let average = (...nums) => {
+    let sum = nums.reduce((total, num) => total + num, 0);
+    return sum / nums.length;
+}
 
-// console.log("Average =",average(...numbers));
+console.log("Average =",average(...numbers));
 
 // ... in average(...numbers) → spread
 // ... in (...nums) → rest
 
 // Q3. Write a Javascript function which resolves a promise after n seconds.The function takes n as the parameter.Use an IIFE to execute the functions with different values of n.
+function resolveafternseconds(n) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(`Promise resolved after ${n} seconds`);
+        }, n * 1000);
+    });
+}
+
+//Now IIFE Execute
+(async function () {
+    console.log(await resolveafternseconds(2));
+    console.log(await resolveafternseconds(4));
+    console.log(await resolveafternseconds(1));
+})();
+
+// Q4. Write a simple interest calculator using Javascript.
+function calculatesi(p, r, t){
+    let si = (p * r * t)/100;
+    let totalamount = p + si;
+
+    console.log("Simple Interest = ",si);
+    console.log("Total Amount = ",totalamount);
+}
+
+calculatesi(1000,5,2);
