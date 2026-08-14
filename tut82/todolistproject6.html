@@ -1,0 +1,250 @@
+<!-- Exercise 6 - TODO List
+Create a TODO List app capable of storing TODOS in local storage.Add an option delete and access all the TODOS.Try to make UI as good as possible. -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 550px;
+            background: rgb(239, 110, 228);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(64, 9, 182, 0.7);
+        }
+
+        h1 {
+            text-align: center;
+            color: #7416f0;
+            text-shadow: #7416f0;
+            margin-bottom: 25px;
+        }
+
+        .inputbox input {
+            flex: 1;
+            padding: 13px;
+            border: 2px solid blueviolet;
+            border-radius: 8px;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .inputbox input:focus {
+            border-color: #667eea;
+        }
+
+        button {
+            border: 1px solid black;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .inputbox button {
+            background: #9b66ea;
+            padding: 0 20px;
+        }
+
+        .inputbox button:hover {
+            color: #7416f0;
+            text-shadow: #7416f0;
+            background: #77d3e8;
+        }
+
+        .todoheader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0 15px;
+        }
+
+
+        .todoheader h2 {
+            color: #7416f0;
+            text-shadow: #7416f0;
+            font-size: 20px;
+        }
+
+        .clearbtn {
+            background: #9b66ea;
+            padding: 0 20px;
+        }
+
+        .clearbtn:hover {
+            color: #7416f0;
+            text-shadow: #7416f0;
+            background: #77d3e8;
+        }
+
+        #todoList {
+            list-style: none;
+        }
+
+        #emptymessage {
+            color: #7416f0;
+            text-shadow: #7416f0;
+            font-size: 17px;
+            font-weight: bolder;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>My Todo List</h1>
+
+        <div class="inputbox">
+            <input type="text" id="todoinput" placeholder="Enter a task...">
+            <button onclick="addTodo()">Add</button>
+        </div>
+
+        <div class="todoheader">
+            <h2>My Tasks</h2>
+            <button class="clearbtn" onclick="clearTodos()">Clear All</button>
+        </div>
+
+        <ul id="todolist"></ul>
+
+        <p id="emptymessage">No tasks yet.Add one above!</p>
+    </div>
+
+    <script>
+        let todos = JSON.parse(localStorage.getItem("todos")) || [];
+
+        const todoInput = document.getElementById("todoinput");
+        const todoList = document.getElementById("todolist");
+        const emptyMessage = document.getElementById("emptymessage");
+
+        // Display todos when page loads
+        displayTodos();
+
+        function addTodo() {
+            const task = todoInput.value.trim();
+
+            // Don't add empty tasks
+            if (task === "") {
+                alert("Please enter a task!");
+                return;
+            }
+
+            const todo = {
+                id: Date.now(),
+                text: task
+            };
+
+            todos.push(todo);
+
+            // Save todos to localStorage
+            localStorage.setItem("todos", JSON.stringify(todos));
+
+            // Clear input
+            todoInput.value = "";
+
+            // Display updated list
+            displayTodos();
+        }
+
+        function displayTodos() {
+            // Clear existing list
+            todoList.innerHTML = "";
+
+            // Show empty message if there are no todos
+            if (todos.length === 0) {
+                emptyMessage.style.display = "block";
+                return;
+            }
+
+            emptyMessage.style.display = "none";
+
+            todos.forEach(function (todo) {
+                const li = document.createElement("li");
+
+                li.style.display = "flex";
+                li.style.justifyContent = "space-between";
+                li.style.alignItems = "center";
+                li.style.background = "#f5e8ff";
+                li.style.padding = "12px";
+                li.style.marginBottom = "10px";
+                li.style.borderRadius = "8px";
+                li.style.color = "#4b168f";
+                li.style.fontWeight = "bold";
+
+                li.innerHTML = `
+            <span>${todo.text}</span>
+            <button onclick="deleteTodo(${todo.id})"
+                style="
+                    background: #ff5c7a;
+                    color: white;
+                    border: none;
+                    padding: 8px 12px;
+                    border-radius: 6px;
+                    cursor: pointer;
+                ">
+                Delete
+            </button>
+        `;
+
+                todoList.appendChild(li);
+            });
+        }
+
+        function deleteTodo(id) {
+            todos = todos.filter(function (todo) {
+                return todo.id !== id;
+            });
+
+            // Update localStorage
+            localStorage.setItem("todos", JSON.stringify(todos));
+
+            // Display updated list
+            displayTodos();
+        }
+
+        function clearTodos() {
+            if (todos.length === 0) {
+                return;
+            }
+
+            const confirmClear = confirm("Are you sure you want to delete all tasks?");
+
+            if (confirmClear) {
+                todos = [];
+
+                localStorage.setItem("todos", JSON.stringify(todos));
+
+                displayTodos();
+            }
+        }
+
+        // Press Enter to add a todo
+        todoInput.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                addTodo();
+            }
+        });
+
+    </script>
+</body>
+
+</html>
