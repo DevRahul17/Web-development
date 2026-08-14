@@ -1,0 +1,105 @@
+<!-- Exercise 4 - Digital Clock
+Create a Digital seconds clock using setInterval and data object in Javascript.The Data object can be used to get the date,time,hours and seconds which can be updated using setInterval.Try to keep the UI good looking. -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Clock</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: -o-repeating-linear-gradient();
+            background-color: aqua;
+        }
+
+        .clock {
+            text-align: center;
+            background-color: rgb(34, 32, 33);
+            padding: 40px 60px;
+            border-radius: 20px;
+            box-shadow: 0 10px 17px rgba(30, 18, 200, 0.656);
+            color: rgb(235, 118, 28);
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            font-size: 30px;
+            text-shadow: gold;
+        }
+
+        #time {
+            font-size: 60px;
+            font-weight: bold;
+            color: #e0f125;
+            text-shadow: 0 0 15px #c8df35;
+        }
+
+        #date {
+            color: red;
+            margin-top: 20px;
+            font-size: 17px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="clock">
+        <h1>Digital Clock</h1>
+
+        <div id="time">00:00:00</div>
+
+        <div id="date">Loading...</div>
+    </div>
+
+
+    <script>
+        function updateclock() {
+            //Create Date object
+            const data = new Date();
+
+            //Get hours,minutes and seconds
+            let hours = data.getHours();
+            let minutes = data.getMinutes();
+            let seconds = data.getSeconds();
+
+            //Add 0 before single digit values
+            hours = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            //Display Time
+            document.getElementById("time").innerText = 
+            `${hours}:${minutes}:${seconds}`;
+
+            //Display date
+            document.getElementById("date").innerText = 
+            data.toLocaleDateString("en-IN", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            });
+        }
+
+        //Call function immediately
+        updateclock();
+
+        //Update clock every second
+        setInterval(updateclock,1000);
+    </script>
+</body>
+
+</html>
