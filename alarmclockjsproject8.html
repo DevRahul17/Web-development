@@ -1,0 +1,208 @@
+<!-- Exercise 8 - Alarm Clock
+The HTML AudioElement Interface can be used to play audio in the browser.Create an alarm clock which displays time and plays sound at a user specified time. -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alarm Clock</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+            background-color: rgb(120, 59, 182);
+        }
+
+        #clock {
+            font-size: 60px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            text-shadow: 0cqi;
+        }
+
+        label {
+            font-weight: bold;
+            text-shadow: 0cqb;
+        }
+
+        input,
+        button {
+            font-size: 17px;
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            border: 2px solid black;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: rgb(98, 208, 245);
+            color: blue;
+        }
+
+        #status {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Alarm Clock</h1>
+
+    <div id="clock">00:00:00</div>
+
+    <label>
+        Set Alarm:
+        <input type="time" id="alarmtime">
+    </label>
+
+    <button onclick="setalarm()">Set Alarm</button>
+    <button onclick="stopalarm()">Stop Alarm</button>
+
+    <p id="status">No alarm set</p>
+
+     <audio id="alarmsound" src="audio1.mp3" controls></audio>
+
+
+
+    <script>
+        const clock = document.getElementById("clock");
+        const alarmtime = document.getElementById("alarmtime");
+        const alarmsound = document.getElementById("alarmsound");
+        const status = document.getElementById("status");
+
+        // let alarm = null;
+
+        // function updateclock() {
+        //     const now = new Date();
+
+        //     let hours = String(now.getHours()).padStart(2, "0");
+        //     let minutes = String(now.getMinutes()).padStart(2, "0");
+        //     let seconds = String(now.getSeconds()).padStart(2, "0");
+
+        //     clock.textContent = `${hours}:${minutes}:${seconds}`;
+
+        //     // Check whether the current time matches the alarm
+        //     if (alarm && hours === alarm.hours && minutes === alarm.minutes && seconds === "00") {
+        //         alarmsound.currentTime = 0;
+        //         // alarmsound.play();
+        //         alarmsound.play().catch(error => {
+        //             console.log("Audio could not play:", error);
+        //         });
+
+
+        //         status.textContent = "⏰ Alarm ringing!";
+        //     }
+        // }
+
+
+        let alarm = null;
+        let alarmRinging = false;
+
+        function updateclock() {
+            const now = new Date();
+
+            let hours = String(now.getHours()).padStart(2, "0");
+            let minutes = String(now.getMinutes()).padStart(2, "0");
+            let seconds = String(now.getSeconds()).padStart(2, "0");
+
+            clock.textContent = `${hours}:${minutes}:${seconds}`;
+
+            if (
+                alarm &&
+                hours === alarm.hours &&
+                minutes === alarm.minutes &&
+                !alarmRinging
+            ) {
+                alarmRinging = true;
+
+                alarmsound.currentTime = 0;
+
+                alarmsound.play().catch(error => {
+                    console.log("Audio could not play:", error);
+                });
+
+                status.textContent = "⏰ Alarm ringing!";
+            }
+        }
+
+
+        // function setalarm() {
+        //     if (!alarmtime.value) {
+        //         status.textContent = "Please select an alarm time.";
+        //         return;
+        //     }
+
+        //     const [hours, minutes] = alarmtime.value.split(":");
+
+        //     alarm = {
+        //         hours,
+        //         minutes
+        //     };
+
+        //     status.textContent = `Alarm set for ${alarmtime.value}`;
+        // }
+
+        // function stopalarm() {
+        //     alarmsound.pause();
+        //     alarmsound.currentTime = 0;
+
+        //     alarm = null;
+        //     status.textContent = "Alarm stopped";
+        // }
+
+
+
+        function setalarm() {
+            if (!alarmtime.value) {
+                status.textContent = "Please select an alarm time.";
+                return;
+            }
+
+            const [hours, minutes] = alarmtime.value.split(":");
+
+            alarm = {
+                hours,
+                minutes
+            };
+
+            alarmRinging = false;
+
+            status.textContent = `Alarm set for ${alarmtime.value}`;
+        }
+
+        function stopalarm() {
+            alarmsound.pause();
+            alarmsound.currentTime = 0;
+
+            alarm = null;
+            alarmRinging = false;
+
+            status.textContent = "Alarm stopped";
+        }
+
+
+
+
+        //Update the clock every second
+        setInterval(updateclock, 1000);
+
+        //Display the clock immediately
+        updateclock();
+    </script>
+</body>
+
+</html>
