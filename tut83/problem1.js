@@ -1,5 +1,4 @@
-
-
+//Problem 1
 function houseassign(students) {
     let houses = [];
 
