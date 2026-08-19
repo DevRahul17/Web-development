@@ -60,6 +60,7 @@ async function ordercoffee() {
 
 ordercoffee();
 
+//Problem11
 function filterProducts(products, criterion) {
     return products.filter(product => product.category === criterion);
 }
