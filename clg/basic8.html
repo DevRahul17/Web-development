@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Profile Card</title>
+    <style>
+        /* 1. Universal Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 2. Body Layout (Centers the card on the screen) */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* 3. Card Styling */
+        .profile-card {
+            background-color: #ffffff;
+            width: 320px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* 4. Profile Image Placeholder */
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            background-color: #007bff;
+            border-radius: 50%;
+            margin: 0 auto 15px auto;
+        }
+
+        /* 5. Typography Styling */
+        .profile-name {
+            font-size: 24px;
+            color: #333333;
+            margin-bottom: 8px;
+        }
+
+        .profile-title {
+            font-size: 14px;
+            color: #777777;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        /* 6. Button Styling & Hover Interaction */
+        .profile-btn {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .profile-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Profile Card Container -->
+    <div class="profile-card">
+        <div class="profile-img"></div>
+        <h1 class="profile-name">Alex Morgan</h1>
+        <p class="profile-title">Web Developer</p>
+        <button class="profile-btn">Connect</button>
+    </div>
+
+</body>
+
+</html>
