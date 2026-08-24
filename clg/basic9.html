@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced HTML & CSS Showcase</title>
+    <style>
+        /* 1. CSS CUSTOM PROPERTIES (VARIABLES) & TOKENS */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a, #1e1b4b);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            
+            --primary-accent: #818cf8;
+            --secondary-accent: #f43f5e;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            
+            --transition-smooth: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --glow-shadow: 0 0 20px rgba(129, 140, 248, 0.15);
+        }
+
+        /* 2. MODERN RESET & GLOBAL STYLES */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        /* 3. ADVANCED GRID LAYOUT */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            width: 100%;
+            max-width: 1100px;
+            perspective: 1000px; /* Prepares environment for 3D transforms */
+        }
+
+        /* 4. GLASSMORPHISM & POSITIONING CODES */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition-smooth);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 5. PSEUDO-ELEMENTS FOR DECORATIVE GLOWS */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(129, 140, 248, 0.08) 0%, transparent 70%);
+            opacity: 0;
+            transition: var(--transition-smooth);
+            pointer-events: none;
+        }
+
+        /* 6. ADVANCED HOVER EFFECTS & TRANSFORMATIONS */
+        .card:hover {
+            transform: translateY(-10px) rotateX(2deg) rotateY(-2deg);
+            border-color: rgba(129, 140, 248, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), var(--glow-shadow);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        /* 7. FLEXBOX CONTENT STRATEGY & TYPOGRAPHY */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .badge {
+            background: linear-gradient(90deg, var(--primary-accent), #a78bfa);
+            color: #0f172a;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        /* 8. COMPLEX SELECTORS & INTERACTIVE BUTTONS */
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        .price {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .btn-action {
+            background: transparent;
+            border: 2px solid var(--primary-accent);
+            color: var(--primary-accent);
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+
+        /* Target the button natively on component hover state */
+        .card:hover .btn-action {
+            background: var(--primary-accent);
+            color: #0f172a;
+            box-shadow: 0 0 15px rgba(129, 140, 248, 0.4);
+        }
+
+        .btn-action:active {
+            transform: scale(0.95);
+        }
+
+        /* Variant Class using custom variable overrides */
+        .card--premium {
+            border-color: rgba(244, 63, 94, 0.2);
+        }
+        .card--premium .badge {
+            background: linear-gradient(90deg, var(--secondary-accent), #fb7185);
+        }
+        .card--premium:hover {
+            border-color: rgba(244, 63, 94, 0.5);
+            --glow-shadow: 0 0 20px rgba(244, 63, 94, 0.2);
+        }
+        .card--premium .btn-action {
+            border-color: var(--secondary-accent);
+            color: var(--secondary-accent);
+        }
+        .card--premium:hover .btn-action {
+            background: var(--secondary-accent);
+            color: var(--text-main);
+            box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+        }
+
+        /* 9. ADVANCED RESPONSIVE DESIGN (MEDIA QUERY) */
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+            .container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SEMANTIC WRAPPER CONTAINER -->
+    <main class="container">
+        
+        <!-- CARD 1: STANDARD ACCENT -->
+        <article class="card">
+            <div class="card-body">
+                <header class="card-header">
+                    <span class="badge">Standard</span>
+                </header>
+                <h2 class="card-title">Core Mesh Node</h2>
+                <p class="card-desc">Deploy decentralized framework scaling options instantly. Zero configuration, global delivery, automated distribution protocols.</p>
+            </div>
+            <footer class="card-footer">
+                <span class="price">$29<span style="font-size: 1rem; color: var(--text-muted);">/mo</span></span>
+                <button class="btn-action">Initialize</button>
+            </footer>
+        </article>
+
+        <!-- CARD 2: PREMIUM ACCENT VARIANT -->
+        <article class="card card--premium">
+            <div class="card-body">
+                <header class="card-header">
+                    <span class="badge">Enterprise</span>
+                </header>
+                <h2 class="card-title">Quantum Engine</h2>
+                <p class="card-desc">Advanced data pipelines built for extreme bandwidth. Real-time predictive syncing nodes with hardware-isolated environments.</p>
+            </div>
+            <footer class="card-footer">
+                <span class="price">$89<span style="font-size: 1rem; color: var(--text-muted);">/mo</span></span>
+                <button class="btn-action">Provision</button>
+            </footer>
+        </article>
+
+    </main>
+
+</body>
+</html>
