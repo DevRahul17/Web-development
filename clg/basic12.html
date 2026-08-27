@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Personal Website</title>
+
+    <!-- Internal CSS Styling -->
+    <style>
+        /* Universal reset for clean layout math */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            background-color: #f4f7f6;
+        }
+
+        /* Navigation Bar Styles */
+        nav {
+            background-color: #2c3e50;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #1abc9c;
+        }
+
+        /* Hero Section Styles */
+        .hero {
+            background: linear-gradient(135deg, #2c3e50 0%, #1abc9c 100%);
+            color: #ffffff;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #ffffff;
+            color: #2c3e50;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        /* Main Content Grid */
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .features {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            flex: 1;
+            min-width: 280px;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .card h3 {
+            margin-bottom: 12px;
+            color: #2c3e50;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #2c3e50;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Breakpoints for Mobile Screens */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .features {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sticky Navigation Menu -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">MyWebsite</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Welcome Hero Showcase -->
+    <section id="home" class="hero">
+        <h1>Welcome to My Website</h1>
+        <p>A beautiful, minimalistic page template built purely with HTML & CSS.</p>
+        <a href="#services" class="btn">Explore More</a>
+    </section>
+
+    <!-- Core Content Cards Grid Section -->
+    <main class="container" id="services">
+        <div class="features">
+            <div class="card">
+                <h3>Clean Design</h3>
+                <p>Styled inside a single file using pure Internal CSS, which keeps the build simple and load times
+                    incredibly fast.</p>
+            </div>
+            <div class="card">
+                <h3>Fully Responsive</h3>
+                <p>Designed using modern CSS Flexbox and media queries so that the webpage adapts seamlessly to mobile
+                    phones, tablets, and laptops.</p>
+            </div>
+            <div class="card">
+                <h3>Easy to Customize</h3>
+                <p>The code structure is straightforward. Simply swap out text variables or color hex codes to match
+                    your personal brand styling.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Sticky Footer Block -->
+    <footer>
+        <p>&copy; 2026 MyWebsite. Built with 💻 and internal CSS styling.</p>
+    </footer>
+
+</body>
+
+</html>
