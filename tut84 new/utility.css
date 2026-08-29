@@ -1,0 +1,28 @@
+.border {
+    margin: 3px;
+}
+
+.bgblack {
+    background-color: black;
+    color: white;
+}
+
+.invert {
+    filter: invert(1);
+}
+
+.bggrey {
+    background-color: #121212;
+}
+
+.rounded {
+    border-radius: 7px;
+}
+
+.margin1 {
+    margin: 5px;
+}
+
+.p1 {
+    padding: 10px;
+}
