@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>YatraPulse | Smart Tourism</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #222;
+        }
+
+        /* Navbar */
+        header {
+            background: #0f766e;
+            color: white;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(
+                rgba(0, 0, 0, 0.45),
+                rgba(0, 0, 0, 0.45)
+            ),
+            url("https://images.unsplash.com/photo-1524492412937-b28074a5d7da")
+            center/cover;
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 750px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: #f59e0b;
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* Sections */
+        section {
+            padding: 60px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        /* AI Planner */
+        .planner {
+            background: white;
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
+            margin-bottom: 10px;
+        }
+
+        .card-content p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        /* Tourism Dashboard */
+        .dashboard {
+            background: #0f766e;
+            color: white;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .stat {
+            background: rgba(255,255,255,0.12);
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat h3 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        /* Footer */
+        footer {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav a {
+                margin: 0 8px;
+            }
+
+            .hero h1 {
+                font-size: 35px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header>
+        <div class="logo">🌍 YatraPulse</div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#planner">AI Planner</a>
+            <a href="#destinations">Destinations</a>
+            <a href="#hotels">Hotels</a>
+            <a href="#dashboard">Dashboard</a>
+        </nav>
+    </header>
+
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+            <h1>Explore More. Discover Better.</h1>
+
+            <p>
+                AI-powered tourism that helps you discover
+                amazing destinations, local experiences and hotels.
+            </p>
+
+            <button class="btn" onclick="scrollToPlanner()">
+                Plan My Trip
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- AI Trip Planner -->
+    <section id="planner">
+
+        <div class="section-title">
+            <h2>🤖 AI Trip Planner</h2>
+            <p>Create a personalized travel experience</p>
+        </div>
+
+        <div class="planner">
+
+            <div class="form-group">
+                <label>Where do you want to go?</label>
+                <input
+                    type="text"
+                    id="destination"
+                    placeholder="Example: Uttar Pradesh"
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Number of Days</label>
+                <input
+                    type="number"
+                    id="days"
+                    placeholder="Example: 4"
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Budget</label>
+                <input
+                    type="number"
+                    id="budget"
+                    placeholder="Example: ₹15000"
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Travel Interest</label>
+
+                <select id="interest">
+                    <option>Heritage</option>
+                    <option>Nature</option>
+                    <option>Adventure</option>
+                    <option>Food</option>
+                    <option>Culture</option>
+                    <option>Spiritual</option>
+                </select>
+
+            </div>
+
+            <button class="btn" onclick="generatePlan()">
+                Generate My Plan
+            </button>
+
+            <div id="result"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Destinations -->
+    <section id="destinations">
+
+        <div class="section-title">
+            <h2>📍 Discover Destinations</h2>
+            <p>Explore popular and hidden gems</p>
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1564507592333-c60657eea523"
+                    alt="Agra"
+                >
+
+                <div class="card-content">
+                    <h3>Agra</h3>
+                    <p>Explore history, architecture and culture.</p>
+                    <button class="btn">Explore</button>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1561361058-c24cecae35ca"
+                    alt="Varanasi"
+                >
+
+                <div class="card-content">
+                    <h3>Varanasi</h3>
+                    <p>Experience spirituality and local culture.</p>
+                    <button class="btn">Explore</button>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1548013146-72479768bada"
+                    alt="Hidden destination"
+                >
+
+                <div class="card-content">
+                    <h3>Hidden Gems</h3>
+                    <p>Discover less crowded destinations.</p>
+                    <button class="btn">Explore</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Hotels -->
+    <section id="hotels">
+
+        <div class="section-title">
+            <h2>🏨 Hotels & Local Experiences</h2>
+            <p>Support local tourism businesses</p>
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+                <div class="card-content">
+                    <h3>🏨 Hotels</h3>
+                    <p>
+                        Find hotels according to your budget
+                        and location.
+                    </p>
+                    <button class="btn">Find Hotels</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <h3>🍛 Local Food</h3>
+                    <p>
+                        Discover authentic local restaurants
+                        and food experiences.
+                    </p>
+                    <button class="btn">Explore Food</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <h3>🎭 Experiences</h3>
+                    <p>
+                        Connect with local guides, artisans
+                        and cultural experiences.
+                    </p>
+                    <button class="btn">Discover</button>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Tourism Dashboard -->
+    <section class="dashboard" id="dashboard">
+
+        <div class="section-title">
+            <h2>📊 Tourism Intelligence</h2>
+            <p>Helping destinations grow sustainably</p>
+        </div>
+
+        <div class="stats">
+
+            <div class="stat">
+                <h3>120+</h3>
+                <p>Destinations</p>
+            </div>
+
+            <div class="stat">
+                <h3>450+</h3>
+                <p>Local Businesses</p>
+            </div>
+
+            <div class="stat">
+                <h3>35%</h3>
+                <p>Potential Crowd Reduction</p>
+            </div>
+
+            <div class="stat">
+                <h3>₹</h3>
+                <p>Local Revenue Growth</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <p>
+            © 2026 YatraPulse | SIH 2026 | PS 26204
+        </p>
+
+    </footer>
+
+
+    <!-- JavaScript -->
+    <script>
+
+        function scrollToPlanner() {
+
+            document
+                .getElementById("planner")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+        }
+
+
+        function generatePlan() {
+
+            const destination =
+                document.getElementById("destination").value;
+
+            const days =
+                document.getElementById("days").value;
+
+            const budget =
+                document.getElementById("budget").value;
+
+            const interest =
+                document.getElementById("interest").value;
+
+            const result =
+                document.getElementById("result");
+
+            if (!destination || !days || !budget) {
+
+                result.innerHTML =
+                    "<p style='margin-top:20px;color:red;'>Please fill all fields.</p>";
+
+                return;
+            }
+
+            result.innerHTML = `
+
+                <div style="
+                    margin-top:25px;
+                    padding:20px;
+                    background:#ecfdf5;
+                    border-radius:10px;
+                ">
+
+                    <h3>✨ Your Travel Plan</h3>
+
+                    <p>
+                        Destination: <strong>${destination}</strong>
+                    </p>
+
+                    <p>
+                        Duration: <strong>${days} days</strong>
+                    </p>
+
+                    <p>
+                        Budget: <strong>₹${budget}</strong>
+                    </p>
+
+                    <p>
+                        Interest: <strong>${interest}</strong>
+                    </p>
+
+                    <br>
+
+                    <p>
+                        🤖 Your personalized AI itinerary
+                        will appear here.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+    </script>
+
+</body>
+</html>
