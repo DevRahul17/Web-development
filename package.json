@@ -1,5 +1,17 @@
 {
   "dependencies": {
     "prompt-sync": "^4.2.0"
-  }
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "web-dev",
+  "version": "1.0.0",
+  "description": "This is nodejs tut",
+  "main": "server.js",
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "Rahul",
+  "license": "ISC"
 }
