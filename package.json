@@ -1,17 +1,18 @@
 {
-  "dependencies": {
-    "prompt-sync": "^4.2.0"
-  },
-  "scripts": {
-    "start": "node server.js"
-  },
   "name": "web-dev",
   "version": "1.0.0",
-  "description": "This is nodejs tut",
-  "main": "server.js",
-  "keywords": [
-    "nodejs"
-  ],
-  "author": "Rahul",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "ansi-regex": "^4.1.1",
+    "prompt-sync": "^4.2.0",
+    "strip-ansi": "^5.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
   "license": "ISC"
 }
