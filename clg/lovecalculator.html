@@ -1,0 +1,3197 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="LoveSync - A beautiful and fun romantic compatibility calculator.">
+
+    <title>LoveSync ❤️ | Love Compatibility Calculator</title>
+
+
+    <!-- =====================================================
+         ALL CSS
+    ====================================================== -->
+
+    <style>
+        /* =====================================================
+           RESET
+        ====================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        /* =====================================================
+           VARIABLES
+        ====================================================== */
+
+        :root {
+
+            --primary: #ff2d75;
+            --secondary: #c026d3;
+            --pink: #ff4b8b;
+
+            --text: #321522;
+            --muted: #806b75;
+
+            --card: rgba(255, 255, 255, 0.78);
+
+            --border: rgba(255, 45, 117, 0.15);
+
+            --background:
+                linear-gradient(135deg,
+                    #fff0f5,
+                    #ffe1ec,
+                    #f8e8ff);
+
+            --shadow:
+                0 30px 80px rgba(80, 10, 40, 0.18);
+        }
+
+
+        /* =====================================================
+           BODY
+        ====================================================== */
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                "Segoe UI",
+                Tahoma,
+                Geneva,
+                Verdana,
+                sans-serif;
+
+            color: var(--text);
+
+            background: var(--background);
+
+            overflow-x: hidden;
+
+            transition:
+                background 0.5s,
+                color 0.5s;
+        }
+
+
+        /* =====================================================
+           DARK MODE
+        ====================================================== */
+
+        body.dark {
+
+            --text: #ffffff;
+
+            --muted: #c7adb9;
+
+            --card: rgba(31, 13, 24, 0.84);
+
+            --border:
+                rgba(255, 255, 255, 0.08);
+
+            background:
+
+                radial-gradient(circle at 10% 20%,
+                    #45152e,
+                    transparent 35%),
+
+                radial-gradient(circle at 90% 80%,
+                    #2b123d,
+                    transparent 35%),
+
+                #10070d;
+        }
+
+
+        /* =====================================================
+           BACKGROUND GLOW
+        ====================================================== */
+
+        .background {
+
+            position: fixed;
+
+            inset: 0;
+
+            overflow: hidden;
+
+            pointer-events: none;
+
+            z-index: 0;
+        }
+
+
+        .glow {
+
+            position: absolute;
+
+            width: 350px;
+
+            height: 350px;
+
+            border-radius: 50%;
+
+            filter: blur(90px);
+
+            opacity: 0.35;
+
+            animation:
+                moveGlow 12s infinite alternate;
+        }
+
+
+        .glow-1 {
+
+            background: #ff4d88;
+
+            top: -150px;
+
+            left: -120px;
+        }
+
+
+        .glow-2 {
+
+            background: #b84cff;
+
+            right: -120px;
+
+            bottom: 10%;
+
+            animation-delay: 3s;
+        }
+
+
+        .glow-3 {
+
+            background: #ff8ab3;
+
+            left: 30%;
+
+            bottom: -200px;
+
+            animation-delay: 6s;
+        }
+
+
+        @keyframes moveGlow {
+
+            from {
+                transform: translate(0, 0);
+            }
+
+            to {
+                transform: translate(100px, 70px);
+            }
+        }
+
+
+        /* =====================================================
+           FLOATING HEARTS
+        ====================================================== */
+
+        #floating-hearts {
+
+            position: fixed;
+
+            inset: 0;
+
+            pointer-events: none;
+
+            z-index: 1;
+        }
+
+
+        .floating-heart {
+
+            position: absolute;
+
+            bottom: -40px;
+
+            opacity: 0.65;
+
+            animation:
+                floatUp linear forwards;
+        }
+
+
+        @keyframes floatUp {
+
+            0% {
+
+                transform:
+                    translateY(0) rotate(0deg);
+
+                opacity: 0;
+            }
+
+            15% {
+
+                opacity: 0.7;
+            }
+
+            100% {
+
+                transform:
+                    translateY(-110vh) rotate(360deg);
+
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ====================================================== */
+
+        .navbar {
+
+            position: relative;
+
+            z-index: 10;
+
+            width: min(1100px, 92%);
+
+            margin: auto;
+
+            padding: 22px 0;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+
+        .brand {
+
+            font-size: 23px;
+
+            font-weight: 900;
+
+            color: var(--primary);
+        }
+
+
+        .brand span {
+
+            margin-right: 5px;
+        }
+
+
+        .theme-toggle {
+
+            width: 45px;
+
+            height: 45px;
+
+            border-radius: 50%;
+
+            border: 1px solid var(--border);
+
+            background: var(--card);
+
+            backdrop-filter: blur(10px);
+
+            cursor: pointer;
+
+            font-size: 19px;
+
+            transition: 0.3s;
+        }
+
+
+        .theme-toggle:hover {
+
+            transform:
+                rotate(20deg) scale(1.1);
+        }
+
+
+        /* =====================================================
+           MAIN
+        ====================================================== */
+
+        .main {
+
+            position: relative;
+
+            z-index: 2;
+
+            width: min(850px, 92%);
+
+            margin: auto;
+        }
+
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .hero {
+
+            text-align: center;
+
+            padding:
+                25px 0 35px;
+        }
+
+
+        .badge {
+
+            display: inline-block;
+
+            padding:
+                8px 15px;
+
+            border-radius: 50px;
+
+            background:
+                rgba(255,
+                    45,
+                    117,
+                    0.1);
+
+            border:
+                1px solid var(--border);
+
+            color: var(--primary);
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+
+        .hero h1 {
+
+            margin-top: 18px;
+
+            font-size:
+                clamp(38px,
+                    7vw,
+                    60px);
+
+            line-height: 1.05;
+
+            letter-spacing: -2px;
+        }
+
+
+        .hero h1 span {
+
+            display: block;
+
+            background:
+                linear-gradient(90deg,
+                    #ff2d75,
+                    #c026d3);
+
+            -webkit-background-clip: text;
+
+            background-clip: text;
+
+            color: transparent;
+        }
+
+
+        .hero p {
+
+            margin-top: 16px;
+
+            color: var(--muted);
+
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ====================================================== */
+
+        .card {
+
+            padding: 35px;
+
+            border-radius: 30px;
+
+            background: var(--card);
+
+            backdrop-filter: blur(25px);
+
+            -webkit-backdrop-filter: blur(25px);
+
+            border:
+                1px solid var(--border);
+
+            box-shadow: var(--shadow);
+        }
+
+
+        /* =====================================================
+           COUPLE INPUTS
+        ====================================================== */
+
+        .couple {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr auto 1fr;
+
+            gap: 20px;
+
+            align-items: center;
+        }
+
+
+        .person {
+
+            padding: 25px 20px;
+
+            text-align: center;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,
+                    255,
+                    255,
+                    0.45);
+
+            border:
+                1px solid var(--border);
+        }
+
+
+        body.dark .person {
+
+            background:
+                rgba(255,
+                    255,
+                    255,
+                    0.04);
+        }
+
+
+        .avatar {
+
+            width: 65px;
+
+            height: 65px;
+
+            margin:
+                auto auto 15px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(135deg,
+                    #ff4d88,
+                    #c026d3);
+
+            font-size: 30px;
+
+            box-shadow:
+                0 10px 25px rgba(255,
+                    45,
+                    117,
+                    0.25);
+        }
+
+
+        .person label {
+
+            display: block;
+
+            margin-bottom: 9px;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+
+        .person input {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border-radius: 12px;
+
+            border:
+                2px solid var(--border);
+
+            background:
+                rgba(255,
+                    255,
+                    255,
+                    0.75);
+
+            color: var(--text);
+
+            outline: none;
+
+            text-align: center;
+
+            font-size: 15px;
+
+            transition: 0.3s;
+        }
+
+
+        body.dark .person input {
+
+            background: #24101c;
+        }
+
+
+        .person input:focus {
+
+            border-color:
+                var(--primary);
+
+            box-shadow:
+                0 0 0 4px rgba(255,
+                    45,
+                    117,
+                    0.1);
+        }
+
+
+        /* =====================================================
+           HEART CONNECTOR
+        ====================================================== */
+
+        .connector {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+        }
+
+
+        .line {
+
+            width: 30px;
+
+            height: 2px;
+
+            background:
+                linear-gradient(90deg,
+                    transparent,
+                    var(--primary));
+        }
+
+
+        .main-heart {
+
+            font-size: 34px;
+
+            animation:
+                heartbeat 1.4s infinite;
+
+            filter:
+                drop-shadow(0 5px 10px rgba(255,
+                        0,
+                        80,
+                        0.3));
+        }
+
+
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            25% {
+                transform: scale(1.2);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+
+            60% {
+                transform: scale(1.15);
+            }
+        }
+
+
+        /* =====================================================
+           CALCULATE BUTTON
+        ====================================================== */
+
+        .calculate {
+
+            width: 100%;
+
+            margin-top: 25px;
+
+            padding: 17px;
+
+            border: none;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(135deg,
+                    #ff2d75,
+                    #c026d3);
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 12px 25px rgba(194,
+                    24,
+                    91,
+                    0.25);
+
+            transition: 0.3s;
+        }
+
+
+        .calculate:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 18px 35px rgba(194,
+                    24,
+                    91,
+                    0.35);
+        }
+
+
+        .calculate:active {
+
+            transform:
+                scale(0.98);
+        }
+
+
+        /* =====================================================
+           QUICK BUTTONS
+        ====================================================== */
+
+        .quick {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 12px;
+        }
+
+
+        .quick button {
+
+            flex: 1;
+
+            padding: 11px;
+
+            border-radius: 12px;
+
+            border:
+                1px solid var(--border);
+
+            background:
+                rgba(255,
+                    255,
+                    255,
+                    0.5);
+
+            color: var(--primary);
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+
+        body.dark .quick button {
+
+            background:
+                rgba(255,
+                    255,
+                    255,
+                    0.05);
+        }
+
+
+        .quick button:hover {
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        /* =====================================================
+           RESULT CARD
+        ====================================================== */
+
+        #result {
+
+            display: none;
+
+            margin-top: 30px;
+
+            padding: 30px;
+
+            text-align: center;
+
+            border-radius: 25px;
+
+            background:
+                linear-gradient(145deg,
+                    rgba(255,
+                        226,
+                        237,
+                        0.8),
+                    rgba(248,
+                        230,
+                        255,
+                        0.8));
+
+            border:
+                1px solid var(--border);
+
+            animation:
+                resultAppear 0.6s ease;
+        }
+
+
+        body.dark #result {
+
+            background:
+                linear-gradient(145deg,
+                    #321326,
+                    #24102f);
+        }
+
+
+        @keyframes resultAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(25px) scale(0.95);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0) scale(1);
+            }
+        }
+
+
+        .result-title {
+
+            color: var(--primary);
+
+            font-size: 11px;
+
+            font-weight: 900;
+
+            letter-spacing: 2px;
+        }
+
+
+        .result-names {
+
+            margin-top: 8px;
+
+            font-size: 25px;
+
+            font-weight: 900;
+        }
+
+
+        /* =====================================================
+           SCORE CIRCLE
+        ====================================================== */
+
+        .score-wrapper {
+
+            position: relative;
+
+            width: 220px;
+
+            height: 220px;
+
+            margin: 25px auto;
+        }
+
+
+        .score-wrapper svg {
+
+            width: 100%;
+
+            height: 100%;
+
+            transform:
+                rotate(-90deg);
+        }
+
+
+        .score-bg {
+
+            fill: none;
+
+            stroke:
+                rgba(255,
+                    45,
+                    117,
+                    0.12);
+
+            stroke-width: 13;
+        }
+
+
+        .score-progress {
+
+            fill: none;
+
+            stroke: var(--primary);
+
+            stroke-width: 13;
+
+            stroke-linecap: round;
+
+            stroke-dasharray: 515;
+
+            stroke-dashoffset: 515;
+
+            transition:
+                stroke-dashoffset 1.5s ease;
+        }
+
+
+        .score-content {
+
+            position: absolute;
+
+            inset: 0;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+        }
+
+
+        .score-number {
+
+            font-size: 62px;
+
+            font-weight: 900;
+
+            color: var(--primary);
+        }
+
+
+        .percent {
+
+            margin-top: -25px;
+
+            font-size: 25px;
+
+            font-weight: 900;
+
+            color: var(--primary);
+        }
+
+
+        /* =====================================================
+           CATEGORY
+        ====================================================== */
+
+        .category {
+
+            display: inline-block;
+
+            padding:
+                8px 18px;
+
+            border-radius: 50px;
+
+            background:
+                linear-gradient(135deg,
+                    #ff2d75,
+                    #c026d3);
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+
+        .message {
+
+            max-width: 620px;
+
+            margin:
+                18px auto;
+
+            color: var(--muted);
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           STATS
+        ====================================================== */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 15px;
+
+            margin-top: 25px;
+        }
+
+
+        .stat {
+
+            padding: 14px;
+
+            border-radius: 14px;
+
+            background:
+                rgba(255,
+                    255,
+                    255,
+                    0.5);
+
+            border:
+                1px solid var(--border);
+
+            text-align: left;
+        }
+
+
+        body.dark .stat {
+
+            background:
+                rgba(255,
+                    255,
+                    255,
+                    0.04);
+        }
+
+
+        .stat-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 9px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .stat-top strong {
+
+            color: var(--primary);
+        }
+
+
+        .bar {
+
+            height: 7px;
+
+            border-radius: 50px;
+
+            background:
+                rgba(255,
+                    45,
+                    117,
+                    0.12);
+
+            overflow: hidden;
+        }
+
+
+        .bar div {
+
+            width: 0%;
+
+            height: 100%;
+
+            border-radius: inherit;
+
+            background:
+                linear-gradient(90deg,
+                    #ff2d75,
+                    #c026d3);
+
+            transition:
+                width 1s ease;
+        }
+
+
+        /* =====================================================
+           LOVE ADVICE
+        ====================================================== */
+
+        .advice {
+
+            display: flex;
+
+            gap: 12px;
+
+            text-align: left;
+
+            margin-top: 20px;
+
+            padding: 16px;
+
+            border-radius: 14px;
+
+            background:
+                rgba(255,
+                    255,
+                    255,
+                    0.5);
+
+            border:
+                1px solid var(--border);
+        }
+
+
+        .advice-icon {
+
+            font-size: 23px;
+        }
+
+
+        .advice p {
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           RESULT BUTTONS
+        ====================================================== */
+
+        .result-buttons {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 18px;
+        }
+
+
+        .result-buttons button {
+
+            flex: 1;
+
+            padding: 11px;
+
+            border-radius: 11px;
+
+            border:
+                1px solid var(--border);
+
+            background:
+                rgba(255,
+                    255,
+                    255,
+                    0.7);
+
+            color: var(--primary);
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+
+        body.dark .result-buttons button {
+
+            background: #351729;
+        }
+
+
+        .result-buttons button:hover {
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        /* =====================================================
+           HISTORY
+        ====================================================== */
+
+        .history {
+
+            margin-top: 30px;
+        }
+
+
+        .history-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 12px;
+        }
+
+
+        .history-header h3 {
+
+            font-size: 16px;
+        }
+
+
+        .clear-history {
+
+            border: none;
+
+            background: transparent;
+
+            color: var(--primary);
+
+            cursor: pointer;
+
+            font-weight: 700;
+        }
+
+
+        .empty {
+
+            padding: 18px;
+
+            text-align: center;
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+            border-radius: 14px;
+
+            border:
+                1px dashed var(--border);
+        }
+
+
+        .history-item {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 14px 15px;
+
+            margin-bottom: 8px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,
+                    255,
+                    255,
+                    0.5);
+
+            border:
+                1px solid var(--border);
+
+            font-size: 13px;
+        }
+
+
+        body.dark .history-item {
+
+            background:
+                rgba(255,
+                    255,
+                    255,
+                    0.04);
+        }
+
+
+        .history-score {
+
+            color: var(--primary);
+
+            font-weight: 900;
+        }
+
+
+        /* =====================================================
+           TOAST
+        ====================================================== */
+
+        .toast {
+
+            position: fixed;
+
+            left: 50%;
+
+            bottom: 30px;
+
+            transform:
+                translate(-50%, 100px);
+
+            padding:
+                12px 20px;
+
+            border-radius: 50px;
+
+            background: #27101d;
+
+            color: white;
+
+            font-size: 13px;
+
+            opacity: 0;
+
+            z-index: 100;
+
+            transition: 0.4s;
+        }
+
+
+        .toast.show {
+
+            opacity: 1;
+
+            transform:
+                translate(-50%, 0);
+        }
+
+
+        /* =====================================================
+           DISCLAIMER
+        ====================================================== */
+
+        .disclaimer {
+
+            text-align: center;
+
+            margin:
+                22px auto;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            max-width: 600px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ====================================================== */
+
+        footer {
+
+            position: relative;
+
+            z-index: 2;
+
+            text-align: center;
+
+            padding: 20px;
+
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+
+        footer span {
+
+            color: var(--primary);
+        }
+
+
+        /* =====================================================
+           CONFETTI
+        ====================================================== */
+
+        .confetti {
+
+            position: fixed;
+
+            top: -30px;
+
+            z-index: 200;
+
+            pointer-events: none;
+
+            animation:
+                fall 3s linear forwards;
+        }
+
+
+        @keyframes fall {
+
+            to {
+
+                transform:
+                    translateY(110vh) rotate(720deg);
+
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 700px) {
+
+            .card {
+
+                padding: 20px;
+            }
+
+
+            .couple {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .connector {
+
+                justify-content: center;
+            }
+
+
+            .line {
+
+                width: 60px;
+            }
+
+
+            .stats {
+
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 450px) {
+
+            .hero h1 {
+
+                letter-spacing: -1px;
+            }
+
+
+            .result-buttons {
+
+                flex-wrap: wrap;
+            }
+
+
+            .score-wrapper {
+
+                width: 190px;
+
+                height: 190px;
+            }
+
+
+            .score-number {
+
+                font-size: 54px;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         BACKGROUND
+    ====================================================== -->
+
+    <div class="background">
+
+        <div class="glow glow-1"></div>
+
+        <div class="glow glow-2"></div>
+
+        <div class="glow glow-3"></div>
+
+    </div>
+
+
+    <!-- Floating Hearts -->
+
+    <div id="floating-hearts"></div>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <nav class="navbar">
+
+        <div class="brand">
+
+            <span>💗</span>
+            LoveSync
+
+        </div>
+
+
+        <button class="theme-toggle" id="themeToggle">
+
+            🌙
+
+        </button>
+
+    </nav>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main">
+
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+            <span class="badge">
+
+                ✨ FUN • ROMANTIC • FREE
+
+            </span>
+
+
+            <h1>
+
+                Discover Your
+
+                <span>
+                    Love Connection
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                Enter two names and discover
+                your fun compatibility score. ❤️
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CALCULATOR
+        ================================================== -->
+
+        <section class="card">
+
+
+            <!-- COUPLE -->
+
+            <div class="couple">
+
+
+                <!-- PERSON 1 -->
+
+                <div class="person">
+
+                    <div class="avatar">
+
+                        👤
+
+                    </div>
+
+
+                    <label>
+
+                        Your Name
+
+                    </label>
+
+
+                    <input id="name1" type="text" placeholder="Enter your name" maxlength="30" autocomplete="off">
+
+                </div>
+
+
+
+                <!-- CONNECTOR -->
+
+                <div class="connector">
+
+                    <div class="line"></div>
+
+                    <div class="main-heart">
+
+                        ❤️
+
+                    </div>
+
+                    <div class="line"></div>
+
+                </div>
+
+
+
+                <!-- PERSON 2 -->
+
+                <div class="person">
+
+                    <div class="avatar">
+
+                        💕
+                    </div>
+
+
+                    <label>
+
+                        Their Name
+
+                    </label>
+
+
+                    <input id="name2" type="text" placeholder="Enter their name" maxlength="30" autocomplete="off">
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CALCULATE -->
+
+            <button class="calculate" id="calculate">
+
+                💞
+                Calculate Compatibility
+                ✨
+
+            </button>
+
+
+
+            <!-- QUICK -->
+
+            <div class="quick">
+
+                <button id="surprise">
+
+                    🎲 Surprise Me
+
+                </button>
+
+
+                <button id="reset">
+
+                    🔄 Reset
+
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 RESULT
+            ================================================== -->
+
+            <section id="result">
+
+
+                <div class="result-title">
+
+                    YOUR LOVE SCORE
+
+                </div>
+
+
+                <div class="result-names" id="resultNames">
+
+                </div>
+
+
+
+                <!-- SCORE -->
+
+                <div class="score-wrapper">
+
+                    <svg viewBox="0 0 200 200">
+
+                        <circle class="score-bg" cx="100" cy="100" r="82">
+                        </circle>
+
+
+                        <circle class="score-progress" id="scoreProgress" cx="100" cy="100" r="82">
+                        </circle>
+
+                    </svg>
+
+
+                    <div class="score-content">
+
+                        <span class="score-number" id="scoreNumber">
+
+                            0
+
+                        </span>
+
+
+                        <span class="percent">
+
+                            %
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CATEGORY -->
+
+                <div class="category" id="category">
+
+                    💖 Compatibility
+
+                </div>
+
+
+
+                <!-- MESSAGE -->
+
+                <p class="message" id="message">
+
+                </p>
+
+
+
+                <!-- =================================================
+                     STATS
+                ================================================== -->
+
+                <div class="stats">
+
+
+                    <div class="stat">
+
+                        <div class="stat-top">
+
+                            <span>
+                                ❤️ Romance
+                            </span>
+
+                            <strong id="romance">
+                                0%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="bar">
+
+                            <div id="romanceBar">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="stat">
+
+                        <div class="stat-top">
+
+                            <span>
+                                🔥 Chemistry
+                            </span>
+
+                            <strong id="chemistry">
+                                0%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="bar">
+
+                            <div id="chemistryBar">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="stat">
+
+                        <div class="stat-top">
+
+                            <span>
+                                💬 Communication
+                            </span>
+
+                            <strong id="communication">
+                                0%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="bar">
+
+                            <div id="communicationBar">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="stat">
+
+                        <div class="stat-top">
+
+                            <span>
+                                🤝 Trust
+                            </span>
+
+                            <strong id="trust">
+                                0%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="bar">
+
+                            <div id="trustBar">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     ADVICE
+                ================================================== -->
+
+                <div class="advice">
+
+                    <div class="advice-icon">
+
+                        💌
+
+                    </div>
+
+
+                    <p id="advice">
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     RESULT BUTTONS
+                ================================================== -->
+
+                <div class="result-buttons">
+
+
+                    <button id="copy">
+
+                        📋 Copy
+
+                    </button>
+
+
+                    <button id="share">
+
+                        📤 Share
+
+                    </button>
+
+
+                    <button id="save">
+
+                        ❤️ Save
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 HISTORY
+            ================================================== -->
+
+            <section class="history">
+
+
+                <div class="history-header">
+
+                    <h3>
+
+                        💌 Recent Matches
+
+                    </h3>
+
+
+                    <button class="clear-history" id="clearHistory">
+
+                        Clear
+
+                    </button>
+
+                </div>
+
+
+                <div id="historyList">
+
+                    <div class="empty">
+
+                        Your recent matches
+                        will appear here.
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </section>
+
+
+
+        <!-- DISCLAIMER -->
+
+        <p class="disclaimer">
+
+            ❤️ LoveSync is made for entertainment only.
+            Love cannot truly be measured by a percentage.
+
+        </p>
+
+
+    </main>
+
+
+    <!-- =====================================================
+         TOAST
+    ====================================================== -->
+
+    <div class="toast" id="toast">
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        Made by Rahul Kumar
+        <span>❤️</span>
+        for fun
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         ALL JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+
+        /* =====================================================
+           ELEMENTS
+        ====================================================== */
+
+        const name1 =
+            document.getElementById("name1");
+
+        const name2 =
+            document.getElementById("name2");
+
+        const calculate =
+            document.getElementById("calculate");
+
+        const result =
+            document.getElementById("result");
+
+        const scoreNumber =
+            document.getElementById("scoreNumber");
+
+        const scoreProgress =
+            document.getElementById("scoreProgress");
+
+        const resultNames =
+            document.getElementById("resultNames");
+
+        const category =
+            document.getElementById("category");
+
+        const message =
+            document.getElementById("message");
+
+        const advice =
+            document.getElementById("advice");
+
+        const toast =
+            document.getElementById("toast");
+
+        const historyList =
+            document.getElementById("historyList");
+
+
+        /* =====================================================
+           LOVE DATA
+        ====================================================== */
+
+        const loveData = {
+
+            soulmate: {
+
+                category:
+                    "🔥 Soulmate Energy",
+
+                message:
+                    "Wow! The connection between you two is seriously magical. You have amazing potential to understand and support each other.",
+
+                advice:
+                    "Keep communicating openly, celebrate each other's wins, and never stop making each other smile."
+            },
+
+
+            perfect: {
+
+                category:
+                    "💖 Perfect Match",
+
+                message:
+                    "Amazing chemistry detected! You two seem to have a beautiful balance of attraction, understanding and positive energy.",
+
+                advice:
+                    "Keep the spark alive with honesty, small surprises and quality time together."
+            },
+
+
+            great: {
+
+                category:
+                    "💕 Great Chemistry",
+
+                message:
+                    "There is definitely something special between you two. The potential for a meaningful connection looks strong.",
+
+                advice:
+                    "Give the relationship time to grow naturally and keep learning more about each other."
+            },
+
+
+            promising: {
+
+                category:
+                    "💗 Promising Connection",
+
+                message:
+                    "There is a spark here! Your connection has potential, but getting to know each other better could reveal something beautiful.",
+
+                advice:
+                    "Spend more time together and focus on genuine conversations rather than rushing things."
+            },
+
+
+            complicated: {
+
+                category:
+                    "⚡ It's Complicated",
+
+                message:
+                    "Love can be unpredictable! Understanding each other may be the key to unlocking the connection.",
+
+                advice:
+                    "Good communication, patience and mutual respect can make a huge difference."
+            }
+
+        };
+
+
+        /* =====================================================
+           CALCULATE LOVE
+        ====================================================== */
+
+        function calculateLove() {
+
+            const first =
+                name1.value.trim();
+
+            const second =
+                name2.value.trim();
+
+
+            if (!first || !second) {
+
+                showToast(
+                    "💗 Please enter both names!"
+                );
+
+                return;
+            }
+
+
+            if (
+                first.toLowerCase() ===
+                second.toLowerCase()
+            ) {
+
+                showToast(
+                    "😂 Please enter two different names!"
+                );
+
+                return;
+            }
+
+
+            /*
+                Create deterministic score.
+                Same names = same result.
+            */
+
+            const combined =
+                (
+                    first +
+                    second
+                ).toLowerCase();
+
+
+            let hash = 0;
+
+
+            for (
+                let i = 0;
+                i < combined.length;
+                i++
+            ) {
+
+                hash =
+                    (
+                        hash * 31 +
+                        combined.charCodeAt(i)
+                    ) % 100000;
+
+            }
+
+
+            const loveScore =
+                (hash % 71) + 30;
+
+
+            displayResult(
+                first,
+                second,
+                loveScore
+            );
+
+
+            saveHistory(
+                first,
+                second,
+                loveScore
+            );
+
+        }
+
+
+        /* =====================================================
+           DISPLAY RESULT
+        ====================================================== */
+
+        function displayResult(
+            first,
+            second,
+            score
+        ) {
+
+            result.style.display =
+                "block";
+
+
+            resultNames.innerHTML =
+                `${escapeHTML(first)}
+                ❤️
+                ${escapeHTML(second)}`;
+
+
+            let data;
+
+
+            if (score >= 90) {
+
+                data =
+                    loveData.soulmate;
+
+                confetti();
+
+            }
+
+            else if (score >= 80) {
+
+                data =
+                    loveData.perfect;
+
+                confetti();
+
+            }
+
+            else if (score >= 70) {
+
+                data =
+                    loveData.great;
+
+            }
+
+            else if (score >= 50) {
+
+                data =
+                    loveData.promising;
+
+            }
+
+            else {
+
+                data =
+                    loveData.complicated;
+
+            }
+
+
+            category.innerText =
+                data.category;
+
+
+            message.innerText =
+                data.message;
+
+
+            advice.innerText =
+                data.advice;
+
+
+            animateScore(score);
+
+
+            generateStats(score);
+
+
+            setTimeout(() => {
+
+                result.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            }, 200);
+
+        }
+
+
+        /* =====================================================
+           SCORE ANIMATION
+        ====================================================== */
+
+        function animateScore(target) {
+
+            let current = 0;
+
+
+            const timer =
+                setInterval(() => {
+
+                    current++;
+
+
+                    scoreNumber.innerText =
+                        current;
+
+
+                    if (
+                        current >= target
+                    ) {
+
+                        clearInterval(timer);
+
+                    }
+
+                }, 15);
+
+
+            const circumference =
+                2 *
+                Math.PI *
+                82;
+
+
+            scoreProgress.style.strokeDasharray =
+                circumference;
+
+
+            const offset =
+                circumference -
+                (
+                    target / 100
+                ) *
+                circumference;
+
+
+            scoreProgress.style.strokeDashoffset =
+                circumference;
+
+
+            setTimeout(() => {
+
+                scoreProgress.style.strokeDashoffset =
+                    offset;
+
+            }, 100);
+
+        }
+
+
+        /* =====================================================
+           GENERATE STATS
+        ====================================================== */
+
+        function generateStats(score) {
+
+            const variation =
+                (score * 7) % 15;
+
+
+            const romance =
+                clamp(
+                    score +
+                    variation -
+                    7
+                );
+
+
+            const chemistry =
+                clamp(
+                    score +
+                    variation
+                );
+
+
+            const communication =
+                clamp(
+                    score -
+                    variation +
+                    5
+                );
+
+
+            const trust =
+                clamp(
+                    score + 3
+                );
+
+
+            animateBar(
+                "romance",
+                "romanceBar",
+                romance
+            );
+
+
+            animateBar(
+                "chemistry",
+                "chemistryBar",
+                chemistry
+            );
+
+
+            animateBar(
+                "communication",
+                "communicationBar",
+                communication
+            );
+
+
+            animateBar(
+                "trust",
+                "trustBar",
+                trust
+            );
+
+        }
+
+
+        /* =====================================================
+           ANIMATE STAT BAR
+        ====================================================== */
+
+        function animateBar(
+            textId,
+            barId,
+            value
+        ) {
+
+            document.getElementById(
+                textId
+            ).innerText =
+                value + "%";
+
+
+            const bar =
+                document.getElementById(
+                    barId
+                );
+
+
+            bar.style.width =
+                "0%";
+
+
+            setTimeout(() => {
+
+                bar.style.width =
+                    value + "%";
+
+            }, 100);
+
+        }
+
+
+        /* =====================================================
+           CLAMP
+        ====================================================== */
+
+        function clamp(number) {
+
+            return Math.max(
+                20,
+                Math.min(
+                    100,
+                    number
+                )
+            );
+
+        }
+
+
+        /* =====================================================
+           SURPRISE ME
+        ====================================================== */
+
+        document
+            .getElementById("surprise")
+            .addEventListener(
+                "click",
+                () => {
+
+                    const couples = [
+
+                        ["Rahul", "Priya"],
+                        ["Arjun", "Ananya"],
+                        ["Aarav", "Kiara"],
+                        ["Aditya", "Ishita"],
+                        ["Rohan", "Sneha"],
+                        ["Ryan", "Sophia"],
+                        ["Alex", "Emma"],
+                        ["Kabir", "Meera"]
+
+                    ];
+
+
+                    const pair =
+                        couples[
+                        Math.floor(
+                            Math.random() *
+                            couples.length
+                        )
+                        ];
+
+
+                    name1.value =
+                        pair[0];
+
+
+                    name2.value =
+                        pair[1];
+
+
+                    calculateLove();
+
+                }
+            );
+
+
+        /* =====================================================
+           RESET
+        ====================================================== */
+
+        document
+            .getElementById("reset")
+            .addEventListener(
+                "click",
+                () => {
+
+                    name1.value = "";
+
+                    name2.value = "";
+
+                    result.style.display =
+                        "none";
+
+
+                    scoreProgress.style.strokeDashoffset =
+                        515;
+
+
+                    showToast(
+                        "🔄 Calculator reset!"
+                    );
+
+                }
+            );
+
+
+        /* =====================================================
+           COPY RESULT
+        ====================================================== */
+
+        document
+            .getElementById("copy")
+            .addEventListener(
+                "click",
+                async () => {
+
+                    const text =
+                        getResultText();
+
+
+                    try {
+
+                        await navigator
+                            .clipboard
+                            .writeText(text);
+
+
+                        showToast(
+                            "📋 Result copied!"
+                        );
+
+                    }
+
+                    catch {
+
+                        showToast(
+                            "❌ Unable to copy."
+                        );
+
+                    }
+
+                }
+            );
+
+
+        /* =====================================================
+           SHARE
+        ====================================================== */
+
+        document
+            .getElementById("share")
+            .addEventListener(
+                "click",
+                async () => {
+
+                    const text =
+                        getResultText();
+
+
+                    if (
+                        navigator.share
+                    ) {
+
+                        try {
+
+                            await navigator.share({
+
+                                title:
+                                    "LoveSync ❤️",
+
+                                text:
+                                    text
+
+                            });
+
+                        }
+
+                        catch {
+
+                            /* Cancelled */
+
+                        }
+
+                    }
+
+                    else {
+
+                        try {
+
+                            await navigator
+                                .clipboard
+                                .writeText(text);
+
+
+                            showToast(
+                                "📋 Result copied!"
+                            );
+
+                        }
+
+                        catch {
+
+                            showToast(
+                                "❌ Sharing unavailable."
+                            );
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+        /* =====================================================
+           SAVE RESULT
+        ====================================================== */
+
+        document
+            .getElementById("save")
+            .addEventListener(
+                "click",
+                () => {
+
+                    const saved =
+                        JSON.parse(
+                            localStorage.getItem(
+                                "loveFavorites"
+                            )
+                        ) || [];
+
+
+                    saved.push({
+
+                        names:
+                            resultNames.innerText,
+
+                        score:
+                            scoreNumber.innerText,
+
+                        date:
+                            new Date()
+                                .toLocaleDateString()
+
+                    });
+
+
+                    localStorage.setItem(
+                        "loveFavorites",
+                        JSON.stringify(saved)
+                    );
+
+
+                    showToast(
+                        "❤️ Match saved!"
+                    );
+
+                }
+            );
+
+
+        /* =====================================================
+           GET RESULT TEXT
+        ====================================================== */
+
+        function getResultText() {
+
+            return `
+
+${resultNames.innerText}
+
+Love Compatibility:
+${scoreNumber.innerText}%
+
+${category.innerText}
+
+${message.innerText}
+
+Made with LoveSync ❤️
+
+            `.trim();
+
+        }
+
+
+        /* =====================================================
+           HISTORY
+        ====================================================== */
+
+        function saveHistory(
+            first,
+            second,
+            score
+        ) {
+
+            let history =
+                JSON.parse(
+                    localStorage.getItem(
+                        "loveHistory"
+                    )
+                ) || [];
+
+
+            history.unshift({
+
+                first,
+                second,
+                score,
+
+                date:
+                    new Date()
+                        .toLocaleDateString()
+
+            });
+
+
+            history =
+                history.slice(0, 6);
+
+
+            localStorage.setItem(
+                "loveHistory",
+                JSON.stringify(history)
+            );
+
+
+            renderHistory();
+
+        }
+
+
+        /* =====================================================
+           RENDER HISTORY
+        ====================================================== */
+
+        function renderHistory() {
+
+            const history =
+                JSON.parse(
+                    localStorage.getItem(
+                        "loveHistory"
+                    )
+                ) || [];
+
+
+            if (!history.length) {
+
+                historyList.innerHTML = `
+
+                    <div class="empty">
+
+                        Your recent matches
+                        will appear here.
+
+                    </div>
+
+                `;
+
+                return;
+            }
+
+
+            historyList.innerHTML =
+                history
+                    .map(item => `
+
+                        <div class="history-item">
+
+                            <span>
+
+                                ${escapeHTML(
+                        item.first
+                    )}
+
+                                ❤️
+
+                                ${escapeHTML(
+                        item.second
+                    )}
+
+                            </span>
+
+
+                            <span class="history-score">
+
+                                ${item.score}%
+
+                            </span>
+
+                        </div>
+
+                    `)
+                    .join("");
+
+        }
+
+
+        renderHistory();
+
+
+        /* =====================================================
+           CLEAR HISTORY
+        ====================================================== */
+
+        document
+            .getElementById("clearHistory")
+            .addEventListener(
+                "click",
+                () => {
+
+                    localStorage.removeItem(
+                        "loveHistory"
+                    );
+
+
+                    renderHistory();
+
+
+                    showToast(
+                        "🗑️ History cleared!"
+                    );
+
+                }
+            );
+
+
+        /* =====================================================
+           DARK MODE
+        ====================================================== */
+
+        const themeToggle =
+            document.getElementById(
+                "themeToggle"
+            );
+
+
+        function loadTheme() {
+
+            const savedTheme =
+                localStorage.getItem(
+                    "loveTheme"
+                );
+
+
+            if (
+                savedTheme === "dark"
+            ) {
+
+                document.body
+                    .classList
+                    .add("dark");
+
+
+                themeToggle.innerText =
+                    "☀️";
+
+            }
+
+        }
+
+
+        themeToggle.addEventListener(
+            "click",
+            () => {
+
+                document.body
+                    .classList
+                    .toggle("dark");
+
+
+                const dark =
+                    document.body
+                        .classList
+                        .contains("dark");
+
+
+                themeToggle.innerText =
+                    dark
+                        ? "☀️"
+                        : "🌙";
+
+
+                localStorage.setItem(
+                    "loveTheme",
+                    dark
+                        ? "dark"
+                        : "light"
+                );
+
+            }
+        );
+
+
+        loadTheme();
+
+
+        /* =====================================================
+           FLOATING HEARTS
+        ====================================================== */
+
+        function createHeart() {
+
+            const heart =
+                document.createElement(
+                    "div"
+                );
+
+
+            heart.className =
+                "floating-heart";
+
+
+            const symbols = [
+
+                "❤️",
+                "💕",
+                "💗",
+                "💖",
+                "💘",
+                "✨"
+
+            ];
+
+
+            heart.innerText =
+                symbols[
+                Math.floor(
+                    Math.random() *
+                    symbols.length
+                )
+                ];
+
+
+            heart.style.left =
+                Math.random() *
+                100 +
+                "%";
+
+
+            heart.style.fontSize =
+                (
+                    12 +
+                    Math.random() *
+                    20
+                ) + "px";
+
+
+            heart.style.animationDuration =
+                (
+                    7 +
+                    Math.random() *
+                    8
+                ) + "s";
+
+
+            document
+                .getElementById(
+                    "floating-hearts"
+                )
+                .appendChild(heart);
+
+
+            setTimeout(() => {
+
+                heart.remove();
+
+            }, 15000);
+
+        }
+
+
+        setInterval(
+            createHeart,
+            800
+        );
+
+
+        /* =====================================================
+           CONFETTI
+        ====================================================== */
+
+        function confetti() {
+
+            const symbols = [
+
+                "❤️",
+                "💖",
+                "💕",
+                "💗",
+                "✨",
+                "💘"
+
+            ];
+
+
+            for (
+                let i = 0;
+                i < 35;
+                i++
+            ) {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "confetti";
+
+
+                item.innerText =
+                    symbols[
+                    Math.floor(
+                        Math.random() *
+                        symbols.length
+                    )
+                    ];
+
+
+                item.style.left =
+                    Math.random() *
+                    100 +
+                    "%";
+
+
+                item.style.fontSize =
+                    (
+                        15 +
+                        Math.random() *
+                        15
+                    ) + "px";
+
+
+                item.style.animationDuration =
+                    (
+                        2 +
+                        Math.random() *
+                        2
+                    ) + "s";
+
+
+                document.body.appendChild(
+                    item
+                );
+
+
+                setTimeout(() => {
+
+                    item.remove();
+
+                }, 4000);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           TOAST
+        ====================================================== */
+
+        let toastTimer;
+
+
+        function showToast(text) {
+
+            toast.innerText =
+                text;
+
+
+            toast.classList.add(
+                "show"
+            );
+
+
+            clearTimeout(
+                toastTimer
+            );
+
+
+            toastTimer =
+                setTimeout(() => {
+
+                    toast.classList.remove(
+                        "show"
+                    );
+
+                }, 2500);
+
+        }
+
+
+        /* =====================================================
+           ENTER KEY
+        ====================================================== */
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    calculateLove();
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           ESCAPE HTML
+        ====================================================== */
+
+        function escapeHTML(text) {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.textContent =
+                text;
+
+
+            return div.innerHTML;
+
+        }
+
+
+        /* =====================================================
+           CALCULATE BUTTON
+        ====================================================== */
+
+        calculate.addEventListener(
+            "click",
+            calculateLove
+        );
+
+    </script>
+
+</body>
+
+</html>
+```
