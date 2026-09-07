@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Romantic Love Calculator</title>
+</head>
+
+<body
+    style="margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); display: flex; justify-content: center; align-items: center; min-height: 100vh; color: #333;">
+
+    <!-- Main Card Container -->
+    <div
+        style="background: rgba(255, 255, 255, 0.95); padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); text-align: center; width: 100%; max-width: 420px; box-sizing: border-box; margin: 20px; border: 2px solid #fff;">
+
+        <!-- Header Section -->
+        <h2 style="margin: 0 0 10px 0; color: #d63384; font-size: 28px; font-weight: 700;">❤️ Love Calculator ❤️</h2>
+        <p style="margin: 0 0 25px 0; color: #6c757d; font-size: 14px;">Enter your names to test your true
+            compatibility!</p>
+
+        <!-- Input Groups -->
+        <div style="margin-bottom: 20px; text-align: left;">
+            <label for="name1"
+                style="display: block; font-weight: 600; margin-bottom: 8px; color: #495057; font-size: 14px;">Your
+                Name:</label>
+            <input type="text" id="name1" placeholder="Enter your name..."
+                style="width: 100%; padding: 12px 15px; border: 2px solid #ffe3e8; border-radius: 10px; font-size: 16px; transition: border-color 0.3s; box-sizing: border-box; outline: none; background-color: #fffafb;">
+        </div>
+
+        <div style="margin-bottom: 20px; text-align: left;">
+            <label for="name2"
+                style="display: block; font-weight: 600; margin-bottom: 8px; color: #495057; font-size: 14px;">Crush's
+                Name:</label>
+            <input type="text" id="name2" placeholder="Enter their name..."
+                style="width: 100%; padding: 12px 15px; border: 2px solid #ffe3e8; border-radius: 10px; font-size: 16px; transition: border-color 0.3s; box-sizing: border-box; outline: none; background-color: #fffafb;">
+        </div>
+
+        <!-- Action Button -->
+        <button onclick="calculateLove()"
+            style="width: 100%; background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%); color: white; border: none; padding: 14px; border-radius: 10px; font-size: 18px; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 5px 15px rgba(233, 30, 99, 0.3); margin-top: 10px;">
+            Calculate Match
+        </button>
+
+        <!-- Dynamic Results Display -->
+        <div id="result-box"
+            style="margin-top: 30px; display: none; padding: 20px; border-radius: 12px; background-color: #fff0f3; border: 1px dashed #ffb3c1; animation: fadeIn 0.5s ease;">
+            <div id="score" style="font-size: 48px; font-weight: 800; color: #e91e63; margin-bottom: 5px;">0%</div>
+            <div id="message" style="font-size: 16px; font-weight: 500; color: #495057; line-height: 1.4;">Relationship
+                status text.</div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Functionality -->
+    <script>
+        function calculateLove() {
+            // Retrieve and trim user input
+            const name1 = document.getElementById('name1').value.trim();
+            const name2 = document.getElementById('name2').value.trim();
+
+            // Simple validation check
+            if (name1 === "" || name2 === "") {
+                alert("Please fill in both name fields to calculate your match!");
+                return;
+            }
+
+            // Generate an algorithmic but consistent score based on ASCII values of the names combined
+            const combinedString = (name1 + name2).toLowerCase();
+            let sum = 0;
+            for (let i = 0; i < combinedString.length; i++) {
+                sum += combinedString.charCodeAt(i);
+            }
+
+            // Map the sum to a reliable 0-100 percentage range
+            const loveScore = (sum % 71) + 30; // Guarantees a fun baseline score between 30% and 100%
+
+            // DOM elements update
+            const resultBox = document.getElementById('result-box');
+            const scoreDisplay = document.getElementById('score');
+            const messageDisplay = document.getElementById('message');
+
+            scoreDisplay.innerText = loveScore + "%";
+
+            // Determine custom relationship message based on calculated percentage
+            if (loveScore >= 85) {
+                messageDisplay.innerText = "✨ An absolute match made in heaven! Your souls are perfectly aligned. ✨";
+            } else if (loveScore >= 70) {
+                messageDisplay.innerText = "💖 Strong chemistry detected! You two share deep mutual vibes. 💖";
+            } else if (loveScore >= 50) {
+                messageDisplay.innerText = "🙂 There is definitely a spark here. Give it some time and nurture it! 🙂";
+            } else {
+                messageDisplay.innerText = "⚡ A complex dynamic! Work hard on communication and things might blossom. ⚡";
+            }
+
+            // Make result visible
+            resultBox.style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
