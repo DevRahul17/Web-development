@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lamp Toggle Project</title>
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.5s ease;
+            overflow: hidden;
+        }
+
+        /* Ambient background changes when lamp is ON */
+        body.lamp-on {
+            background-color: #fef9e7;
+            color: #333333;
+        }
+
+        /* Main Container for the Lamp */
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+        }
+
+        /* Lamp Cord */
+        .cord {
+            width: 4px;
+            height: 120px;
+            background-color: #444;
+            position: absolute;
+            top: 0;
+        }
+
+        /* Lamp Body */
+        .lamp-container {
+            margin-top: 120px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .fixture {
+            width: 60px;
+            height: 30px;
+            background-color: #555;
+            border-radius: 5px 5px 0 0;
+            z-index: 2;
+        }
+
+        /* The Bulb */
+        .bulb {
+            width: 90px;
+            height: 90px;
+            background-color: #444;
+            border-radius: 50%;
+            margin-top: -10px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+            z-index: 1;
+        }
+
+        /* Glowing effect when lamp is ON */
+        body.lamp-on .bulb {
+            background-color: #ffdf00;
+            box-shadow: 0 0 80px #ffdf00, inset -10px -10px 20px rgba(255,255,255,0.5);
+        }
+
+        /* Lamp Base Base/Socket look */
+        .bulb::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 12px;
+            background: #777;
+        }
+
+        /* Interactive Switch Button */
+        .switch-btn {
+            margin-top: 40px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+            background-color: #e74c3c;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .switch-btn:active {
+            transform: scale(0.95);
+        }
+
+        body.lamp-on .switch-btn {
+            background-color: #2ecc71;
+        }
+
+        /* Footer Navigation Bar */
+        footer {
+            width: 100%;
+            background-color: #111;
+            padding: 15px 0;
+            border-top: 1px solid #333;
+            transition: background-color 0.5s ease, border-color 0.5s ease;
+        }
+
+        body.lamp-on footer {
+            background-color: #ffffff;
+            border-top: 1px solid #dddddd;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ffdf00;
+        }
+
+        body.lamp-on .nav-links a {
+            color: #555;
+        }
+
+        body.lamp-on .nav-links a:hover {
+            color: #e67e22;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Content Area with Lamp -->
+    <div class="container">
+        <div class="cord"></div>
+        <div class="lamp-container">
+            <div class="fixture"></div>
+            <div class="bulb" id="lampBulb"></div>
+        </div>
+        <button class="switch-btn" id="switchBtn">Turn On</button>
+    </div>
+
+    <!-- Footer Navigation Bar -->
+    <footer>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </footer>
+
+    <!-- JavaScript Control Logic -->
+    <script>
+        const lampBulb = document.getElementById('lampBulb');
+        const switchBtn = document.getElementById('switchBtn');
+        const body = document.body;
+
+        // Function to toggle the light states
+        function toggleLamp() {
+            body.classList.toggle('lamp-on');
+            
+            // Update button text based on current state
+            if (body.classList.contains('lamp-on')) {
+                switchBtn.textContent = 'Turn Off';
+            } else {
+                switchBtn.textContent = 'Turn On';
+            }
+        }
+
+        // Add event listeners to both the switch button and the bulb itself
+        switchBtn.addEventListener('click', toggleLamp);
+        lampBulb.addEventListener('click', toggleLamp);
+    </script>
+</body>
+</html>
