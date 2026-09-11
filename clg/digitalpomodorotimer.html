@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Pomodoro Timer</title>
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --pomodoro-color: #ff5252;
+            --short-break-color: #4caf50;
+            --long-break-color: #2196f3;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.5s ease;
+        }
+
+        body.pomodoro {
+            background-color: #ffebee;
+        }
+
+        body.short-break {
+            background-color: #e8f5e9;
+        }
+
+        body.long-break {
+            background-color: #e3f2fd;
+        }
+
+        .timer-container {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+        }
+
+        .mode-switchers {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            gap: 10px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 0.6rem 0.5rem;
+            border: none;
+            border-radius: 8px;
+            background-color: #f0f0f0;
+            color: var(--text-muted);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .mode-btn.active[data-mode="pomodoro"] {
+            background-color: var(--pomodoro-color);
+            color: white;
+        }
+
+        .mode-btn.active[data-mode="short"] {
+            background-color: var(--short-break-color);
+            color: white;
+        }
+
+        .mode-btn.active[data-mode="long"] {
+            background-color: var(--long-break-color);
+            color: white;
+        }
+
+        .time-display {
+            font-size: 6rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .control-btn {
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s ease;
+        }
+
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+
+        #start-pause-btn {
+            background-color: var(--text-main);
+            color: white;
+            min-width: 140px;
+        }
+
+        #reset-btn {
+            background-color: #e0e0e0;
+            color: var(--text-main);
+        }
+
+        #reset-btn:hover {
+            background-color: #d5d5d5;
+        }
+
+        .status-text {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            height: 1.5rem;
+        }
+    </style>
+</head>
+
+<body class="pomodoro">
+
+    <div class="timer-container">
+        <!-- Mode Switcher Buttons -->
+        <div class="mode-switchers">
+            <button class="mode-btn active" data-mode="pomodoro" data-time="1500">Pomodoro</button>
+            <button class="mode-btn" data-mode="short" data-time="300">Short Break</button>
+            <button class="mode-btn" data-mode="long" data-time="900">Long Break</button>
+        </div>
+
+        <!-- Time Display -->
+        <div class="time-display" id="time-display">25:00</div>
+
+        <!-- Action Controls -->
+        <div class="controls">
+            <button class="control-btn" id="start-pause-btn">Start</button>
+            <button class="control-btn" id="reset-btn">Reset</button>
+        </div>
+
+        <!-- Status Message -->
+        <div class="status-text" id="status-text">Time to focus!</div>
+    </div>
+
+    <script>
+        // State Configuration
+        const TIME_MODES = {
+            pomodoro: { seconds: 1500, label: 'Time to focus!', bodyClass: 'pomodoro' },
+            short: { seconds: 300, label: 'Time for a break!', bodyClass: 'short-break' },
+            long: { seconds: 900, label: 'Time for a long break!', bodyClass: 'long-break' }
+        };
+
+        let currentMode = 'pomodoro';
+        let timeLeft = TIME_MODES[currentMode].seconds;
+        let timerInterval = null;
+        let isRunning = false;
+
+        // DOM Elements
+        const timeDisplay = document.getElementById('time-display');
+        const startPauseBtn = document.getElementById('start-pause-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const statusText = document.getElementById('status-text');
+        const modeButtons = document.querySelectorAll('.mode-btn');
+        const bodyElement = document.body;
+
+        // Formats seconds into MM:SS
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+        }
+
+        // Updates the User Interface
+        function updateUI() {
+            timeDisplay.textContent = formatTime(timeLeft);
+            document.title = `${formatTime(timeLeft)} - Pomodoro Timer`;
+            statusText.textContent = TIME_MODES[currentMode].label;
+
+            // Adjust body background color theme dynamically
+            bodyElement.className = TIME_MODES[currentMode].bodyClass;
+
+            if (isRunning) {
+                startPauseBtn.textContent = 'Pause';
+                startPauseBtn.style.backgroundColor = '#555555';
+            } else {
+                startPauseBtn.textContent = 'Start';
+                startPauseBtn.style.backgroundColor = 'var(--text-main)';
+            }
+        }
+
+        // Core Timer Actions
+        function startTimer() {
+            if (isRunning) return;
+            isRunning = true;
+            updateUI();
+
+            timerInterval = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    timeDisplay.textContent = formatTime(timeLeft);
+                    document.title = `${formatTime(timeLeft)} - Pomodoro Timer`;
+                } else {
+                    clearInterval(timerInterval);
+                    isRunning = false;
+                    alert('Session completed!');
+                    resetTimer();
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            updateUI();
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            timeLeft = TIME_MODES[currentMode].seconds;
+            updateUI();
+        }
+
+        // Event Handlers
+        startPauseBtn.addEventListener('click', () => {
+            if (isRunning) {
+                pauseTimer();
+            } else {
+                startTimer();
+            }
+        });
+
+        resetBtn.addEventListener('click', resetTimer);
+
+        modeButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                // Remove active styling from previous buttons
+                modeButtons.forEach(btn => btn.classList.remove('active'));
+
+                // Set current selected button active
+                e.target.classList.add('active');
+
+                // Update mode state
+                currentMode = e.target.getAttribute('data-mode');
+
+                // Reset and apply new time intervals
+                pauseTimer();
+                timeLeft = TIME_MODES[currentMode].seconds;
+                updateUI();
+            });
+        });
+
+        // Initialize display on page load
+        updateUI();
+    </script>
+</body>
+
+</html>
