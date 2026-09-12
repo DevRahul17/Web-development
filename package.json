@@ -17,5 +17,6 @@
   "keywords": [],
   "author": "Rahul",
   "license": "ISC",
-  "description": "nodejs "
+  "description": "nodejs ",
+  "devDependencies": {}
 }
