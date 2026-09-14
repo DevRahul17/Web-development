@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Counter Project</title>
+
+    <!-- Internal CSS for page styling -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #74ebe1 0%, #d4a5ec 100%);
+        }
+
+        .counter-container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 350px;
+        }
+
+        h1 {
+            color: #333333;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #counter-value {
+            font-size: 72px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 20px 0;
+            transition: transform 0.1s ease, color 0.3s ease;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 0;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #ffffff;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .btn-decrease {
+            background-color: #e74c3c;
+        }
+
+        .btn-decrease:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-reset {
+            background-color: #7f8c8d;
+        }
+
+        .btn-reset:hover {
+            background-color: #95a5a6;
+        }
+
+        .btn-increase {
+            background-color: #2ecc71;
+        }
+
+        .btn-increase:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="counter-container">
+        <!-- Title using inline CSS as a fallback modifier -->
+        <h1 style="border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">Digital Counter</h1>
+
+        <!-- Live Counter Output Area -->
+        <div id="counter-value">0</div>
+
+        <!-- Action Buttons utilizing inline JavaScript event handlers -->
+        <div class="button-group">
+            <button class="btn-decrease" onclick="updateCounter(-1)">-1</button>
+            <button class="btn-reset" onclick="resetCounter()">Reset</button>
+            <button class="btn-increase" onclick="updateCounter(1)">+1</button>
+        </div>
+    </div>
+
+    <!-- Internal JavaScript for Application Logic -->
+    <script>
+        // Track the state of the app
+        let count = 0;
+
+        // DOM element references
+        const counterDisplay = document.getElementById('counter-value');
+
+        /**
+         * Increments or decrements the counter value
+         * @param {number} value - The amount to add or subtract
+         */
+        function updateCounter(value) {
+            count += value;
+            renderCounter();
+            animateTrigger();
+        }
+
+        /**
+         * Resets the counter value back to zero
+         */
+        function resetCounter() {
+            count = 0;
+            renderCounter();
+            animateTrigger();
+        }
+
+        /**
+         * Updates the user interface with the new state
+         */
+        function renderCounter() {
+            counterDisplay.textContent = count;
+
+            // Color changing logic based on current number state
+            if (count > 0) {
+                counterDisplay.style.color = "#2ecc71"; // Dynamic green
+            } else if (count < 0) {
+                counterDisplay.style.color = "#e74c3c"; // Dynamic red
+            } else {
+                counterDisplay.style.color = "#2c3e50"; // Default dark slate
+            }
+        }
+
+        /**
+         * Adds a minor pop animation upon user interaction
+         */
+        function animateTrigger() {
+            counterDisplay.style.transform = "scale(1.15)";
+            setTimeout(() => {
+                counterDisplay.style.transform = "scale(1.0)";
+            }, 100);
+        }
+    </script>
+</body>
+
+</html>
