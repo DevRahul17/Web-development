@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Expense Tracker</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f8;
+            color: #222;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h3 {
+            color: #777;
+            margin-bottom: 8px;
+        }
+
+        .income {
+            color: #16a34a;
+        }
+
+        .expense {
+            color: #dc2626;
+        }
+
+        .balance {
+            color: #2563eb;
+        }
+
+        .form-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .filter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .filter button {
+            margin: 0;
+            background: #64748b;
+        }
+
+        .filter button.active {
+            background: #2563eb;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            background: white;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid;
+        }
+
+        li.income-item {
+            border-color: #16a34a;
+        }
+
+        li.expense-item {
+            border-color: #dc2626;
+        }
+
+        .transaction-info strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .delete {
+            width: auto;
+            padding: 7px 12px;
+            margin: 0;
+            background: #dc2626;
+        }
+
+        .delete:hover {
+            background: #b91c1c;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            .filter {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>💰 Expense Tracker</h1>
+
+        <div class="summary">
+
+            <div class="card">
+                <h3>Balance</h3>
+                <h2 class="balance" id="balance">₹0</h2>
+            </div>
+
+            <div class="card">
+                <h3>Income</h3>
+                <h2 class="income" id="income">₹0</h2>
+            </div>
+
+            <div class="card">
+                <h3>Expense</h3>
+                <h2 class="expense" id="expense">₹0</h2>
+            </div>
+
+        </div>
+
+        <div class="form-box">
+
+            <h2>Add Transaction</h2>
+
+            <form id="transactionForm">
+
+                <input type="text" id="description" placeholder="Description" required>
+
+                <input type="number" id="amount" placeholder="Amount" min="1" required>
+
+                <select id="type">
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
+
+                <button type="submit">
+                    Add Transaction
+                </button>
+
+            </form>
+
+        </div>
+
+        <div class="filter">
+
+            <button class="active" data-filter="all">
+                All
+            </button>
+
+            <button data-filter="income">
+                Income
+            </button>
+
+            <button data-filter="expense">
+                Expense
+            </button>
+
+        </div>
+
+        <ul id="transactionList"></ul>
+
+    </div>
+
+    <script>
+
+        // Get elements from HTML
+        const form = document.getElementById("transactionForm");
+        const description = document.getElementById("description");
+        const amount = document.getElementById("amount");
+        const type = document.getElementById("type");
+
+        const transactionList =
+            document.getElementById("transactionList");
+
+        const balanceElement =
+            document.getElementById("balance");
+
+        const incomeElement =
+            document.getElementById("income");
+
+        const expenseElement =
+            document.getElementById("expense");
+
+        let transactions =
+            JSON.parse(localStorage.getItem("transactions")) || [];
+
+        let currentFilter = "all";
+
+
+        // Add new transaction
+        form.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            const transaction = {
+                id: Date.now(),
+
+                description: description.value,
+
+                amount: Number(amount.value),
+
+                type: type.value
+            };
+
+            transactions.push(transaction);
+
+            saveTransactions();
+
+            form.reset();
+
+            displayTransactions();
+
+        });
+
+
+        // Save data to localStorage
+        function saveTransactions() {
+
+            localStorage.setItem(
+                "transactions",
+                JSON.stringify(transactions)
+            );
+
+        }
+
+
+        // Display transactions
+        function displayTransactions() {
+
+            transactionList.innerHTML = "";
+
+            const filteredTransactions =
+                transactions.filter(transaction => {
+
+                    if (currentFilter === "all") {
+                        return true;
+                    }
+
+                    return transaction.type === currentFilter;
+
+                });
+
+
+            filteredTransactions.forEach(transaction => {
+
+                const li = document.createElement("li");
+
+                li.className =
+                    transaction.type === "income"
+                        ? "income-item"
+                        : "expense-item";
+
+
+                const sign =
+                    transaction.type === "income"
+                        ? "+"
+                        : "-";
+
+
+                li.innerHTML = `
+
+          <div class="transaction-info">
+
+            <strong>
+              ${transaction.description}
+            </strong>
+
+            <span>
+              ${sign}₹${transaction.amount}
+            </span>
+
+          </div>
+
+          <button
+            class="delete"
+            onclick="deleteTransaction(${transaction.id})"
+          >
+            Delete
+          </button>
+
+        `;
+
+                transactionList.appendChild(li);
+
+            });
+
+            updateSummary();
+
+        }
+
+
+        // Delete transaction
+        function deleteTransaction(id) {
+
+            transactions =
+                transactions.filter(
+                    transaction => transaction.id !== id
+                );
+
+            saveTransactions();
+
+            displayTransactions();
+
+        }
+
+
+        // Calculate totals
+        function updateSummary() {
+
+            const income =
+                transactions
+                    .filter(t => t.type === "income")
+                    .reduce(
+                        (total, t) => total + t.amount,
+                        0
+                    );
+
+
+            const expense =
+                transactions
+                    .filter(t => t.type === "expense")
+                    .reduce(
+                        (total, t) => total + t.amount,
+                        0
+                    );
+
+
+            const balance = income - expense;
+
+
+            incomeElement.textContent =
+                `₹${income}`;
+
+            expenseElement.textContent =
+                `₹${expense}`;
+
+            balanceElement.textContent =
+                `₹${balance}`;
+
+        }
+
+
+        // Filter buttons
+        document.querySelectorAll(".filter button")
+            .forEach(button => {
+
+                button.addEventListener("click", function () {
+
+                    document
+                        .querySelectorAll(".filter button")
+                        .forEach(btn =>
+                            btn.classList.remove("active")
+                        );
+
+                    this.classList.add("active");
+
+                    currentFilter =
+                        this.dataset.filter;
+
+                    displayTransactions();
+
+                });
+
+            });
+
+
+        // Load transactions when page starts
+        displayTransactions();
+
+    </script>
+
+</body>
+
+</html>
