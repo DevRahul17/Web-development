@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspirational Quote Generator</title>
+
+    <!-- Internal CSS for styling -->
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #9face6);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .quote-text {
+            font-size: 1.5rem;
+            color: #333333;
+            margin-bottom: 15px;
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        .quote-text::before {
+            content: "“ ";
+            color: #9face6;
+            font-size: 2rem;
+        }
+
+        .quote-text::after {
+            content: " ”";
+            color: #9face6;
+            font-size: 2rem;
+        }
+
+        .quote-author {
+            font-size: 1rem;
+            color: #666666;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button {
+            background-color: #6c5ce7;
+            color: #ffffff;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #5b4cc4;
+            transform: scale(1.03);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HTML Structure -->
+    <div class="card">
+        <p class="quote-text" id="quote">Click the button to get inspired.</p>
+        <p class="quote-author" id="author">Unknown</p>
+        <button id="new-quote-btn">New Quote</button>
+    </div>
+
+    <!-- Internal JavaScript for Interactivity -->
+    <script>
+        // Array of quote objects
+        const quotes = [
+            {
+                text: "The only way to do great work is to love what you do.",
+                author: "Steve Jobs"
+            },
+            {
+                text: "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+                author: "Winston Churchill"
+            },
+            {
+                text: "Can't wait for the future, because that's where I'm going to spend the rest of my life.",
+                author: "George Burns"
+            },
+            {
+                text: "Believe you can and you're halfway there.",
+                author: "Theodore Roosevelt"
+            },
+            {
+                text: "Strive not to be a success, but rather to be of value.",
+                author: "Albert Einstein"
+            }
+        ];
+
+        // Grab DOM elements
+        const quoteElement = document.getElementById('quote');
+        const authorElement = document.getElementById('author');
+        const button = document.getElementById('new-quote-btn');
+
+        // Function to select and display a random quote
+        function generateQuote() {
+            // Pick a random index from the array
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            const selectedQuote = quotes[randomIndex];
+
+            // Update the HTML text content
+            quoteElement.textContent = selectedQuote.text;
+            authorElement.textContent = selectedQuote.author;
+        }
+
+        // Attach event listener to the button click event
+        button.addEventListener('click', generateQuote);
+
+        // Run the function once when the page loads so it doesn't start empty
+        window.onload = generateQuote;
+    </script>
+</body>
+
+</html>
