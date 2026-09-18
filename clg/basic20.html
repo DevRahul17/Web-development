@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini App: Inline HTML, CSS & JS</title>
+
+    <!-- Inline CSS Styling -->
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --text-color: #333333;
+            --card-bg: #ffffff;
+            --primary-color: #4a90e2;
+            --button-hover: #357abd;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1e1e24;
+            --text-color: #f4f7f6;
+            --card-bg: #2a2a32;
+            --primary-color: #ffb703;
+            --button-hover: #fb8500;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .counter-display {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin: 1.5rem 0;
+            color: var(--primary-color);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        button {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        button:hover {
+            background-color: var(--button-hover);
+        }
+
+        .theme-btn {
+            background-color: transparent;
+            color: var(--text-color);
+            border: 2px solid var(--text-color);
+        }
+
+        .theme-btn:hover {
+            background-color: var(--text-color);
+            color: var(--card-bg);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HTML Structure -->
+    <div class="container">
+        <h1>Mini Utility App</h1>
+        <p>A simple interactive component utilizing embedded code blocks.</p>
+
+        <div id="counter" class="counter-display">0</div>
+
+        <div class="btn-group">
+            <button id="incrementBtn">Click Me!</button>
+            <button id="resetBtn" style="background-color: #e63946;">Reset</button>
+        </div>
+
+        <button id="themeToggle" class="theme-btn">Switch Theme</button>
+    </div>
+
+    <!-- Inline JavaScript Functionality -->
+    <script>
+        // DOM Elements
+        const counterDisplay = document.getElementById('counter');
+        const incrementBtn = document.getElementById('incrementBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const themeToggle = document.getElementById('themeToggle');
+
+        // State Tracking
+        let count = 0;
+
+        // Counter Logic
+        incrementBtn.addEventListener('click', () => {
+            count++;
+            counterDisplay.textContent = count;
+        });
+
+        resetBtn.addEventListener('click', () => {
+            count = 0;
+            counterDisplay.textContent = count;
+        });
+
+        // Theme Toggle Logic
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        });
+    </script>
+</body>
+
+</html>
