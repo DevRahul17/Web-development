@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "ansi-regex": "^4.1.1",
-    "express": "^5.2.1",
+    "express": "^4.22.3",
     "prompt-sync": "^4.2.0",
     "slugify": "^1.6.9",
     "strip-ansi": "^5.2.0"
