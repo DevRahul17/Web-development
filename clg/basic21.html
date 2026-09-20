@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Habit Tracker</title>
+</head>
+<!-- Embedded Inline CSS Styles -->
+<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+
+    <div style="background-color: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); width: 100%; max-width: 450px; box-sizing: border-box;">
+        
+        <h2 style="color: #333; margin-top: 0; font-size: 24px; text-align: center; border-bottom: 2px solid #eee; padding-bottom: 10px;">🎯 Habit Tracker</h2>
+        
+        <!-- Input Form Layout -->
+        <div style="display: flex; gap: 10px; margin-top: 20px; margin-bottom: 20px;">
+            <input type="text" id="habitInput" placeholder="Enter a new habit..." style="flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; outline: none;">
+            <button onclick="addHabit()" style="background-color: #2ecc71; color: white; border: none; padding: 12px 20px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; transition: background 0.2s;">Add</button>
+        </div>
+
+        <!-- Habit Container -->
+        <ul id="habitList" style="list-style-type: none; padding: 0; margin: 0;">
+            <!-- JavaScript will render items dynamically here -->
+        </ul>
+    </div>
+
+    <!-- Embedded Inline JavaScript Logic -->
+    <script>
+        // Array to store tracking data
+        let habits = [
+            { id: 1, name: 'Drink 3L Water', completed: false },
+            { id: 2, name: 'Read for 20 mins', completed: true }
+        ];
+
+        // Renders the list items to the view
+        function renderHabits() {
+            const listContainer = document.getElementById('habitList');
+            listContainer.innerHTML = ''; // Reset UI
+
+            habits.forEach(habit => {
+                const li = document.createElement('li');
+                // Apply dynamic CSS layout styles inline to the dynamic list elements
+                li.style.display = 'flex';
+                li.style.justifyContent = 'space-between';
+                li.style.alignItems = 'center';
+                li.style.padding = '12px 15px';
+                li.style.marginBottom = '10px';
+                li.style.borderRadius = '6px';
+                li.style.backgroundColor = habit.completed ? '#e8f8f5' : '#f9f9f9';
+                li.style.borderLeft = habit.completed ? '5px solid #2ecc71' : '5px solid #bdc3c7';
+                li.style.transition = 'all 0.3s ease';
+
+                // Core item description text element
+                const span = document.createElement('span');
+                span.innerText = habit.name;
+                span.style.fontSize = '16px';
+                span.style.color = habit.completed ? '#27ae60' : '#2c3e50';
+                span.style.textDecoration = habit.completed ? 'line-through' : 'none';
+                span.style.cursor = 'pointer';
+                span.style.flex = '1';
+                span.onclick = () => toggleHabit(habit.id);
+
+                // Delete interactive element
+                const deleteBtn = document.createElement('button');
+                deleteBtn.innerText = '✕';
+                deleteBtn.style.background = 'none';
+                deleteBtn.style.border = 'none';
+                deleteBtn.style.color = '#e74c3c';
+                deleteBtn.style.fontSize = '16px';
+                deleteBtn.style.cursor = 'pointer';
+                deleteBtn.style.padding = '0 5px';
+                deleteBtn.onclick = (e) => {
+                    e.stopPropagation(); // Avoid triggering full toggle event click
+                    deleteHabit(habit.id);
+                };
+
+                li.appendChild(span);
+                li.appendChild(deleteBtn);
+                listContainer.appendChild(li);
+            });
+        }
+
+        // Toggles absolute completion status on target entity
+        function toggleHabit(id) {
+            habits = habits.map(habit => 
+                habit.id === id ? { ...habit, completed: !habit.completed } : habit
+            );
+            renderHabits();
+        }
+
+        // Appends new dynamic entries into array space
+        function addHabit() {
+            const input = document.getElementById('habitInput');
+            const text = input.value.trim();
+            if (text === '') return;
+
+            const newHabit = {
+                id: Date.now(),
+                name: text,
+                completed: false
+            };
+
+            habits.push(newHabit);
+            input.value = '';
+            renderHabits();
+        }
+
+        // Destroys habit row via specific matching ID
+        function deleteHabit(id) {
+            habits = habits.filter(habit => habit.id !== id);
+            renderHabits();
+        }
+
+        // Catch Enter key submission activity
+        document.getElementById('habitInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addHabit();
+            }
+        });
+
+        // Initialize state view loop on first pass execution load
+        renderHabits();
+    </script>
+</body>
+</html>
