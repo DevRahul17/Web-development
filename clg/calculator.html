@@ -1,0 +1,2275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Modern animated calculator built with HTML, CSS and JavaScript">
+    <title>⚡ Modern Calculator</title>
+
+    <style>
+        /* =========================
+           CSS VARIABLES
+        ========================= */
+
+        :root {
+            --bg: #080b14;
+            --bg2: #111827;
+            --card: rgba(18, 23, 38, 0.78);
+            --display: rgba(5, 8, 18, 0.72);
+            --button: rgba(255, 255, 255, 0.055);
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --accent: #8b5cf6;
+            --accent2: #6366f1;
+            --danger: #fb7185;
+            --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+        }
+
+        body.light {
+            --bg: #eef2ff;
+            --bg2: #e0e7ff;
+            --card: rgba(255, 255, 255, 0.75);
+            --display: rgba(248, 250, 252, 0.85);
+            --button: rgba(15, 23, 42, 0.055);
+            --text: #111827;
+            --muted: #64748b;
+            --border: rgba(15, 23, 42, 0.1);
+            --shadow: 0 30px 80px rgba(51, 65, 85, 0.2);
+        }
+
+        /* =========================
+           RESET
+        ========================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            color: var(--text);
+
+            background:
+                radial-gradient(circle at top left,
+                    rgba(99, 102, 241, 0.18),
+                    transparent 35%),
+                radial-gradient(circle at bottom right,
+                    rgba(139, 92, 246, 0.12),
+                    transparent 30%),
+                var(--bg);
+
+            transition:
+                background 0.3s ease,
+                color 0.3s ease;
+        }
+
+        /* =========================
+           ANIMATED BACKGROUND
+        ========================= */
+
+        .background {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .orb {
+            position: absolute;
+
+            width: 280px;
+            height: 280px;
+
+            border-radius: 50%;
+
+            filter: blur(80px);
+
+            opacity: 0.18;
+
+            animation:
+                float 12s ease-in-out infinite alternate;
+        }
+
+        .orb.one {
+            background: #8b5cf6;
+            top: -100px;
+            left: -100px;
+        }
+
+        .orb.two {
+            background: #06b6d4;
+            right: -100px;
+            top: 35%;
+            animation-delay: -4s;
+        }
+
+        .orb.three {
+            background: #ec4899;
+            bottom: -120px;
+            left: 35%;
+            animation-delay: -8s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(50px, -40px) scale(1.1);
+            }
+
+            100% {
+                transform: translate(-30px, 40px) scale(0.95);
+            }
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .container {
+            width: min(1050px, calc(100% - 30px));
+            margin: auto;
+            padding: 45px 0;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 25px;
+
+            animation: slideDown 0.7s ease;
+        }
+
+        .eyebrow {
+            color: var(--accent);
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+        }
+
+        .header h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            letter-spacing: -2px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            margin-top: 8px;
+            font-size: 0.95rem;
+        }
+
+        .theme-btn {
+            width: 50px;
+            height: 50px;
+
+            border: 1px solid var(--border);
+            border-radius: 15px;
+
+            background: var(--button);
+            color: var(--text);
+
+            cursor: pointer;
+            font-size: 1.2rem;
+
+            transition: 0.25s ease;
+        }
+
+        .theme-btn:hover {
+            transform: translateY(-4px) rotate(5deg);
+            border-color: var(--accent);
+        }
+
+        .theme-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        .layout {
+            display: grid;
+            grid-template-columns:
+                minmax(320px, 500px) minmax(260px, 1fr);
+
+            gap: 22px;
+            align-items: start;
+        }
+
+        /* =========================
+           CARDS
+        ========================= */
+
+        .calculator,
+        .history {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 28px;
+
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+
+            box-shadow: var(--shadow);
+        }
+
+        .calculator {
+            padding: 20px;
+
+            animation:
+                calculatorIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .history {
+            padding: 22px;
+
+            min-height: 520px;
+
+            animation:
+                fadeUp 0.8s 0.15s both;
+        }
+
+        /* =========================
+           DISPLAY
+        ========================= */
+
+        .display {
+            min-height: 155px;
+
+            padding: 22px;
+
+            margin-bottom: 16px;
+
+            border-radius: 22px;
+
+            background: var(--display);
+
+            border: 1px solid var(--border);
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            overflow: hidden;
+        }
+
+        .display-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        #previous {
+            color: var(--muted);
+
+            font-size: 0.85rem;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+        .status {
+            color: var(--muted);
+
+            font-size: 0.7rem;
+
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #22c55e;
+
+            box-shadow:
+                0 0 10px rgba(34, 197, 94, 0.8);
+
+            animation: pulse 2s infinite;
+        }
+
+        #display {
+            width: 100%;
+
+            text-align: right;
+
+            font-size: clamp(2.3rem, 8vw, 3.8rem);
+
+            font-weight: 700;
+
+            letter-spacing: -2px;
+
+            white-space: nowrap;
+
+            overflow-x: auto;
+
+            scrollbar-width: none;
+        }
+
+        #display::-webkit-scrollbar {
+            display: none;
+        }
+
+        #display.result {
+            animation: resultPop 0.3s ease;
+        }
+
+        /* =========================
+           KEYPAD
+        ========================= */
+
+        .keypad {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 10px;
+        }
+
+        .key {
+            min-height: 68px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            background: var(--button);
+
+            color: var(--text);
+
+            cursor: pointer;
+
+            font-size: 1.1rem;
+            font-weight: 700;
+
+            transition:
+                transform 0.15s ease,
+                background 0.25s ease,
+                border-color 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        .key:hover {
+            transform: translateY(-3px);
+
+            background:
+                rgba(139, 92, 246, 0.1);
+
+            border-color:
+                rgba(139, 92, 246, 0.35);
+
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .key:active,
+        .key.active {
+            transform: scale(0.9);
+
+            background:
+                rgba(139, 92, 246, 0.2);
+
+            border-color: var(--accent);
+        }
+
+        .key.control {
+            color: var(--danger);
+        }
+
+        .key.operator {
+            color: #a78bfa;
+
+            background:
+                rgba(139, 92, 246, 0.08);
+        }
+
+        .key.special {
+            color: var(--muted);
+        }
+
+        .key.equals {
+            color: white;
+
+            border: none;
+
+            background:
+                linear-gradient(135deg,
+                    var(--accent),
+                    var(--accent2));
+
+            box-shadow:
+                0 12px 30px rgba(99, 102, 241, 0.25);
+        }
+
+        .key.equals:hover {
+            background:
+                linear-gradient(135deg,
+                    #7c3aed,
+                    #4f46e5);
+
+            box-shadow:
+                0 15px 35px rgba(99, 102, 241, 0.4);
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            text-align: center;
+
+            margin-top: 18px;
+
+            color: var(--muted);
+
+            font-size: 0.72rem;
+        }
+
+        /* =========================
+           HISTORY
+        ========================= */
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 18px;
+        }
+
+        .history h2 {
+            font-size: 1.15rem;
+        }
+
+        .clear-history {
+            border: none;
+
+            background: transparent;
+
+            color: var(--danger);
+
+            cursor: pointer;
+
+            padding: 8px;
+
+            border-radius: 8px;
+
+            font-weight: 600;
+        }
+
+        .clear-history:hover {
+            background:
+                rgba(251, 113, 133, 0.1);
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+
+            gap: 10px;
+
+            max-height: 420px;
+
+            overflow-y: auto;
+        }
+
+        .empty {
+            min-height: 350px;
+
+            display: flex;
+            flex-direction: column;
+
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+
+            color: var(--muted);
+        }
+
+        .history-icon {
+            width: 60px;
+            height: 60px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 18px;
+
+            background:
+                rgba(139, 92, 246, 0.1);
+
+            color: var(--accent);
+
+            font-size: 1.8rem;
+
+            margin-bottom: 15px;
+        }
+
+        .empty h3 {
+            color: var(--text);
+
+            font-size: 1rem;
+
+            margin-bottom: 5px;
+        }
+
+        .empty p {
+            font-size: 0.8rem;
+        }
+
+        .history-item {
+            width: 100%;
+
+            padding: 14px;
+
+            text-align: left;
+
+            border-radius: 15px;
+
+            border: 1px solid var(--border);
+
+            background: var(--button);
+
+            color: var(--text);
+
+            cursor: pointer;
+
+            transition: 0.25s ease;
+        }
+
+        .history-item:hover {
+            transform: translateX(4px);
+
+            background:
+                rgba(139, 92, 246, 0.08);
+
+            border-color:
+                rgba(139, 92, 246, 0.3);
+        }
+
+        .history-expression {
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 0.8rem;
+
+            margin-bottom: 5px;
+        }
+
+        .history-result {
+            display: block;
+
+            font-size: 1.15rem;
+
+            font-weight: 700;
+        }
+
+        .history-time {
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 0.65rem;
+
+            margin-top: 6px;
+        }
+
+        /* =========================
+           ANIMATIONS
+        ========================= */
+
+        @keyframes calculatorIn {
+            from {
+                opacity: 0;
+                transform:
+                    translateY(35px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform:
+                    translateY(0) scale(1);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes resultPop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.04);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .history {
+                min-height: auto;
+            }
+
+            .history-list {
+                max-height: 300px;
+            }
+        }
+
+        @media (max-width: 520px) {
+
+            .container {
+                width: calc(100% - 16px);
+                padding: 25px 0;
+            }
+
+            .calculator {
+                padding: 12px;
+                border-radius: 22px;
+            }
+
+            .history {
+                padding: 16px;
+                border-radius: 22px;
+            }
+
+            .display {
+                min-height: 125px;
+                padding: 17px;
+                border-radius: 18px;
+            }
+
+            .keypad {
+                gap: 7px;
+            }
+
+            .key {
+                min-height: 60px;
+                border-radius: 15px;
+            }
+        }
+
+        @media (max-width: 350px) {
+
+            .key {
+                min-height: 54px;
+                border-radius: 12px;
+            }
+
+            .display {
+                padding: 14px;
+            }
+        }
+
+        /* =========================
+           ACCESSIBILITY
+        ========================= */
+
+        button:focus-visible {
+            outline: 3px solid rgba(139, 92, 246, 0.5);
+
+            outline-offset: 3px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Animated Background -->
+    <div class="background">
+        <span class="orb one"></span>
+        <span class="orb two"></span>
+        <span class="orb three"></span>
+    </div>
+
+
+    <main class="container">
+
+        <!-- HEADER -->
+        <header class="header">
+
+            <div>
+                <p class="eyebrow">
+                    JAVASCRIPT PROJECT
+                </p>
+
+                <h1>
+                    ⚡ Calculator
+                </h1>
+
+                <p class="subtitle">
+                    Modern JavaScript Calculator
+                </p>
+            </div>
+
+            <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+                ☀️
+            </button>
+
+        </header>
+
+
+        <!-- MAIN LAYOUT -->
+        <section class="layout">
+
+            <!-- CALCULATOR -->
+            <div class="calculator">
+
+                <!-- DISPLAY -->
+                <div class="display">
+
+                    <div class="display-top">
+
+                        <span id="previous">
+                            Ready
+                        </span>
+
+                        <span class="status" id="status">
+                            <span class="dot"></span>
+                            Ready
+                        </span>
+
+                    </div>
+
+                    <div id="display" aria-live="polite">
+                        0
+                    </div>
+
+                </div>
+
+
+                <!-- BUTTONS -->
+                <div class="keypad">
+
+                    <button class="key control" data-action="clear">
+                        AC
+                    </button>
+
+                    <button class="key control" data-action="delete">
+                        DEL
+                    </button>
+
+                    <button class="key operator" data-action="percent">
+                        %
+                    </button>
+
+                    <button class="key operator" data-operation="/">
+                        ÷
+                    </button>
+
+
+                    <button class="key" data-number="7">
+                        7
+                    </button>
+
+                    <button class="key" data-number="8">
+                        8
+                    </button>
+
+                    <button class="key" data-number="9">
+                        9
+                    </button>
+
+                    <button class="key operator" data-operation="*">
+                        ×
+                    </button>
+
+
+                    <button class="key" data-number="4">
+                        4
+                    </button>
+
+                    <button class="key" data-number="5">
+                        5
+                    </button>
+
+                    <button class="key" data-number="6">
+                        6
+                    </button>
+
+                    <button class="key operator" data-operation="-">
+                        −
+                    </button>
+
+
+                    <button class="key" data-number="1">
+                        1
+                    </button>
+
+                    <button class="key" data-number="2">
+                        2
+                    </button>
+
+                    <button class="key" data-number="3">
+                        3
+                    </button>
+
+                    <button class="key operator" data-operation="+">
+                        +
+                    </button>
+
+
+                    <button class="key special" data-action="sign">
+                        +/−
+                    </button>
+
+                    <button class="key" data-number="0">
+                        0
+                    </button>
+
+                    <button class="key" data-number=".">
+                        .
+                    </button>
+
+                    <button class="key equals" data-action="calculate">
+                        =
+                    </button>
+
+                </div>
+
+
+                <div class="footer">
+                    Built with HTML • CSS • JavaScript
+                </div>
+
+            </div>
+
+
+            <!-- HISTORY -->
+            <aside class="history">
+
+                <div class="history-header">
+
+                    <div>
+
+                        <p class="eyebrow">
+                            ACTIVITY
+                        </p>
+
+                        <h2>
+                            Calculation History
+                        </h2>
+
+                    </div>
+
+                    <button class="clear-history" id="clearHistory">
+                        Clear
+                    </button>
+
+                </div>
+
+
+                <div class="history-list" id="historyList">
+
+                    <div class="empty">
+
+                        <div class="history-icon">
+                            ⌁
+                        </div>
+
+                        <h3>
+                            No calculations yet
+                        </h3>
+
+                        <p>
+                            Your calculations will appear here.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+        /* =========================
+           ELEMENTS
+        ========================= */
+
+        const display =
+            document.getElementById("display");
+
+        const previous =
+            document.getElementById("previous");
+
+        const status =
+            document.getElementById("status");
+
+        const themeToggle =
+            document.getElementById("themeToggle");
+
+        const historyList =
+            document.getElementById("historyList");
+
+        const clearHistory =
+            document.getElementById("clearHistory");
+
+
+        /* =========================
+           STATE
+        ========================= */
+
+        let currentInput = "0";
+
+        let expression = "";
+
+        let justCalculated = false;
+
+        let history = [];
+
+
+        /* =========================
+           INITIAL DISPLAY
+        ========================= */
+
+        updateDisplay();
+
+
+        /* =========================
+           NUMBER BUTTONS
+        ========================= */
+
+        document
+            .querySelectorAll("[data-number]")
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        appendNumber(
+                            button.dataset.number
+                        );
+
+                        animateButton(button);
+                    }
+                );
+
+            });
+
+
+        /* =========================
+           OPERATORS
+        ========================= */
+
+        document
+            .querySelectorAll("[data-operation]")
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        chooseOperation(
+                            button.dataset.operation
+                        );
+
+                        animateButton(button);
+                    }
+                );
+
+            });
+
+
+        /* =========================
+           ACTION BUTTONS
+        ========================= */
+
+        document
+            .querySelector('[data-action="clear"]')
+            .addEventListener(
+                "click",
+                () => {
+
+                    clearCalculator();
+
+                }
+            );
+
+
+        document
+            .querySelector('[data-action="delete"]')
+            .addEventListener(
+                "click",
+                () => {
+
+                    deleteNumber();
+
+                }
+            );
+
+
+        document
+            .querySelector('[data-action="calculate"]')
+            .addEventListener(
+                "click",
+                () => {
+
+                    calculate();
+
+                }
+            );
+
+
+        document
+            .querySelector('[data-action="percent"]')
+            .addEventListener(
+                "click",
+                () => {
+
+                    percentage();
+
+                }
+            );
+
+
+        document
+            .querySelector('[data-action="sign"]')
+            .addEventListener(
+                "click",
+                () => {
+
+                    toggleSign();
+
+                }
+            );
+
+
+        /* =========================
+           APPEND NUMBER
+        ========================= */
+
+        function appendNumber(number) {
+
+            if (justCalculated) {
+
+                currentInput = "0";
+                expression = "";
+
+                previous.textContent = "Ready";
+
+                justCalculated = false;
+            }
+
+
+            if (number === ".") {
+
+                if (
+                    currentInput.includes(".")
+                ) {
+                    return;
+                }
+
+                currentInput += ".";
+
+                updateDisplay();
+
+                return;
+            }
+
+
+            if (
+                currentInput === "0" ||
+                currentInput === "Error"
+            ) {
+
+                currentInput = number;
+
+            } else {
+
+                currentInput += number;
+
+            }
+
+
+            updateDisplay();
+        }
+
+
+        /* =========================
+           CHOOSE OPERATION
+        ========================= */
+
+        function chooseOperation(operation) {
+
+            if (
+                currentInput === "Error"
+            ) {
+
+                clearCalculator();
+
+                return;
+            }
+
+
+            if (
+                expression &&
+                !justCalculated
+            ) {
+
+                expression +=
+                    ` ${operation} `;
+
+            } else {
+
+                expression =
+                    `${currentInput} ${operation} `;
+
+            }
+
+
+            previous.textContent =
+                formatExpression(
+                    expression
+                );
+
+
+            currentInput = "0";
+
+            justCalculated = false;
+
+            updateDisplay();
+        }
+
+
+        /* =========================
+           CALCULATE
+        ========================= */
+
+        function calculate() {
+
+            if (!expression) {
+                return;
+            }
+
+
+            const fullExpression =
+                expression + currentInput;
+
+
+            try {
+
+                const tokens =
+                    tokenize(fullExpression);
+
+
+                const result =
+                    evaluate(tokens);
+
+
+                if (
+                    !Number.isFinite(result)
+                ) {
+
+                    throw new Error(
+                        "Invalid calculation"
+                    );
+
+                }
+
+
+                const formatted =
+                    formatNumber(result);
+
+
+                addHistory(
+                    fullExpression,
+                    formatted
+                );
+
+
+                currentInput = formatted;
+
+                previous.textContent =
+                    formatExpression(
+                        fullExpression
+                    ) + " =";
+
+
+                expression = "";
+
+                justCalculated = true;
+
+                updateDisplay();
+
+                display.classList.remove(
+                    "result"
+                );
+
+                void display.offsetWidth;
+
+                display.classList.add(
+                    "result"
+                );
+
+                showStatus(
+                    "Calculated"
+                );
+
+            } catch (error) {
+
+                currentInput = "Error";
+
+                previous.textContent =
+                    error.message;
+
+                expression = "";
+
+                justCalculated = true;
+
+                updateDisplay();
+
+                showStatus(
+                    "Error"
+                );
+            }
+        }
+
+
+        /* =========================
+           TOKENIZE
+        ========================= */
+
+        function tokenize(input) {
+
+            const clean =
+                input.replace(/\s+/g, "");
+
+
+            if (!clean) {
+                throw new Error(
+                    "Empty expression"
+                );
+            }
+
+
+            const tokens =
+                clean.match(
+                    /(\d*\.?\d+|[+\-*/])/g
+                );
+
+
+            if (!tokens) {
+                throw new Error(
+                    "Invalid expression"
+                );
+            }
+
+
+            if (
+                tokens.join("") !== clean
+            ) {
+
+                throw new Error(
+                    "Invalid characters"
+                );
+
+            }
+
+
+            return tokens;
+        }
+
+
+        /* =========================
+           SAFE CALCULATOR
+        ========================= */
+
+        function evaluate(tokens) {
+
+            const values = [];
+
+            const operators = [];
+
+            let expectingNumber = true;
+
+
+            for (
+                const token of tokens
+            ) {
+
+                if (
+                    /^-?\d*\.?\d+$/
+                        .test(token)
+                ) {
+
+                    values.push(
+                        Number(token)
+                    );
+
+                    expectingNumber = false;
+
+                } else {
+
+                    if (expectingNumber) {
+
+                        if (
+                            token === "-" &&
+                            values.length === 0
+                        ) {
+
+                            values.push(0);
+
+                        } else {
+
+                            throw new Error(
+                                "Invalid expression"
+                            );
+
+                        }
+                    }
+
+
+                    while (
+                        operators.length &&
+                        precedence(
+                            operators[
+                            operators.length - 1
+                            ]
+                        ) >=
+                        precedence(token)
+                    ) {
+
+                        applyOperation(
+                            values,
+                            operators
+                        );
+
+                    }
+
+
+                    operators.push(token);
+
+                    expectingNumber = true;
+                }
+            }
+
+
+            if (expectingNumber) {
+
+                throw new Error(
+                    "Expression incomplete"
+                );
+
+            }
+
+
+            while (operators.length) {
+
+                applyOperation(
+                    values,
+                    operators
+                );
+
+            }
+
+
+            if (values.length !== 1) {
+
+                throw new Error(
+                    "Invalid calculation"
+                );
+
+            }
+
+
+            return values[0];
+        }
+
+
+        /* =========================
+           PRECEDENCE
+        ========================= */
+
+        function precedence(operator) {
+
+            if (
+                operator === "+" ||
+                operator === "-"
+            ) {
+
+                return 1;
+
+            }
+
+
+            if (
+                operator === "*" ||
+                operator === "/"
+            ) {
+
+                return 2;
+
+            }
+
+
+            return 0;
+        }
+
+
+        /* =========================
+           APPLY OPERATION
+        ========================= */
+
+        function applyOperation(
+            values,
+            operators
+        ) {
+
+            const operator =
+                operators.pop();
+
+            const right =
+                values.pop();
+
+            const left =
+                values.pop();
+
+
+            if (
+                left === undefined ||
+                right === undefined
+            ) {
+
+                throw new Error(
+                    "Invalid expression"
+                );
+
+            }
+
+
+            let result;
+
+
+            switch (operator) {
+
+                case "+":
+
+                    result =
+                        left + right;
+
+                    break;
+
+
+                case "-":
+
+                    result =
+                        left - right;
+
+                    break;
+
+
+                case "*":
+
+                    result =
+                        left * right;
+
+                    break;
+
+
+                case "/":
+
+                    if (right === 0) {
+
+                        throw new Error(
+                            "Cannot divide by zero"
+                        );
+
+                    }
+
+                    result =
+                        left / right;
+
+                    break;
+
+                default:
+
+                    throw new Error(
+                        "Unknown operator"
+                    );
+            }
+
+
+            if (
+                !Number.isFinite(result)
+            ) {
+
+                throw new Error(
+                    "Result is too large"
+                );
+
+            }
+
+
+            values.push(result);
+        }
+
+
+        /* =========================
+           DELETE
+        ========================= */
+
+        function deleteNumber() {
+
+            if (justCalculated) {
+
+                clearCalculator();
+
+                return;
+            }
+
+
+            if (
+                currentInput.length <= 1 ||
+                currentInput === "Error"
+            ) {
+
+                currentInput = "0";
+
+            } else {
+
+                currentInput =
+                    currentInput.slice(
+                        0,
+                        -1
+                    );
+
+            }
+
+
+            updateDisplay();
+        }
+
+
+        /* =========================
+           CLEAR
+        ========================= */
+
+        function clearCalculator() {
+
+            currentInput = "0";
+
+            expression = "";
+
+            justCalculated = false;
+
+            previous.textContent =
+                "Ready";
+
+            updateDisplay();
+
+            showStatus("Ready");
+        }
+
+
+        /* =========================
+           POSITIVE / NEGATIVE
+        ========================= */
+
+        function toggleSign() {
+
+            if (
+                currentInput === "0" ||
+                currentInput === "Error"
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                currentInput.startsWith("-")
+            ) {
+
+                currentInput =
+                    currentInput.substring(1);
+
+            } else {
+
+                currentInput =
+                    "-" + currentInput;
+
+            }
+
+
+            updateDisplay();
+        }
+
+
+        /* =========================
+           PERCENTAGE
+        ========================= */
+
+        function percentage() {
+
+            if (
+                currentInput === "Error"
+            ) {
+
+                return;
+            }
+
+
+            const value =
+                Number(currentInput);
+
+
+            if (
+                !Number.isFinite(value)
+            ) {
+
+                return;
+            }
+
+
+            currentInput =
+                formatNumber(
+                    value / 100
+                );
+
+
+            updateDisplay();
+
+            showStatus(
+                "Percentage"
+            );
+        }
+
+
+        /* =========================
+           UPDATE DISPLAY
+        ========================= */
+
+        function updateDisplay() {
+
+            display.textContent =
+                formatDisplay(
+                    currentInput
+                );
+        }
+
+
+        /* =========================
+           FORMAT DISPLAY
+        ========================= */
+
+        function formatDisplay(value) {
+
+            if (
+                value === "Error"
+            ) {
+
+                return value;
+            }
+
+
+            if (
+                value.includes(".")
+            ) {
+
+                const parts =
+                    value.split(".");
+
+
+                return (
+                    formatInteger(
+                        parts[0]
+                    ) +
+                    "." +
+                    parts[1]
+                );
+
+            }
+
+
+            return formatInteger(value);
+        }
+
+
+        /* =========================
+           FORMAT INTEGER
+        ========================= */
+
+        function formatInteger(value) {
+
+            if (
+                value === "-" ||
+                value === ""
+            ) {
+
+                return value;
+            }
+
+
+            const negative =
+                value.startsWith("-");
+
+
+            const number =
+                negative
+                    ? value.substring(1)
+                    : value;
+
+
+            const formatted =
+                Number(number)
+                    .toLocaleString("en-US");
+
+
+            return negative
+                ? "-" + formatted
+                : formatted;
+        }
+
+
+        /* =========================
+           FORMAT NUMBER
+        ========================= */
+
+        function formatNumber(number) {
+
+            const rounded =
+                Math.round(
+                    (number +
+                        Number.EPSILON) *
+                    100000000
+                ) / 100000000;
+
+
+            return String(rounded);
+        }
+
+
+        /* =========================
+           FORMAT EXPRESSION
+        ========================= */
+
+        function formatExpression(value) {
+
+            return value
+                .replace(/\*/g, "×")
+                .replace(/\//g, "÷")
+                .replace(/-/g, "−");
+        }
+
+
+        /* =========================
+           HISTORY
+        ========================= */
+
+        function addHistory(
+            expressionValue,
+            result
+        ) {
+
+            history.unshift({
+
+                expression:
+                    formatExpression(
+                        expressionValue
+                    ),
+
+                result: result,
+
+                time:
+                    new Date()
+                        .toLocaleTimeString(
+                            [],
+                            {
+                                hour: "2-digit",
+                                minute: "2-digit"
+                            }
+                        )
+
+            });
+
+
+            if (
+                history.length > 20
+            ) {
+
+                history.pop();
+
+            }
+
+
+            renderHistory();
+        }
+
+
+        /* =========================
+           RENDER HISTORY
+        ========================= */
+
+        function renderHistory() {
+
+            historyList.innerHTML = "";
+
+
+            if (
+                history.length === 0
+            ) {
+
+                historyList.innerHTML = `
+                    <div class="empty">
+
+                        <div class="history-icon">
+                            ⌁
+                        </div>
+
+                        <h3>
+                            No calculations yet
+                        </h3>
+
+                        <p>
+                            Your calculations will appear here.
+                        </p>
+
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            history.forEach(item => {
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                button.className =
+                    "history-item";
+
+
+                button.innerHTML = `
+                    <span class="history-expression">
+                        ${escapeHTML(
+                    item.expression
+                )}
+                    </span>
+
+                    <span class="history-result">
+                        = ${escapeHTML(
+                    item.result
+                )}
+                    </span>
+
+                    <span class="history-time">
+                        ${escapeHTML(
+                    item.time
+                )}
+                    </span>
+                `;
+
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        currentInput =
+                            item.result;
+
+                        expression = "";
+
+                        justCalculated = true;
+
+                        previous.textContent =
+                            item.expression;
+
+                        updateDisplay();
+
+                        showStatus(
+                            "Loaded"
+                        );
+                    }
+                );
+
+
+                historyList.appendChild(
+                    button
+                );
+
+            });
+        }
+
+
+        /* =========================
+           CLEAR HISTORY
+        ========================= */
+
+        clearHistory.addEventListener(
+            "click",
+            () => {
+
+                history = [];
+
+                renderHistory();
+
+                showStatus(
+                    "History cleared"
+                );
+            }
+        );
+
+
+        /* =========================
+           KEYBOARD
+        ========================= */
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                const key =
+                    event.key;
+
+
+                if (
+                    key >= "0" &&
+                    key <= "9"
+                ) {
+
+                    appendNumber(key);
+
+                    pressKey(
+                        `[data-number="${key}"]`
+                    );
+
+                    return;
+                }
+
+
+                if (key === ".") {
+
+                    appendNumber(".");
+
+                    pressKey(
+                        '[data-number="."]'
+                    );
+
+                    return;
+                }
+
+
+                if (
+                    key === "+" ||
+                    key === "-" ||
+                    key === "*" ||
+                    key === "/"
+                ) {
+
+                    chooseOperation(key);
+
+                    pressKey(
+                        `[data-operation="${key}"]`
+                    );
+
+                    return;
+                }
+
+
+                if (key === "%") {
+
+                    percentage();
+
+                    pressKey(
+                        '[data-action="percent"]'
+                    );
+
+                    return;
+                }
+
+
+                if (
+                    key === "Enter" ||
+                    key === "="
+                ) {
+
+                    event.preventDefault();
+
+                    calculate();
+
+                    pressKey(
+                        '[data-action="calculate"]'
+                    );
+
+                    return;
+                }
+
+
+                if (
+                    key === "Backspace"
+                ) {
+
+                    deleteNumber();
+
+                    pressKey(
+                        '[data-action="delete"]'
+                    );
+
+                    return;
+                }
+
+
+                if (
+                    key === "Escape"
+                ) {
+
+                    clearCalculator();
+
+                    pressKey(
+                        '[data-action="clear"]'
+                    );
+
+                    return;
+                }
+
+            }
+        );
+
+
+        /* =========================
+           KEY ANIMATION
+        ========================= */
+
+        function pressKey(selector) {
+
+            const button =
+                document.querySelector(
+                    selector
+                );
+
+
+            if (!button) {
+                return;
+            }
+
+
+            animateButton(button);
+        }
+
+
+        function animateButton(button) {
+
+            button.classList.add(
+                "active"
+            );
+
+
+            setTimeout(
+                () => {
+
+                    button.classList.remove(
+                        "active"
+                    );
+
+                },
+                120
+            );
+        }
+
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        function showStatus(message) {
+
+            status.innerHTML = `
+                <span class="dot"></span>
+                ${escapeHTML(message)}
+            `;
+
+
+            clearTimeout(
+                showStatus.timer
+            );
+
+
+            showStatus.timer =
+                setTimeout(
+                    () => {
+
+                        status.innerHTML = `
+                            <span class="dot"></span>
+                            Ready
+                        `;
+
+                    },
+                    1800
+                );
+        }
+
+
+        /* =========================
+           THEME
+        ========================= */
+
+        themeToggle.addEventListener(
+            "click",
+            () => {
+
+                document.body.classList.toggle(
+                    "light"
+                );
+
+
+                const isLight =
+                    document.body.classList.contains(
+                        "light"
+                    );
+
+
+                themeToggle.textContent =
+                    isLight
+                        ? "🌙"
+                        : "☀️";
+            }
+        );
+
+
+        /* =========================
+           HTML ESCAPE
+        ========================= */
+
+        function escapeHTML(value) {
+
+            return String(value)
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+        }
+
+    </script>
+
+</body>
+
+</html>
