@@ -81,24 +81,24 @@ Create a Digital seconds clock using setInterval and data object in Javascript.T
             seconds = seconds < 10 ? "0" + seconds : seconds;
 
             //Display Time
-            document.getElementById("time").innerText = 
-            `${hours}:${minutes}:${seconds}`;
+            document.getElementById("time").innerText =
+                `${hours}:${minutes}:${seconds}`;
 
             //Display date
-            document.getElementById("date").innerText = 
-            data.toLocaleDateString("en-IN", {
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-                year: "numeric"
-            });
+            document.getElementById("date").innerText =
+                data.toLocaleDateString("en-IN", {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                });
         }
 
         //Call function immediately
         updateclock();
 
         //Update clock every second
-        setInterval(updateclock,1000);
+        setInterval(updateclock, 1000);
     </script>
 </body>
 
