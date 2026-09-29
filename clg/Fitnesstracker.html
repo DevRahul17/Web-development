@@ -1,0 +1,2819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitPulse — Fitness Tracker</title>
+
+<style>
+:root{
+    --bg:#07110d;
+    --card:rgba(17,30,24,.78);
+    --card2:#101f18;
+    --text:#f2fff8;
+    --muted:#8ca79a;
+    --green:#36f28a;
+    --green2:#13c86a;
+    --blue:#36bfff;
+    --orange:#ffb84d;
+    --red:#ff6577;
+    --border:rgba(255,255,255,.08);
+    --shadow:0 20px 50px rgba(0,0,0,.28);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+    background:
+        radial-gradient(circle at 10% 0%,rgba(54,242,138,.10),transparent 30%),
+        radial-gradient(circle at 90% 10%,rgba(54,191,255,.08),transparent 28%),
+        var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+button,input{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+    width:245px;
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    padding:28px 18px;
+    background:rgba(5,15,11,.92);
+    border-right:1px solid var(--border);
+    backdrop-filter:blur(20px);
+    z-index:100;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:0 12px 30px;
+}
+
+.logo-icon{
+    width:42px;
+    height:42px;
+    display:grid;
+    place-items:center;
+    border-radius:13px;
+    background:linear-gradient(135deg,var(--green),var(--blue));
+    color:#03150b;
+    font-size:21px;
+    font-weight:900;
+}
+
+.logo h2{
+    font-size:20px;
+}
+
+.logo span{
+    color:var(--green);
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.nav button{
+    border:0;
+    background:transparent;
+    color:var(--muted);
+    padding:13px 15px;
+    border-radius:13px;
+    display:flex;
+    align-items:center;
+    gap:13px;
+    text-align:left;
+    transition:.25s;
+}
+
+.nav button:hover,
+.nav button.active{
+    background:rgba(54,242,138,.10);
+    color:var(--green);
+    transform:translateX(3px);
+}
+
+.nav-icon{
+    width:24px;
+    text-align:center;
+    font-size:18px;
+}
+
+.sidebar-bottom{
+    position:absolute;
+    bottom:25px;
+    left:18px;
+    right:18px;
+}
+
+.mini-profile{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:13px;
+    border:1px solid var(--border);
+    border-radius:15px;
+    background:rgba(255,255,255,.025);
+}
+
+.avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,var(--green),var(--blue));
+    color:#02130a;
+    font-weight:800;
+}
+
+.mini-profile small{
+    color:var(--muted);
+}
+
+/* ================= MAIN ================= */
+
+.main{
+    width:calc(100% - 245px);
+    margin-left:245px;
+    padding:28px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.greeting small{
+    color:var(--muted);
+}
+
+.greeting h1{
+    margin-top:5px;
+    font-size:30px;
+}
+
+.top-actions{
+    display:flex;
+    gap:10px;
+}
+
+.icon-btn{
+    width:43px;
+    height:43px;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+    border-radius:13px;
+    transition:.2s;
+}
+
+.icon-btn:hover{
+    border-color:var(--green);
+    transform:translateY(-2px);
+}
+
+.section{
+    display:none;
+    animation:fadeIn .35s ease;
+}
+
+.section.active{
+    display:block;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(8px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+/* ================= CARDS ================= */
+
+.card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:20px;
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(18px);
+}
+
+.card-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+}
+
+.card-title h3{
+    font-size:17px;
+}
+
+.card-title span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+    display:grid;
+    grid-template-columns:1.5fr 1fr;
+    gap:20px;
+    margin-bottom:20px;
+}
+
+.hero-card{
+    min-height:245px;
+    position:relative;
+    overflow:hidden;
+    padding:30px;
+    background:
+        radial-gradient(circle at 80% 20%,rgba(54,242,138,.17),transparent 35%),
+        linear-gradient(135deg,#10261b,#0b1812);
+}
+
+.hero-card::after{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    right:-60px;
+    bottom:-80px;
+    border-radius:50%;
+    background:rgba(54,242,138,.08);
+}
+
+.hero-card small{
+    color:var(--muted);
+}
+
+.hero-card h2{
+    font-size:31px;
+    max-width:500px;
+    margin:10px 0;
+}
+
+.hero-card p{
+    color:var(--muted);
+    max-width:500px;
+    line-height:1.6;
+}
+
+.hero-progress{
+    margin-top:24px;
+    height:9px;
+    border-radius:20px;
+    background:rgba(255,255,255,.08);
+    overflow:hidden;
+}
+
+.hero-progress div{
+    width:64%;
+    height:100%;
+    background:linear-gradient(90deg,var(--green),var(--blue));
+    border-radius:20px;
+    transition:1s;
+}
+
+.hero-percent{
+    display:flex;
+    justify-content:space-between;
+    margin-top:8px;
+    font-size:13px;
+}
+
+.hero-percent span:first-child{
+    color:var(--green);
+}
+
+/* ================= RING ================= */
+
+.ring-card{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:22px;
+}
+
+.ring{
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:conic-gradient(var(--green) 0 64%,rgba(255,255,255,.07) 64% 100%);
+    position:relative;
+}
+
+.ring::before{
+    content:"";
+    position:absolute;
+    width:112px;
+    height:112px;
+    border-radius:50%;
+    background:#0d1b15;
+}
+
+.ring-content{
+    position:relative;
+    text-align:center;
+}
+
+.ring-content strong{
+    display:block;
+    font-size:27px;
+}
+
+.ring-content small{
+    color:var(--muted);
+}
+
+/* ================= STATS ================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.stat{
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+
+.stat-icon{
+    width:48px;
+    height:48px;
+    display:grid;
+    place-items:center;
+    border-radius:15px;
+    background:rgba(54,242,138,.09);
+    font-size:21px;
+}
+
+.stat h3{
+    margin:3px 0;
+    font-size:21px;
+}
+
+.stat p{
+    color:var(--muted);
+    font-size:12px;
+}
+
+/* ================= DASH GRID ================= */
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:1.35fr .85fr;
+    gap:20px;
+}
+
+.activity-chart{
+    height:230px;
+    display:flex;
+    align-items:end;
+    justify-content:space-around;
+    gap:10px;
+    padding:15px 5px 0;
+}
+
+.bar-wrap{
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:end;
+    align-items:center;
+    gap:9px;
+    flex:1;
+    cursor:pointer;
+}
+
+.bar{
+    width:75%;
+    max-width:38px;
+    min-height:10px;
+    border-radius:9px 9px 3px 3px;
+    background:linear-gradient(to top,var(--green2),var(--green));
+    transition:.3s;
+}
+
+.bar-wrap:hover .bar{
+    filter:brightness(1.25);
+    transform:scaleX(1.08);
+}
+
+.bar-wrap span{
+    font-size:11px;
+    color:var(--muted);
+}
+
+.activity-info{
+    padding:12px;
+    margin-top:5px;
+    border-radius:12px;
+    background:rgba(255,255,255,.035);
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* ================= GOALS ================= */
+
+.goals{
+    display:grid;
+    gap:15px;
+}
+
+.goal-row{
+    display:grid;
+    grid-template-columns:42px 1fr auto;
+    gap:12px;
+    align-items:center;
+}
+
+.goal-icon{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    background:rgba(255,255,255,.05);
+}
+
+.goal-info h4{
+    font-size:13px;
+    margin-bottom:7px;
+}
+
+.goal-info small{
+    color:var(--muted);
+}
+
+.progress{
+    height:6px;
+    margin-top:7px;
+    background:rgba(255,255,255,.07);
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.progress div{
+    height:100%;
+    border-radius:10px;
+    background:linear-gradient(90deg,var(--green),var(--blue));
+    transition:.5s;
+}
+
+.counter-buttons{
+    display:flex;
+    gap:5px;
+}
+
+.counter-buttons button{
+    width:30px;
+    height:30px;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.04);
+    color:white;
+    border-radius:8px;
+}
+
+/* ================= WORKOUTS ================= */
+
+.workout-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.workout{
+    transition:.25s;
+}
+
+.workout:hover{
+    transform:translateY(-5px);
+    border-color:rgba(54,242,138,.3);
+}
+
+.workout-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.workout-icon{
+    width:48px;
+    height:48px;
+    display:grid;
+    place-items:center;
+    border-radius:14px;
+    background:rgba(54,242,138,.1);
+    font-size:23px;
+}
+
+.difficulty{
+    font-size:11px;
+    color:var(--green);
+    padding:5px 8px;
+    background:rgba(54,242,138,.08);
+    border-radius:20px;
+}
+
+.workout h3{
+    margin-bottom:10px;
+}
+
+.workout-meta{
+    display:flex;
+    gap:14px;
+    color:var(--muted);
+    font-size:12px;
+    margin-bottom:17px;
+}
+
+.primary-btn{
+    width:100%;
+    padding:11px;
+    border:0;
+    border-radius:11px;
+    background:linear-gradient(135deg,var(--green),var(--green2));
+    color:#03130a;
+    font-weight:800;
+    transition:.2s;
+}
+
+.primary-btn:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.08);
+}
+
+/* ================= TIMER ================= */
+
+.timer-card{
+    margin-bottom:20px;
+    text-align:center;
+    display:none;
+    background:
+        radial-gradient(circle at center,rgba(54,242,138,.10),transparent 55%),
+        var(--card);
+}
+
+.timer-card.show{
+    display:block;
+}
+
+.timer{
+    font-size:55px;
+    font-weight:800;
+    letter-spacing:3px;
+    margin:10px 0 15px;
+}
+
+.timer-buttons{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+}
+
+.timer-buttons button{
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.06);
+    color:white;
+    padding:10px 20px;
+    border-radius:10px;
+}
+
+.timer-buttons .stop{
+    background:rgba(255,101,119,.12);
+    color:var(--red);
+}
+
+/* ================= WATER ================= */
+
+.water-box{
+    display:flex;
+    align-items:center;
+    gap:30px;
+}
+
+.water-circle{
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:conic-gradient(var(--blue) 0 68%,rgba(255,255,255,.06) 68%);
+}
+
+.water-inner{
+    width:138px;
+    height:138px;
+    border-radius:50%;
+    background:#0c1b15;
+    display:grid;
+    place-items:center;
+    text-align:center;
+}
+
+.water-inner strong{
+    font-size:27px;
+}
+
+.water-inner small{
+    color:var(--muted);
+}
+
+.water-actions{
+    flex:1;
+}
+
+.water-actions h2{
+    margin-bottom:7px;
+}
+
+.water-actions p{
+    color:var(--muted);
+    margin-bottom:18px;
+}
+
+.add-water{
+    padding:12px 20px;
+    border:0;
+    border-radius:11px;
+    background:var(--blue);
+    color:#03111a;
+    font-weight:800;
+}
+
+/* ================= CALORIES ================= */
+
+.calorie-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.calorie-card strong{
+    display:block;
+    font-size:27px;
+    margin-top:8px;
+}
+
+.calorie-card small{
+    color:var(--muted);
+}
+
+.food-form{
+    display:flex;
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.input{
+    width:100%;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.04);
+    color:white;
+    padding:12px;
+    border-radius:10px;
+    outline:none;
+}
+
+.input:focus{
+    border-color:var(--green);
+}
+
+.food-form button{
+    min-width:120px;
+}
+
+.food-item{
+    display:flex;
+    justify-content:space-between;
+    padding:12px;
+    border-bottom:1px solid var(--border);
+}
+
+.food-item:last-child{
+    border-bottom:0;
+}
+
+.food-item span{
+    color:var(--muted);
+}
+
+/* ================= ACHIEVEMENTS ================= */
+
+.achievement-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.achievement{
+    text-align:center;
+    padding:25px 15px;
+}
+
+.badge{
+    width:65px;
+    height:65px;
+    margin:auto;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:rgba(54,242,138,.1);
+    font-size:29px;
+    margin-bottom:13px;
+}
+
+.achievement.locked{
+    opacity:.35;
+    filter:grayscale(1);
+}
+
+.achievement p{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:6px;
+}
+
+/* ================= STREAK ================= */
+
+.streak-card{
+    text-align:center;
+}
+
+.streak-number{
+    font-size:52px;
+    color:var(--green);
+    font-weight:900;
+    margin:10px 0;
+}
+
+.week{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    margin-top:20px;
+}
+
+.day{
+    width:45px;
+    height:55px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:4px;
+    border-radius:12px;
+    background:rgba(255,255,255,.04);
+    cursor:pointer;
+    border:1px solid var(--border);
+}
+
+.day small{
+    color:var(--muted);
+    font-size:9px;
+}
+
+.day.done{
+    background:rgba(54,242,138,.12);
+    border-color:var(--green);
+}
+
+.day.done small{
+    color:var(--green);
+}
+
+/* ================= PROFILE ================= */
+
+.profile{
+    max-width:700px;
+}
+
+.profile-header{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.big-avatar{
+    width:85px;
+    height:85px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    font-size:30px;
+    font-weight:900;
+    color:#02130a;
+    background:linear-gradient(135deg,var(--green),var(--blue));
+}
+
+.profile-info h2{
+    margin-bottom:5px;
+}
+
+.profile-info p{
+    color:var(--muted);
+}
+
+.profile-details{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.detail{
+    padding:15px;
+    border-radius:13px;
+    background:rgba(255,255,255,.035);
+}
+
+.detail span{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.detail strong{
+    display:block;
+    margin-top:6px;
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,.7);
+    backdrop-filter:blur(8px);
+    z-index:500;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:100%;
+    max-width:450px;
+    background:#102019;
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:25px;
+    animation:modalIn .25s ease;
+}
+
+@keyframes modalIn{
+    from{opacity:0;transform:scale(.95)}
+    to{opacity:1;transform:scale(1)}
+}
+
+.modal-box h2{
+    margin-bottom:20px;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+.form-group label{
+    display:block;
+    color:var(--muted);
+    font-size:12px;
+    margin-bottom:7px;
+}
+
+.modal-actions{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+.modal-actions button{
+    flex:1;
+    padding:11px;
+    border-radius:10px;
+    border:1px solid var(--border);
+}
+
+.cancel{
+    background:rgba(255,255,255,.05);
+    color:white;
+}
+
+.save{
+    background:var(--green);
+    border:0!important;
+    color:#03130a;
+    font-weight:800;
+}
+
+/* ================= TOAST ================= */
+
+.toast{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    z-index:1000;
+    background:#14261e;
+    border:1px solid rgba(54,242,138,.3);
+    padding:14px 18px;
+    border-radius:13px;
+    box-shadow:var(--shadow);
+    transform:translateY(100px);
+    opacity:0;
+    transition:.35s;
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+/* ================= LIGHT MODE ================= */
+
+body.light{
+    --bg:#eef7f2;
+    --card:rgba(255,255,255,.82);
+    --card2:#fff;
+    --text:#13231b;
+    --muted:#668075;
+    --border:rgba(0,0,0,.08);
+}
+
+body.light .sidebar{
+    background:rgba(245,252,248,.94);
+}
+
+body.light .ring::before,
+body.light .water-inner{
+    background:#f5fbf7;
+}
+
+/* ================= MOBILE NAV ================= */
+
+.mobile-nav{
+    display:none;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1100px){
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .workout-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .achievement-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:850px){
+    .sidebar{
+        display:none;
+    }
+
+    .main{
+        width:100%;
+        margin-left:0;
+        padding:20px;
+        padding-bottom:90px;
+    }
+
+    .hero,
+    .dashboard-grid{
+        grid-template-columns:1fr;
+    }
+
+    .mobile-nav{
+        position:fixed;
+        display:flex;
+        bottom:12px;
+        left:12px;
+        right:12px;
+        background:rgba(7,17,13,.94);
+        border:1px solid var(--border);
+        backdrop-filter:blur(20px);
+        border-radius:18px;
+        padding:8px;
+        z-index:200;
+        justify-content:space-around;
+    }
+
+    .mobile-nav button{
+        border:0;
+        background:transparent;
+        color:var(--muted);
+        font-size:19px;
+        padding:8px 12px;
+        border-radius:10px;
+    }
+
+    .mobile-nav button.active{
+        color:var(--green);
+        background:rgba(54,242,138,.1);
+    }
+}
+
+@media(max-width:600px){
+    .topbar{
+        align-items:flex-start;
+    }
+
+    .greeting h1{
+        font-size:24px;
+    }
+
+    .hero-card h2{
+        font-size:24px;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .workout-grid,
+    .achievement-grid,
+    .calorie-grid{
+        grid-template-columns:1fr;
+    }
+
+    .ring-card{
+        flex-direction:column;
+    }
+
+    .water-box{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .food-form{
+        flex-direction:column;
+    }
+
+    .profile-details{
+        grid-template-columns:1fr;
+    }
+
+    .week{
+        gap:5px;
+    }
+
+    .day{
+        width:40px;
+    }
+
+    .main{
+        padding:15px;
+        padding-bottom:90px;
+    }
+
+    .card{
+        border-radius:16px;
+        padding:16px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        <div class="logo-icon">⚡</div>
+        <h2>Fit<span>Pulse</span></h2>
+    </div>
+
+    <nav class="nav">
+        <button class="active" data-section="dashboard">
+            <span class="nav-icon">🏠</span> Dashboard
+        </button>
+
+        <button data-section="workouts">
+            <span class="nav-icon">🏋️</span> Workouts
+        </button>
+
+        <button data-section="activity">
+            <span class="nav-icon">👟</span> Activity
+        </button>
+
+        <button data-section="hydration">
+            <span class="nav-icon">💧</span> Hydration
+        </button>
+
+        <button data-section="calories">
+            <span class="nav-icon">🔥</span> Calories
+        </button>
+
+        <button data-section="achievements">
+            <span class="nav-icon">🏆</span> Achievements
+        </button>
+
+        <button data-section="profile">
+            <span class="nav-icon">👤</span> Profile
+        </button>
+    </nav>
+
+    <div class="sidebar-bottom">
+        <div class="mini-profile">
+            <div class="avatar" id="miniAvatar">R</div>
+            <div>
+                <strong id="miniName">Rahul</strong>
+                <br>
+                <small>Fitness Beginner</small>
+            </div>
+        </div>
+    </div>
+
+</aside>
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+<header class="topbar">
+
+    <div class="greeting">
+        <small id="dateText">Tuesday, September 29</small>
+        <h1>Good evening, <span id="helloName">Rahul</span> 👋</h1>
+    </div>
+
+    <div class="top-actions">
+        <button class="icon-btn" id="themeBtn" title="Toggle theme">☀️</button>
+        <button class="icon-btn" id="resetBtn" title="Reset day">↻</button>
+    </div>
+
+</header>
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<section class="section active" id="dashboard">
+
+    <div class="hero">
+
+        <div class="card hero-card">
+
+            <small>YOUR DAILY PROGRESS</small>
+
+            <h2>Keep moving. Your future self will thank you. 💪</h2>
+
+            <p id="motivation">
+                You're making great progress today. Keep pushing!
+            </p>
+
+            <div class="hero-progress">
+                <div id="heroProgress"></div>
+            </div>
+
+            <div class="hero-percent">
+                <span id="heroPercent">64% completed</span>
+                <span id="heroSteps">6,420 / 10,000 steps</span>
+            </div>
+
+        </div>
+
+        <div class="card ring-card">
+
+            <div class="ring" id="goalRing">
+                <div class="ring-content">
+                    <strong id="ringPercent">64%</strong>
+                    <small>Daily Goal</small>
+                </div>
+            </div>
+
+            <div>
+                <small style="color:var(--muted)">TODAY'S GOAL</small>
+                <h2 id="ringSteps" style="margin:8px 0">6,420</h2>
+                <p style="color:var(--muted);font-size:13px">
+                    steps completed
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="card stat">
+            <div class="stat-icon">👟</div>
+            <div>
+                <p>STEPS</p>
+                <h3 id="statSteps">6,420</h3>
+                <p>of 10,000</p>
+            </div>
+        </div>
+
+        <div class="card stat">
+            <div class="stat-icon">🔥</div>
+            <div>
+                <p>CALORIES</p>
+                <h3 id="statCalories">480</h3>
+                <p>burned</p>
+            </div>
+        </div>
+
+        <div class="card stat">
+            <div class="stat-icon">📍</div>
+            <div>
+                <p>DISTANCE</p>
+                <h3 id="statDistance">4.8</h3>
+                <p>kilometers</p>
+            </div>
+        </div>
+
+        <div class="card stat">
+            <div class="stat-icon">⏱️</div>
+            <div>
+                <p>ACTIVE TIME</p>
+                <h3 id="statMinutes">42</h3>
+                <p>minutes</p>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-grid">
+
+        <div class="card">
+
+            <div class="card-title">
+                <h3>Weekly Activity</h3>
+                <span>Tap a day</span>
+            </div>
+
+            <div class="activity-chart" id="chart"></div>
+
+            <div class="activity-info" id="activityInfo">
+                Monday • 7,840 steps • 52 active minutes
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                <h3>Daily Goals</h3>
+                <button class="icon-btn" id="editGoalsBtn" style="width:35px;height:35px">✏️</button>
+            </div>
+
+            <div class="goals">
+
+                <div class="goal-row">
+
+                    <div class="goal-icon">👟</div>
+
+                    <div class="goal-info">
+                        <h4>Steps</h4>
+                        <small id="stepsGoalText">6,420 / 10,000</small>
+
+                        <div class="progress">
+                            <div id="stepsBar" style="width:64%"></div>
+                        </div>
+                    </div>
+
+                    <div class="counter-buttons">
+                        <button data-action="stepsDown">−</button>
+                        <button data-action="stepsUp">+</button>
+                    </div>
+
+                </div>
+
+
+                <div class="goal-row">
+
+                    <div class="goal-icon">🔥</div>
+
+                    <div class="goal-info">
+                        <h4>Calories</h4>
+                        <small id="calGoalText">480 / 750 kcal</small>
+
+                        <div class="progress">
+                            <div id="calBar" style="width:64%"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="goal-row">
+
+                    <div class="goal-icon">💧</div>
+
+                    <div class="goal-info">
+                        <h4>Water</h4>
+                        <small id="waterGoalText">1.7 / 2.5 L</small>
+
+                        <div class="progress">
+                            <div id="waterBar" style="width:68%"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= WORKOUTS ================= -->
+
+<section class="section" id="workouts">
+
+    <div class="card timer-card" id="timerCard">
+
+        <small style="color:var(--green)">WORKOUT IN PROGRESS</small>
+
+        <h2 id="activeWorkoutName">Running</h2>
+
+        <div class="timer" id="timer">00:00</div>
+
+        <p style="color:var(--muted);margin-bottom:15px">
+            Calories burned: <strong id="timerCalories">0</strong> kcal
+        </p>
+
+        <div class="timer-buttons">
+            <button id="pauseBtn">⏸ Pause</button>
+            <button id="resumeBtn" style="display:none">▶ Resume</button>
+            <button class="stop" id="stopBtn">■ Stop</button>
+        </div>
+
+    </div>
+
+
+    <div class="card-title">
+        <h3>Choose Your Workout</h3>
+        <span>Start moving today</span>
+    </div>
+
+    <div class="workout-grid">
+
+        <div class="card workout">
+            <div class="workout-top">
+                <div class="workout-icon">🏃</div>
+                <span class="difficulty">MEDIUM</span>
+            </div>
+            <h3>Running</h3>
+            <div class="workout-meta">
+                <span>⏱ 30 min</span>
+                <span>🔥 300 kcal</span>
+            </div>
+            <button class="primary-btn start-workout" data-name="Running">Start Workout</button>
+        </div>
+
+        <div class="card workout">
+            <div class="workout-top">
+                <div class="workout-icon">🚶</div>
+                <span class="difficulty">EASY</span>
+            </div>
+            <h3>Walking</h3>
+            <div class="workout-meta">
+                <span>⏱ 30 min</span>
+                <span>🔥 120 kcal</span>
+            </div>
+            <button class="primary-btn start-workout" data-name="Walking">Start Workout</button>
+        </div>
+
+        <div class="card workout">
+            <div class="workout-top">
+                <div class="workout-icon">🚴</div>
+                <span class="difficulty">MEDIUM</span>
+            </div>
+            <h3>Cycling</h3>
+            <div class="workout-meta">
+                <span>⏱ 45 min</span>
+                <span>🔥 420 kcal</span>
+            </div>
+            <button class="primary-btn start-workout" data-name="Cycling">Start Workout</button>
+        </div>
+
+        <div class="card workout">
+            <div class="workout-top">
+                <div class="workout-icon">🏋️</div>
+                <span class="difficulty">HARD</span>
+            </div>
+            <h3>Strength Training</h3>
+            <div class="workout-meta">
+                <span>⏱ 40 min</span>
+                <span>🔥 350 kcal</span>
+            </div>
+            <button class="primary-btn start-workout" data-name="Strength Training">Start Workout</button>
+        </div>
+
+        <div class="card workout">
+            <div class="workout-top">
+                <div class="workout-icon">🧘</div>
+                <span class="difficulty">EASY</span>
+            </div>
+            <h3>Yoga</h3>
+            <div class="workout-meta">
+                <span>⏱ 30 min</span>
+                <span>🔥 150 kcal</span>
+            </div>
+            <button class="primary-btn start-workout" data-name="Yoga">Start Workout</button>
+        </div>
+
+        <div class="card workout">
+            <div class="workout-top">
+                <div class="workout-icon">⚡</div>
+                <span class="difficulty">HARD</span>
+            </div>
+            <h3>HIIT</h3>
+            <div class="workout-meta">
+                <span>⏱ 20 min</span>
+                <span>🔥 280 kcal</span>
+            </div>
+            <button class="primary-btn start-workout" data-name="HIIT">Start Workout</button>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ACTIVITY ================= -->
+
+<section class="section" id="activity">
+
+    <div class="card">
+
+        <div class="card-title">
+            <h3>Activity Overview</h3>
+            <span>This week</span>
+        </div>
+
+        <div class="activity-chart" id="activityChart"></div>
+
+        <div class="activity-info" id="activityInfo2">
+            Select a day to see your activity.
+        </div>
+
+    </div>
+
+    <br>
+
+    <div class="stats">
+
+        <div class="card stat">
+            <div class="stat-icon">👟</div>
+            <div>
+                <p>AVERAGE STEPS</p>
+                <h3>7,842</h3>
+            </div>
+        </div>
+
+        <div class="card stat">
+            <div class="stat-icon">🔥</div>
+            <div>
+                <p>AVG CALORIES</p>
+                <h3>536</h3>
+            </div>
+        </div>
+
+        <div class="card stat">
+            <div class="stat-icon">⏱️</div>
+            <div>
+                <p>ACTIVE TIME</p>
+                <h3>48m</h3>
+            </div>
+        </div>
+
+        <div class="card stat">
+            <div class="stat-icon">📍</div>
+            <div>
+                <p>DISTANCE</p>
+                <h3>5.7km</h3>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= HYDRATION ================= -->
+
+<section class="section" id="hydration">
+
+    <div class="card">
+
+        <div class="card-title">
+            <h3>Hydration Tracker 💧</h3>
+            <span>Stay hydrated</span>
+        </div>
+
+        <div class="water-box">
+
+            <div class="water-circle" id="waterCircle">
+
+                <div class="water-inner">
+                    <div>
+                        <strong id="waterValue">1.7L</strong>
+                        <br>
+                        <small>of 2.5L</small>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="water-actions">
+
+                <h2>Keep drinking water!</h2>
+
+                <p>
+                    Your body performs better when properly hydrated.
+                </p>
+
+                <button class="add-water" id="addWater">
+                    💧 + Add 250ml
+                </button>
+
+                <p style="margin-top:15px">
+                    Glasses today: <strong id="glassCount">7</strong>
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CALORIES ================= -->
+
+<section class="section" id="calories">
+
+    <div class="calorie-grid">
+
+        <div class="card calorie-card">
+            <small>CONSUMED</small>
+            <strong id="consumedCalories">1,240</strong>
+            <small>kcal</small>
+        </div>
+
+        <div class="card calorie-card">
+            <small>BURNED</small>
+            <strong id="burnedCalories">480</strong>
+            <small>kcal</small>
+        </div>
+
+        <div class="card calorie-card">
+            <small>REMAINING</small>
+            <strong id="remainingCalories">760</strong>
+            <small>kcal</small>
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <div class="card-title">
+            <h3>Food Diary</h3>
+            <span>Add your meals</span>
+        </div>
+
+        <form class="food-form" id="foodForm">
+
+            <input
+                class="input"
+                id="foodName"
+                placeholder="Food name e.g. Banana"
+                required
+            >
+
+            <input
+                class="input"
+                id="foodCalories"
+                type="number"
+                min="1"
+                placeholder="Calories"
+                required
+            >
+
+            <button class="primary-btn" type="submit">
+                Add Food
+            </button>
+
+        </form>
+
+        <div id="foodList"></div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ACHIEVEMENTS ================= -->
+
+<section class="section" id="achievements">
+
+    <div class="card-title">
+        <h3>Your Achievements 🏆</h3>
+        <span>Keep going!</span>
+    </div>
+
+    <div class="achievement-grid">
+
+        <div class="card achievement">
+            <div class="badge">🏃</div>
+            <h3>First Workout</h3>
+            <p>Complete your first workout</p>
+        </div>
+
+        <div class="card achievement locked" id="achievementStreak">
+            <div class="badge">🔥</div>
+            <h3>7 Day Streak</h3>
+            <p>Stay active for 7 days</p>
+        </div>
+
+        <div class="card achievement locked" id="achievementWater">
+            <div class="badge">💧</div>
+            <h3>Hydration Hero</h3>
+            <p>Drink 2.5L of water</p>
+        </div>
+
+        <div class="card achievement" id="achievementSteps">
+            <div class="badge">👟</div>
+            <h3>10K Steps</h3>
+            <p>Reach 10,000 steps</p>
+        </div>
+
+        <div class="card achievement">
+            <div class="badge">💪</div>
+            <h3>Fitness Beginner</h3>
+            <p>Start your fitness journey</p>
+        </div>
+
+        <div class="card achievement locked">
+            <div class="badge">🏆</div>
+            <h3>Weekly Champion</h3>
+            <p>Reach all weekly goals</p>
+        </div>
+
+    </div>
+
+    <br>
+
+    <div class="card streak-card">
+
+        <small style="color:var(--muted)">CURRENT STREAK</small>
+
+        <div class="streak-number">
+            🔥 <span id="streakNumber">5</span>
+        </div>
+
+        <p style="color:var(--muted)">
+            days in a row
+        </p>
+
+        <div class="week" id="week"></div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= PROFILE ================= -->
+
+<section class="section" id="profile">
+
+    <div class="card profile">
+
+        <div class="profile-header">
+
+            <div class="big-avatar" id="bigAvatar">R</div>
+
+            <div class="profile-info">
+                <h2 id="profileName">Rahul</h2>
+                <p id="profileLevel">Fitness Beginner</p>
+            </div>
+
+        </div>
+
+        <div class="profile-details">
+
+            <div class="detail">
+                <span>WEIGHT</span>
+                <strong id="profileWeight">68 kg</strong>
+            </div>
+
+            <div class="detail">
+                <span>HEIGHT</span>
+                <strong id="profileHeight">175 cm</strong>
+            </div>
+
+            <div class="detail">
+                <span>WEEKLY GOAL</span>
+                <strong>5 Workouts</strong>
+            </div>
+
+            <div class="detail">
+                <span>FITNESS LEVEL</span>
+                <strong>Beginner</strong>
+            </div>
+
+        </div>
+
+        <button
+            class="primary-btn"
+            id="editProfileBtn"
+            style="margin-top:20px"
+        >
+            ✏️ Edit Profile
+        </button>
+
+    </div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<!-- ================= MOBILE NAV ================= -->
+
+<nav class="mobile-nav">
+
+    <button class="active" data-section="dashboard">🏠</button>
+    <button data-section="workouts">🏋️</button>
+    <button data-section="activity">👟</button>
+    <button data-section="hydration">💧</button>
+    <button data-section="calories">🔥</button>
+    <button data-section="achievements">🏆</button>
+    <button data-section="profile">👤</button>
+
+</nav>
+
+
+<!-- ================= PROFILE MODAL ================= -->
+
+<div class="modal" id="profileModal">
+
+    <div class="modal-box">
+
+        <h2>Edit Profile</h2>
+
+        <div class="form-group">
+            <label>Name</label>
+            <input class="input" id="nameInput" value="Rahul">
+        </div>
+
+        <div class="form-group">
+            <label>Weight (kg)</label>
+            <input class="input" id="weightInput" type="number" value="68">
+        </div>
+
+        <div class="form-group">
+            <label>Height (cm)</label>
+            <input class="input" id="heightInput" type="number" value="175">
+        </div>
+
+        <div class="modal-actions">
+
+            <button class="cancel" id="closeProfile">
+                Cancel
+            </button>
+
+            <button class="save" id="saveProfile">
+                Save Changes
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= GOALS MODAL ================= -->
+
+<div class="modal" id="goalsModal">
+
+    <div class="modal-box">
+
+        <h2>Edit Daily Goals</h2>
+
+        <div class="form-group">
+            <label>Step Goal</label>
+            <input class="input" id="stepGoalInput" type="number" min="1000">
+        </div>
+
+        <div class="form-group">
+            <label>Calorie Goal</label>
+            <input class="input" id="calGoalInput" type="number" min="100">
+        </div>
+
+        <div class="form-group">
+            <label>Water Goal (ml)</label>
+            <input class="input" id="waterGoalInput" type="number" min="500">
+        </div>
+
+        <div class="modal-actions">
+
+            <button class="cancel" id="closeGoals">
+                Cancel
+            </button>
+
+            <button class="save" id="saveGoals">
+                Save Goals
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= TOAST ================= -->
+
+<div class="toast" id="toast">
+    <span id="toastText">Done!</span>
+</div>
+
+
+<script>
+
+/* =========================================
+   FITNESS TRACKER APP
+   Vanilla JavaScript + LocalStorage
+========================================= */
+
+
+/* ---------- APP STATE ---------- */
+
+let data = JSON.parse(localStorage.getItem("fitPulseData")) || {
+
+    name: "Rahul",
+
+    weight: 68,
+
+    height: 175,
+
+    steps: 6420,
+
+    caloriesBurned: 480,
+
+    caloriesConsumed: 1240,
+
+    water: 1700,
+
+    glasses: 7,
+
+    goals: {
+        steps: 10000,
+        calories: 750,
+        water: 2500
+    },
+
+    workouts: [],
+
+    streak: 5,
+
+    completedDays: [true,true,true,true,true,false,false],
+
+    foods: [
+        {name:"Oatmeal", calories:320},
+        {name:"Banana", calories:105},
+        {name:"Chicken Rice", calories:520},
+        {name:"Protein Shake", calories:295}
+    ]
+
+};
+
+
+/* ---------- SAVE DATA ---------- */
+
+function saveData(){
+
+    localStorage.setItem(
+        "fitPulseData",
+        JSON.stringify(data)
+    );
+
+}
+
+
+/* ---------- SELECTORS ---------- */
+
+const $ = selector => document.querySelector(selector);
+
+const $$ = selector => document.querySelectorAll(selector);
+
+
+/* ---------- TOAST ---------- */
+
+let toastTimer;
+
+function showToast(message){
+
+    $("#toastText").textContent = message;
+
+    $("#toast").classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer = setTimeout(() => {
+
+        $("#toast").classList.remove("show");
+
+    },2500);
+
+}
+
+
+/* ---------- NAVIGATION ---------- */
+
+$$("[data-section]").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        const section = button.dataset.section;
+
+        $$(".section").forEach(s => {
+            s.classList.remove("active");
+        });
+
+        $("#" + section).classList.add("active");
+
+        $$(".nav button,.mobile-nav button").forEach(b => {
+            b.classList.toggle(
+                "active",
+                b.dataset.section === section
+            );
+        });
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+    });
+
+});
+
+
+/* ---------- DATE ---------- */
+
+const today = new Date();
+
+$("#dateText").textContent =
+    today.toLocaleDateString("en-US",{
+        weekday:"long",
+        month:"long",
+        day:"numeric"
+    });
+
+
+/* ---------- RENDER DASHBOARD ---------- */
+
+function render(){
+
+    const stepPercent = Math.min(
+        100,
+        Math.round(
+            (data.steps / data.goals.steps) * 100
+        )
+    );
+
+    const waterPercent = Math.min(
+        100,
+        Math.round(
+            (data.water / data.goals.water) * 100
+        )
+    );
+
+    const calPercent = Math.min(
+        100,
+        Math.round(
+            (data.caloriesBurned / data.goals.calories) * 100
+        )
+    );
+
+
+    /* Profile */
+
+    $("#helloName").textContent = data.name;
+
+    $("#miniName").textContent = data.name;
+
+    $("#profileName").textContent = data.name;
+
+    $("#profileWeight").textContent =
+        data.weight + " kg";
+
+    $("#profileHeight").textContent =
+        data.height + " cm";
+
+    const firstLetter =
+        data.name.charAt(0).toUpperCase();
+
+    $("#miniAvatar").textContent = firstLetter;
+
+    $("#bigAvatar").textContent = firstLetter;
+
+
+    /* Steps */
+
+    $("#statSteps").textContent =
+        data.steps.toLocaleString();
+
+    $("#ringSteps").textContent =
+        data.steps.toLocaleString();
+
+    $("#heroSteps").textContent =
+        `${data.steps.toLocaleString()} / ${data.goals.steps.toLocaleString()} steps`;
+
+    $("#stepsGoalText").textContent =
+        `${data.steps.toLocaleString()} / ${data.goals.steps.toLocaleString()}`;
+
+    $("#stepsBar").style.width =
+        stepPercent + "%";
+
+    $("#heroProgress").style.width =
+        stepPercent + "%";
+
+    $("#heroPercent").textContent =
+        stepPercent + "% completed";
+
+    $("#ringPercent").textContent =
+        stepPercent + "%";
+
+    $("#goalRing").style.background =
+        `conic-gradient(var(--green) 0 ${stepPercent}%, rgba(255,255,255,.07) ${stepPercent}% 100%)`;
+
+
+    /* Calories */
+
+    $("#statCalories").textContent =
+        data.caloriesBurned;
+
+    $("#calBar").style.width =
+        calPercent + "%";
+
+    $("#calGoalText").textContent =
+        `${data.caloriesBurned} / ${data.goals.calories} kcal`;
+
+    $("#consumedCalories").textContent =
+        data.caloriesConsumed.toLocaleString();
+
+    $("#burnedCalories").textContent =
+        data.caloriesBurned.toLocaleString();
+
+    $("#remainingCalories").textContent =
+        Math.max(
+            0,
+            data.caloriesConsumed -
+            data.caloriesBurned
+        ).toLocaleString();
+
+
+    /* Water */
+
+    $("#waterValue").textContent =
+        (data.water / 1000).toFixed(2) + "L";
+
+    $("#glassCount").textContent =
+        data.glasses;
+
+    $("#waterGoalText").textContent =
+        `${(data.water/1000).toFixed(1)} / ${(data.goals.water/1000).toFixed(1)} L`;
+
+    $("#waterBar").style.width =
+        waterPercent + "%";
+
+    $("#waterCircle").style.background =
+        `conic-gradient(var(--blue) 0 ${waterPercent}%, rgba(255,255,255,.06) ${waterPercent}% 100%)`;
+
+
+    /* Motivation */
+
+    if(stepPercent >= 100){
+
+        $("#motivation").textContent =
+            "🏆 Goal completed! Amazing work today.";
+
+    }else if(stepPercent >= 75){
+
+        $("#motivation").textContent =
+            "🔥 You're almost there! Finish strong.";
+
+    }else if(stepPercent >= 50){
+
+        $("#motivation").textContent =
+            "💪 You're halfway there. Keep moving!";
+
+    }else{
+
+        $("#motivation").textContent =
+            "🌱 Every step counts. Let's get moving!";
+
+    }
+
+
+    renderFoods();
+
+    renderWeek();
+
+    renderChart();
+
+    checkAchievements();
+
+}
+
+
+/* ---------- CHART ---------- */
+
+const weeklyData = [
+    {day:"Mon",steps:7840},
+    {day:"Tue",steps:6420},
+    {day:"Wed",steps:9200},
+    {day:"Thu",steps:7100},
+    {day:"Fri",steps:8600},
+    {day:"Sat",steps:5400},
+    {day:"Sun",steps:3200}
+];
+
+function createChart(containerId,infoId){
+
+    const container = $(containerId);
+
+    container.innerHTML = "";
+
+    const max = 10000;
+
+    weeklyData.forEach((item,index) => {
+
+        const wrap = document.createElement("div");
+
+        wrap.className = "bar-wrap";
+
+        const bar = document.createElement("div");
+
+        bar.className = "bar";
+
+        bar.style.height =
+            Math.max(
+                10,
+                (item.steps / max) * 85
+            ) + "%";
+
+        const label =
+            document.createElement("span");
+
+        label.textContent = item.day;
+
+        wrap.appendChild(bar);
+
+        wrap.appendChild(label);
+
+        wrap.addEventListener("click",() => {
+
+            $(infoId).textContent =
+                `${item.day} • ${item.steps.toLocaleString()} steps • ${Math.round(item.steps/150)} active minutes`;
+
+        });
+
+        container.appendChild(wrap);
+
+    });
+
+}
+
+
+function renderChart(){
+
+    createChart(
+        "#chart",
+        "#activityInfo"
+    );
+
+    createChart(
+        "#activityChart",
+        "#activityInfo2"
+    );
+
+}
+
+
+/* ---------- WATER ---------- */
+
+$("#addWater").addEventListener("click",() => {
+
+    data.water += 250;
+
+    data.glasses += 1;
+
+    saveData();
+
+    render();
+
+    showToast("💧 250ml water added!");
+
+    if(data.water >= data.goals.water){
+
+        showToast("🏆 Hydration goal completed!");
+
+    }
+
+});
+
+
+/* ---------- STEPS CONTROLS ---------- */
+
+$$("[data-action]").forEach(button => {
+
+    button.addEventListener("click",() => {
+
+        const action =
+            button.dataset.action;
+
+        if(action === "stepsUp"){
+
+            data.steps += 500;
+
+            showToast("👟 +500 steps added!");
+
+        }
+
+        if(action === "stepsDown"){
+
+            data.steps =
+                Math.max(0,data.steps - 500);
+
+        }
+
+        saveData();
+
+        render();
+
+    });
+
+});
+
+
+/* ---------- WORKOUT TIMER ---------- */
+
+let workoutInterval = null;
+
+let workoutSeconds = 0;
+
+let workoutRunning = false;
+
+let currentWorkout = "";
+
+$$(".start-workout").forEach(button => {
+
+    button.addEventListener("click",() => {
+
+        currentWorkout =
+            button.dataset.name;
+
+        workoutSeconds = 0;
+
+        workoutRunning = true;
+
+        $("#activeWorkoutName").textContent =
+            currentWorkout;
+
+        $("#timerCard").classList.add("show");
+
+        startTimer();
+
+        showToast(
+            `🏋️ ${currentWorkout} started!`
+        );
+
+        document
+            .querySelector("#workouts")
+            .scrollIntoView({
+                behavior:"smooth"
+            });
+
+    });
+
+});
+
+
+function startTimer(){
+
+    clearInterval(workoutInterval);
+
+    workoutInterval =
+        setInterval(() => {
+
+            if(!workoutRunning) return;
+
+            workoutSeconds++;
+
+            updateTimer();
+
+        },1000);
+
+}
+
+
+function updateTimer(){
+
+    const minutes =
+        Math.floor(workoutSeconds / 60)
+            .toString()
+            .padStart(2,"0");
+
+    const seconds =
+        (workoutSeconds % 60)
+            .toString()
+            .padStart(2,"0");
+
+    $("#timer").textContent =
+        `${minutes}:${seconds}`;
+
+    const calories =
+        Math.floor(workoutSeconds * 0.12);
+
+    $("#timerCalories").textContent =
+        calories;
+
+}
+
+
+$("#pauseBtn").addEventListener("click",() => {
+
+    workoutRunning = false;
+
+    $("#pauseBtn").style.display = "none";
+
+    $("#resumeBtn").style.display = "inline-block";
+
+    showToast("⏸ Workout paused");
+
+});
+
+
+$("#resumeBtn").addEventListener("click",() => {
+
+    workoutRunning = true;
+
+    $("#pauseBtn").style.display = "inline-block";
+
+    $("#resumeBtn").style.display = "none";
+
+    showToast("▶ Workout resumed");
+
+});
+
+
+$("#stopBtn").addEventListener("click",() => {
+
+    clearInterval(workoutInterval);
+
+    workoutRunning = false;
+
+    const calories =
+        Math.floor(workoutSeconds * 0.12);
+
+    data.caloriesBurned += calories;
+
+    data.workouts.push({
+        name:currentWorkout,
+        duration:workoutSeconds,
+        calories:calories,
+        date:new Date().toISOString()
+    });
+
+    data.streak += 1;
+
+    saveData();
+
+    $("#timerCard").classList.remove("show");
+
+    render();
+
+    showToast(
+        `🏆 Workout complete! +${calories} kcal`
+    );
+
+});
+
+
+/* ---------- FOOD ---------- */
+
+function renderFoods(){
+
+    const list = $("#foodList");
+
+    list.innerHTML = "";
+
+    data.foods.forEach((food,index) => {
+
+        const item =
+            document.createElement("div");
+
+        item.className = "food-item";
+
+        item.innerHTML = `
+            <strong>🍽️ ${escapeHTML(food.name)}</strong>
+            <span>${food.calories} kcal</span>
+        `;
+
+        list.appendChild(item);
+
+    });
+
+}
+
+
+$("#foodForm").addEventListener("submit",(e) => {
+
+    e.preventDefault();
+
+    const name =
+        $("#foodName").value.trim();
+
+    const calories =
+        Number($("#foodCalories").value);
+
+    if(!name || !Number.isFinite(calories) || calories <= 0){
+
+        showToast("⚠️ Enter valid food details");
+
+        return;
+
+    }
+
+    data.foods.push({
+        name,
+        calories
+    });
+
+    data.caloriesConsumed += calories;
+
+    $("#foodName").value = "";
+
+    $("#foodCalories").value = "";
+
+    saveData();
+
+    render();
+
+    showToast(
+        `🍽️ ${name} added!`
+    );
+
+});
+
+
+function escapeHTML(value){
+
+    return value
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
+
+
+/* ---------- WEEK ---------- */
+
+function renderWeek(){
+
+    const week = $("#week");
+
+    week.innerHTML = "";
+
+    const days =
+        ["M","T","W","T","F","S","S"];
+
+    data.completedDays.forEach(
+        (done,index) => {
+
+            const day =
+                document.createElement("button");
+
+            day.className =
+                "day" + (done ? " done" : "");
+
+            day.innerHTML = `
+                <small>${days[index]}</small>
+                <strong>${done ? "✓" : "○"}</strong>
+            `;
+
+            day.addEventListener("click",() => {
+
+                data.completedDays[index] =
+                    !data.completedDays[index];
+
+                saveData();
+
+                render();
+
+                showToast(
+                    data.completedDays[index]
+                    ? "🔥 Day completed!"
+                    : "Day marked incomplete"
+                );
+
+            });
+
+            week.appendChild(day);
+
+        }
+    );
+
+}
+
+
+/* ---------- ACHIEVEMENTS ---------- */
+
+function checkAchievements(){
+
+    if(data.water >= data.goals.water){
+
+        $("#achievementWater")
+            .classList.remove("locked");
+
+    }
+
+    if(data.streak >= 7){
+
+        $("#achievementStreak")
+            .classList.remove("locked");
+
+    }
+
+    if(data.steps >= 10000){
+
+        $("#achievementSteps")
+            .classList.remove("locked");
+
+    }
+
+}
+
+
+/* ---------- THEME ---------- */
+
+$("#themeBtn").addEventListener("click",() => {
+
+    document.body.classList.toggle("light");
+
+    const light =
+        document.body.classList.contains("light");
+
+    $("#themeBtn").textContent =
+        light ? "🌙" : "☀️";
+
+});
+
+
+/* ---------- PROFILE MODAL ---------- */
+
+$("#editProfileBtn").addEventListener(
+    "click",
+    () => {
+
+        $("#nameInput").value =
+            data.name;
+
+        $("#weightInput").value =
+            data.weight;
+
+        $("#heightInput").value =
+            data.height;
+
+        $("#profileModal")
+            .classList.add("show");
+
+    }
+);
+
+
+$("#closeProfile").addEventListener(
+    "click",
+    () => {
+
+        $("#profileModal")
+            .classList.remove("show");
+
+    }
+);
+
+
+$("#saveProfile").addEventListener(
+    "click",
+    () => {
+
+        const name =
+            $("#nameInput").value.trim();
+
+        const weight =
+            Number($("#weightInput").value);
+
+        const height =
+            Number($("#heightInput").value);
+
+        if(!name || weight <= 0 || height <= 0){
+
+            showToast("⚠️ Enter valid profile details");
+
+            return;
+
+        }
+
+        data.name = name;
+
+        data.weight = weight;
+
+        data.height = height;
+
+        saveData();
+
+        render();
+
+        $("#profileModal")
+            .classList.remove("show");
+
+        showToast("✅ Profile updated!");
+
+    }
+);
+
+
+/* ---------- GOALS MODAL ---------- */
+
+$("#editGoalsBtn").addEventListener(
+    "click",
+    () => {
+
+        $("#stepGoalInput").value =
+            data.goals.steps;
+
+        $("#calGoalInput").value =
+            data.goals.calories;
+
+        $("#waterGoalInput").value =
+            data.goals.water;
+
+        $("#goalsModal")
+            .classList.add("show");
+
+    }
+);
+
+
+$("#closeGoals").addEventListener(
+    "click",
+    () => {
+
+        $("#goalsModal")
+            .classList.remove("show");
+
+    }
+);
+
+
+$("#saveGoals").addEventListener(
+    "click",
+    () => {
+
+        const steps =
+            Number($("#stepGoalInput").value);
+
+        const calories =
+            Number($("#calGoalInput").value);
+
+        const water =
+            Number($("#waterGoalInput").value);
+
+        if(
+            steps < 1000 ||
+            calories < 100 ||
+            water < 500
+        ){
+
+            showToast("⚠️ Enter realistic goals");
+
+            return;
+
+        }
+
+        data.goals.steps = steps;
+
+        data.goals.calories = calories;
+
+        data.goals.water = water;
+
+        saveData();
+
+        render();
+
+        $("#goalsModal")
+            .classList.remove("show");
+
+        showToast("🎯 Goals updated!");
+
+    }
+);
+
+
+/* ---------- RESET DAY ---------- */
+
+$("#resetBtn").addEventListener("click",() => {
+
+    const confirmReset =
+        confirm(
+            "Reset today's fitness data?"
+        );
+
+    if(!confirmReset) return;
+
+    data.steps = 0;
+
+    data.caloriesBurned = 0;
+
+    data.water = 0;
+
+    data.glasses = 0;
+
+    saveData();
+
+    render();
+
+    showToast("↻ Today's data has been reset");
+
+});
+
+
+/* ---------- INITIALIZE ---------- */
+
+render();
+
+</script>
+
+</body>
+</html>
