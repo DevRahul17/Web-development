@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EstateHub — Real Estate Platform</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+}
+
+:root{
+    --bg:#f5f7fb;
+    --card:#ffffff;
+    --text:#172033;
+    --muted:#697386;
+    --primary:#5b5ce2;
+    --primary2:#7b61ff;
+    --border:#e6e8ef;
+    --shadow:0 15px 40px rgba(24,31,56,.08);
+}
+
+body.dark{
+    --bg:#0d111c;
+    --card:#151b2b;
+    --text:#f5f7ff;
+    --muted:#9da7ba;
+    --border:#283149;
+    --shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    transition:.3s;
+}
+
+/* NAVBAR */
+
+header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:rgba(255,255,255,.85);
+    backdrop-filter:blur(15px);
+    border-bottom:1px solid var(--border);
+}
+
+body.dark header{
+    background:rgba(13,17,28,.85);
+}
+
+.navbar{
+    max-width:1250px;
+    margin:auto;
+    height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 20px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:23px;
+    font-weight:800;
+}
+
+.logo span{
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    color:white;
+    width:40px;
+    height:40px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+}
+
+nav{
+    display:flex;
+    gap:30px;
+}
+
+nav a{
+    text-decoration:none;
+    color:var(--text);
+    font-weight:600;
+}
+
+.nav-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.icon-btn{
+    width:42px;
+    height:42px;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+    border-radius:12px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+/* HERO */
+
+.hero{
+    min-height:500px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:70px 20px;
+    background:
+    linear-gradient(rgba(15,18,35,.55),rgba(15,18,35,.7)),
+    url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=80")
+    center/cover;
+    color:white;
+}
+
+.hero-content{
+    max-width:900px;
+}
+
+.hero h1{
+    font-size:clamp(40px,6vw,70px);
+    line-height:1.05;
+    margin-bottom:20px;
+}
+
+.hero p{
+    font-size:19px;
+    color:#e8e9ef;
+    margin-bottom:35px;
+}
+
+.search-box{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:10px;
+    border-radius:18px;
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr auto;
+    gap:8px;
+    box-shadow:0 20px 50px rgba(0,0,0,.25);
+}
+
+.search-box input,
+.search-box select{
+    border:0;
+    outline:0;
+    padding:16px;
+    font-size:15px;
+    color:#333;
+    background:#f6f7fb;
+    border-radius:12px;
+}
+
+.search-btn{
+    border:0;
+    border-radius:12px;
+    padding:0 25px;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+}
+
+/* STATS */
+
+.stats{
+    max-width:1100px;
+    margin:-50px auto 60px;
+    position:relative;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+}
+
+.stat{
+    padding:25px;
+    text-align:center;
+    border-right:1px solid var(--border);
+}
+
+.stat:last-child{
+    border:0;
+}
+
+.stat h2{
+    color:var(--primary);
+    font-size:30px;
+}
+
+/* MAIN */
+
+.container{
+    max-width:1250px;
+    margin:auto;
+    padding:0 20px 80px;
+}
+
+.section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+    margin-bottom:25px;
+}
+
+.section-head h2{
+    font-size:32px;
+}
+
+.section-head p{
+    color:var(--muted);
+    margin-top:7px;
+}
+
+.results{
+    color:var(--muted);
+}
+
+/* FILTERS */
+
+.filters{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:30px;
+}
+
+.filter{
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+    padding:11px 16px;
+    border-radius:12px;
+    cursor:pointer;
+}
+
+.filter.active{
+    background:var(--primary);
+    color:white;
+    border-color:var(--primary);
+}
+
+/* GRID */
+
+.property-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+}
+
+.property{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    transition:.3s;
+    animation:fadeUp .5s ease;
+}
+
+.property:hover{
+    transform:translateY(-7px);
+}
+
+.image-wrap{
+    position:relative;
+    height:230px;
+    overflow:hidden;
+}
+
+.image-wrap img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:.5s;
+}
+
+.property:hover img{
+    transform:scale(1.06);
+}
+
+.badge{
+    position:absolute;
+    top:15px;
+    left:15px;
+    background:var(--primary);
+    color:white;
+    padding:7px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.heart{
+    position:absolute;
+    right:15px;
+    top:15px;
+    width:40px;
+    height:40px;
+    border:0;
+    border-radius:50%;
+    background:white;
+    cursor:pointer;
+    font-size:19px;
+}
+
+.heart.liked{
+    color:#ef476f;
+}
+
+.property-info{
+    padding:20px;
+}
+
+.property-info h3{
+    font-size:21px;
+    margin-bottom:7px;
+}
+
+.location{
+    color:var(--muted);
+    font-size:14px;
+    margin-bottom:16px;
+}
+
+.price{
+    font-size:22px;
+    font-weight:800;
+    color:var(--primary);
+}
+
+.price span{
+    font-size:13px;
+    color:var(--muted);
+    font-weight:500;
+}
+
+.features{
+    display:flex;
+    gap:15px;
+    color:var(--muted);
+    font-size:13px;
+    margin:15px 0;
+    flex-wrap:wrap;
+}
+
+.details-btn{
+    width:100%;
+    padding:12px;
+    border:0;
+    border-radius:11px;
+    background:var(--text);
+    color:var(--card);
+    cursor:pointer;
+    font-weight:700;
+}
+
+/* MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.7);
+    display:none;
+    place-items:center;
+    z-index:2000;
+    padding:20px;
+}
+
+.modal.show{
+    display:grid;
+}
+
+.modal-box{
+    width:min(850px,100%);
+    max-height:90vh;
+    overflow:auto;
+    background:var(--card);
+    border-radius:22px;
+    position:relative;
+    animation:scaleIn .3s;
+}
+
+.close{
+    position:absolute;
+    right:18px;
+    top:18px;
+    width:40px;
+    height:40px;
+    border:0;
+    border-radius:50%;
+    background:white;
+    cursor:pointer;
+    z-index:2;
+    font-size:20px;
+}
+
+.modal-image{
+    width:100%;
+    height:330px;
+    object-fit:cover;
+}
+
+.modal-content{
+    padding:30px;
+}
+
+.modal-content h2{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.modal-price{
+    font-size:26px;
+    color:var(--primary);
+    font-weight:800;
+    margin:15px 0;
+}
+
+.contact-btn{
+    margin-top:20px;
+    width:100%;
+    padding:15px;
+    border:0;
+    border-radius:12px;
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    color:white;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    padding:70px;
+    grid-column:1/-1;
+    color:var(--muted);
+}
+
+.empty div{
+    font-size:50px;
+    margin-bottom:10px;
+}
+
+/* FOOTER */
+
+footer{
+    background:#101522;
+    color:white;
+    padding:50px 20px;
+}
+
+.footer-inner{
+    max-width:1250px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1fr;
+    gap:40px;
+}
+
+footer h3{
+    margin-bottom:15px;
+}
+
+footer p,
+footer a{
+    color:#9da7ba;
+    text-decoration:none;
+    line-height:2;
+}
+
+.copy{
+    max-width:1250px;
+    margin:40px auto 0;
+    padding-top:20px;
+    border-top:1px solid #283149;
+    color:#788397;
+}
+
+/* ANIMATIONS */
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes scaleIn{
+    from{
+        opacity:0;
+        transform:scale(.9);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+    nav{
+        display:none;
+    }
+
+    .property-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .search-box{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .search-btn{
+        padding:15px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+        margin:30px 20px 50px;
+    }
+
+    .stat{
+        border-bottom:1px solid var(--border);
+    }
+
+    .footer-inner{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+@media(max-width:600px){
+    .hero{
+        min-height:600px;
+    }
+
+    .search-box{
+        grid-template-columns:1fr;
+    }
+
+    .property-grid{
+        grid-template-columns:1fr;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .section-head{
+        display:block;
+    }
+
+    .results{
+        margin-top:10px;
+    }
+
+    .footer-inner{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="navbar">
+
+        <div class="logo">
+            <span>⌂</span>
+            EstateHub
+        </div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#properties">Properties</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="nav-actions">
+            <button class="icon-btn" onclick="toggleTheme()">🌙</button>
+        </div>
+
+    </div>
+</header>
+
+
+<!-- HERO -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <h1>Find a place you'll love to live.</h1>
+
+        <p>
+            Discover beautiful homes, apartments and properties
+            in locations you'll love.
+        </p>
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search city or property..."
+            >
+
+            <select id="typeFilter">
+
+                <option value="all">Property Type</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Villa">Villa</option>
+                <option value="House">House</option>
+                <option value="Penthouse">Penthouse</option>
+
+            </select>
+
+            <select id="priceFilter">
+
+                <option value="all">Any Price</option>
+                <option value="1">Under $500K</option>
+                <option value="2">$500K - $1M</option>
+                <option value="3">Above $1M</option>
+
+            </select>
+
+            <button class="search-btn" onclick="filterProperties()">
+                Search
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- STATS -->
+
+<div class="stats">
+
+    <div class="stat">
+        <h2>2,450+</h2>
+        <p>Properties</p>
+    </div>
+
+    <div class="stat">
+        <h2>850+</h2>
+        <p>Happy Clients</p>
+    </div>
+
+    <div class="stat">
+        <h2>120+</h2>
+        <p>Locations</p>
+    </div>
+
+    <div class="stat">
+        <h2>98%</h2>
+        <p>Success Rate</p>
+    </div>
+
+</div>
+
+
+<!-- PROPERTIES -->
+
+<main class="container" id="properties">
+
+    <div class="section-head">
+
+        <div>
+            <h2>Featured Properties</h2>
+            <p>Explore some of our most popular listings.</p>
+        </div>
+
+        <div class="results" id="resultCount">
+            6 properties found
+        </div>
+
+    </div>
+
+
+    <div class="filters">
+
+        <button class="filter active" onclick="quickFilter('all',this)">
+            All
+        </button>
+
+        <button class="filter" onclick="quickFilter('Apartment',this)">
+            Apartments
+        </button>
+
+        <button class="filter" onclick="quickFilter('Villa',this)">
+            Villas
+        </button>
+
+        <button class="filter" onclick="quickFilter('House',this)">
+            Houses
+        </button>
+
+        <button class="filter" onclick="quickFilter('Penthouse',this)">
+            Penthouses
+        </button>
+
+        <button class="filter" onclick="resetFilters()">
+            Reset
+        </button>
+
+    </div>
+
+
+    <div class="property-grid" id="propertyGrid"></div>
+
+</main>
+
+
+<!-- MODAL -->
+
+<div class="modal" id="modal">
+
+    <div class="modal-box">
+
+        <button class="close" onclick="closeModal()">×</button>
+
+        <img id="modalImage" class="modal-image">
+
+        <div class="modal-content">
+
+            <h2 id="modalTitle"></h2>
+
+            <p class="location" id="modalLocation"></p>
+
+            <div class="modal-price" id="modalPrice"></div>
+
+            <p id="modalDescription"></p>
+
+            <div class="features" id="modalFeatures"></div>
+
+            <button class="contact-btn" onclick="contactAgent()">
+                📞 Contact Agent
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- FOOTER -->
+
+<footer id="contact">
+
+    <div class="footer-inner">
+
+        <div>
+            <h3>🏠 EstateHub</h3>
+            <p>
+                Find your dream property with our modern
+                real estate platform.
+            </p>
+        </div>
+
+        <div>
+            <h3>Company</h3>
+            <p><a href="#">About Us</a></p>
+            <p><a href="#">Our Team</a></p>
+            <p><a href="#">Careers</a></p>
+        </div>
+
+        <div>
+            <h3>Explore</h3>
+            <p><a href="#">Properties</a></p>
+            <p><a href="#">Locations</a></p>
+            <p><a href="#">Agents</a></p>
+        </div>
+
+        <div>
+            <h3>Contact</h3>
+            <p>📧 hello@estatehub.com</p>
+            <p>📞 +1 234 567 890</p>
+            <p>📍 New York, USA</p>
+        </div>
+
+    </div>
+
+    <div class="copy">
+        © 2026 EstateHub. All rights reserved.
+    </div>
+
+</footer>
+
+
+<script>
+
+const properties = [
+
+{
+    id:1,
+    title:"Modern Luxury Villa",
+    location:"Beverly Hills, California",
+    type:"Villa",
+    price:1250000,
+    beds:4,
+    baths:3,
+    area:"3,200 sq.ft",
+    image:"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1000&q=80",
+    description:"A stunning modern villa featuring spacious interiors, premium finishes, a private garden and beautiful city views."
+},
+
+{
+    id:2,
+    title:"Skyline Apartment",
+    location:"Manhattan, New York",
+    type:"Apartment",
+    price:750000,
+    beds:2,
+    baths:2,
+    area:"1,450 sq.ft",
+    image:"https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1000&q=80",
+    description:"Elegant city apartment with floor-to-ceiling windows, modern kitchen and spectacular Manhattan skyline views."
+},
+
+{
+    id:3,
+    title:"Family Dream House",
+    location:"Austin, Texas",
+    type:"House",
+    price:465000,
+    beds:3,
+    baths:2,
+    area:"2,100 sq.ft",
+    image:"https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1000&q=80",
+    description:"A comfortable family home in a peaceful neighborhood with a large backyard and modern interiors."
+},
+
+{
+    id:4,
+    title:"Ocean View Penthouse",
+    location:"Miami, Florida",
+    type:"Penthouse",
+    price:1850000,
+    beds:4,
+    baths:4,
+    area:"3,900 sq.ft",
+    image:"https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=1000&q=80",
+    description:"Premium penthouse offering panoramic ocean views, private terrace and luxury amenities."
+},
+
+{
+    id:5,
+    title:"Urban Garden Apartment",
+    location:"Seattle, Washington",
+    type:"Apartment",
+    price:520000,
+    beds:2,
+    baths:2,
+    area:"1,300 sq.ft",
+    image:"https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1000&q=80",
+    description:"Beautiful apartment with a private garden, stylish interiors and excellent access to city amenities."
+},
+
+{
+    id:6,
+    title:"Contemporary Family Villa",
+    location:"Denver, Colorado",
+    type:"Villa",
+    price:890000,
+    beds:5,
+    baths:3,
+    area:"3,000 sq.ft",
+    image:"https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1000&q=80",
+    description:"Spacious contemporary villa with five bedrooms, modern architecture and a large outdoor living area."
+}
+
+];
+
+
+const grid = document.getElementById("propertyGrid");
+const resultCount = document.getElementById("resultCount");
+
+
+function formatPrice(price){
+
+    return "$" + price.toLocaleString();
+
+}
+
+
+function renderProperties(list){
+
+    grid.innerHTML = "";
+
+    resultCount.textContent =
+        list.length + " properties found";
+
+
+    if(list.length === 0){
+
+        grid.innerHTML = `
+            <div class="empty">
+                <div>🏠</div>
+                <h3>No properties found</h3>
+                <p>Try changing your search or filters.</p>
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    list.forEach(property => {
+
+        const card = document.createElement("div");
+
+        card.className = "property";
+
+        card.innerHTML = `
+
+            <div class="image-wrap">
+
+                <img src="${property.image}" alt="${property.title}">
+
+                <span class="badge">
+                    ${property.type}
+                </span>
+
+                <button
+                    class="heart"
+                    onclick="toggleFavorite(this)"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+            <div class="property-info">
+
+                <h3>${property.title}</h3>
+
+                <div class="location">
+                    📍 ${property.location}
+                </div>
+
+                <div class="price">
+                    ${formatPrice(property.price)}
+                    <span> / total</span>
+                </div>
+
+                <div class="features">
+
+                    <span>🛏 ${property.beds} Beds</span>
+
+                    <span>🚿 ${property.baths} Baths</span>
+
+                    <span>📐 ${property.area}</span>
+
+                </div>
+
+                <button
+                    class="details-btn"
+                    onclick="showDetails(${property.id})"
+                >
+                    View Details
+                </button>
+
+            </div>
+        `;
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+
+function filterProperties(){
+
+    const search =
+        document.getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+    const type =
+        document.getElementById("typeFilter").value;
+
+    const price =
+        document.getElementById("priceFilter").value;
+
+
+    const filtered = properties.filter(property => {
+
+        const matchesSearch =
+            property.title.toLowerCase().includes(search) ||
+            property.location.toLowerCase().includes(search);
+
+        const matchesType =
+            type === "all" ||
+            property.type === type;
+
+        let matchesPrice = true;
+
+        if(price === "1"){
+            matchesPrice = property.price < 500000;
+        }
+
+        if(price === "2"){
+            matchesPrice =
+                property.price >= 500000 &&
+                property.price <= 1000000;
+        }
+
+        if(price === "3"){
+            matchesPrice =
+                property.price > 1000000;
+        }
+
+        return matchesSearch &&
+               matchesType &&
+               matchesPrice;
+
+    });
+
+
+    renderProperties(filtered);
+
+}
+
+
+function quickFilter(type,button){
+
+    document.querySelectorAll(".filter")
+        .forEach(btn => btn.classList.remove("active"));
+
+    button.classList.add("active");
+
+
+    document.getElementById("typeFilter").value = type;
+
+    filterProperties();
+
+}
+
+
+function resetFilters(){
+
+    document.getElementById("searchInput").value = "";
+
+    document.getElementById("typeFilter").value = "all";
+
+    document.getElementById("priceFilter").value = "all";
+
+    document.querySelectorAll(".filter")
+        .forEach(btn => btn.classList.remove("active"));
+
+    document.querySelector(".filter")
+        .classList.add("active");
+
+    renderProperties(properties);
+
+}
+
+
+function toggleFavorite(button){
+
+    button.classList.toggle("liked");
+
+    button.textContent =
+        button.classList.contains("liked")
+        ? "♥"
+        : "♡";
+
+}
+
+
+function showDetails(id){
+
+    const property =
+        properties.find(p => p.id === id);
+
+    document.getElementById("modalImage").src =
+        property.image;
+
+    document.getElementById("modalTitle").textContent =
+        property.title;
+
+    document.getElementById("modalLocation").textContent =
+        "📍 " + property.location;
+
+    document.getElementById("modalPrice").textContent =
+        formatPrice(property.price);
+
+    document.getElementById("modalDescription").textContent =
+        property.description;
+
+    document.getElementById("modalFeatures").innerHTML = `
+
+        <span>🛏 ${property.beds} Bedrooms</span>
+
+        <span>🚿 ${property.baths} Bathrooms</span>
+
+        <span>📐 ${property.area}</span>
+
+        <span>🏷️ ${property.type}</span>
+
+    `;
+
+    document.getElementById("modal")
+        .classList.add("show");
+
+}
+
+
+function closeModal(){
+
+    document.getElementById("modal")
+        .classList.remove("show");
+
+}
+
+
+function contactAgent(){
+
+    alert(
+        "Thanks for your interest! An agent will contact you shortly."
+    );
+
+}
+
+
+function toggleTheme(){
+
+    document.body.classList.toggle("dark");
+
+    const button =
+        document.querySelector(".icon-btn");
+
+    button.textContent =
+        document.body.classList.contains("dark")
+        ? "☀️"
+        : "🌙";
+
+}
+
+
+document.getElementById("searchInput")
+    .addEventListener("keypress", function(event){
+
+        if(event.key === "Enter"){
+            filterProperties();
+        }
+
+    });
+
+
+document.getElementById("modal")
+    .addEventListener("click", function(event){
+
+        if(event.target === this){
+            closeModal();
+        }
+
+    });
+
+
+renderProperties(properties);
+
+</script>
+
+</body>
+</html>
