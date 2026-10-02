@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Button Exercise</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #141e30, #243b55);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 420px;
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #222;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .question {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f4f6ff;
+            transform: translateX(4px);
+        }
+
+        .option input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 10px;
+            background: #667eea;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #4f5fd1;
+            transform: translateY(-2px);
+        }
+
+        #result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .correct {
+            color: green;
+        }
+
+        .wrong {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🎯 Radio Button Quiz</h1>
+
+        <p class="subtitle">
+            Select one option
+        </p>
+
+        <div class="question">
+            Which language is used to create the structure of a webpage?
+        </div>
+
+        <label class="option">
+            <input type="radio" name="language" value="HTML">
+            HTML
+        </label>
+
+        <label class="option">
+            <input type="radio" name="language" value="CSS">
+            CSS
+        </label>
+
+        <label class="option">
+            <input type="radio" name="language" value="JavaScript">
+            JavaScript
+        </label>
+
+        <label class="option">
+            <input type="radio" name="language" value="Python">
+            Python
+        </label>
+
+        <button onclick="checkAnswer()">
+            Check Answer
+        </button>
+
+        <div id="result"></div>
+
+    </div>
+
+    <script>
+        function checkAnswer() {
+
+            // Get selected radio button
+            const selected = document.querySelector(
+                'input[name="language"]:checked'
+            );
+
+            const result = document.getElementById("result");
+
+            // Check if user selected anything
+            if (!selected) {
+                result.innerHTML = "⚠️ Please select an option!";
+                result.className = "wrong";
+                return;
+            }
+
+            // Check answer
+            if (selected.value === "HTML") {
+                result.innerHTML = "✅ Correct Answer!";
+                result.className = "correct";
+            } else {
+                result.innerHTML = "❌ Wrong Answer! Try again.";
+                result.className = "wrong";
+            }
+        }
+    </script>
+
+</body>
+</html>
