@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supercar Showcase</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            color: white;
+            background:
+                radial-gradient(circle at 20% 20%, #222 0%, transparent 35%),
+                radial-gradient(circle at 80% 80%, #111 0%, transparent 40%),
+                #050505;
+            overflow-x: hidden;
+        }
+
+        /* Background Grid */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, .025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, .025) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            border-bottom: 1px solid rgba(255, 255, 255, .1);
+            backdrop-filter: blur(15px);
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: 3px;
+        }
+
+        .logo span {
+            color: #ff3b30;
+        }
+
+        nav button {
+            border: 1px solid rgba(255, 255, 255, .2);
+            background: rgba(255, 255, 255, .05);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        nav button:hover {
+            background: white;
+            color: black;
+        }
+
+        /* HERO */
+
+        .hero {
+            max-width: 1400px;
+            margin: auto;
+            padding: 55px 7% 30px;
+        }
+
+        .hero-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .small-title {
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-size: 13px;
+        }
+
+        .car-name {
+            font-size: clamp(45px, 7vw, 90px);
+            line-height: .9;
+            margin-top: 10px;
+            font-weight: 900;
+        }
+
+        .car-name span {
+            color: #ff3b30;
+        }
+
+        .price {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        /* CAR AREA */
+
+        .car-area {
+            min-height: 430px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .car {
+            width: min(850px, 90vw);
+            height: 280px;
+            position: relative;
+            transform: perspective(900px) rotateX(5deg);
+            transition: .6s;
+            filter: drop-shadow(0 35px 25px rgba(0, 0, 0, .8));
+        }
+
+        .car:hover {
+            transform: perspective(900px) rotateX(5deg) scale(1.03);
+        }
+
+        /* Car Body */
+
+        .car-body {
+            position: absolute;
+            width: 88%;
+            height: 125px;
+            left: 6%;
+            top: 85px;
+            background: var(--carColor, #e60000);
+            border-radius: 35px 75px 25px 25px;
+            transform: skewX(-8deg);
+            box-shadow:
+                inset 0 10px 20px rgba(255, 255, 255, .2),
+                inset 0 -15px 25px rgba(0, 0, 0, .5),
+                0 0 30px var(--carGlow, #e60000);
+        }
+
+        /* Roof */
+
+        .roof {
+            position: absolute;
+            width: 43%;
+            height: 100px;
+            left: 28%;
+            top: 15px;
+            background: linear-gradient(135deg, #222, #050505);
+            border-radius: 100px 120px 10px 10px;
+            border: 3px solid rgba(255, 255, 255, .15);
+            transform: skewX(-8deg);
+        }
+
+        /* Windows */
+
+        .window {
+            position: absolute;
+            width: 35%;
+            height: 58px;
+            left: 32%;
+            top: 28px;
+            background: linear-gradient(135deg, #162b3b, #020406);
+            border: 2px solid #555;
+            transform: skewX(-8deg);
+            border-radius: 40px 60px 5px 5px;
+        }
+
+        /* Headlights */
+
+        .light {
+            position: absolute;
+            width: 55px;
+            height: 22px;
+            background: white;
+            box-shadow: 0 0 30px white;
+            border-radius: 50%;
+            top: 112px;
+        }
+
+        .light.left {
+            left: 7%;
+        }
+
+        .light.right {
+            right: 7%;
+        }
+
+        /* Wheels */
+
+        .wheel {
+            position: absolute;
+            width: 85px;
+            height: 85px;
+            background: #050505;
+            border: 12px solid #202020;
+            border-radius: 50%;
+            bottom: 5px;
+            box-shadow: inset 0 0 0 7px #555;
+            animation: wheelSpin 1s linear infinite paused;
+        }
+
+        .wheel::after {
+            content: "";
+            position: absolute;
+            inset: 23px;
+            background: #999;
+            border-radius: 50%;
+        }
+
+        .wheel.front {
+            right: 12%;
+        }
+
+        .wheel.back {
+            left: 12%;
+        }
+
+        .car.driving .wheel {
+            animation-play-state: running;
+        }
+
+        @keyframes wheelSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* INFO CARDS */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, .055);
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 18px;
+            padding: 22px;
+            backdrop-filter: blur(15px);
+            transition: .3s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, .09);
+        }
+
+        .info-card small {
+            color: #888;
+        }
+
+        .info-card h2 {
+            margin-top: 8px;
+            font-size: 25px;
+        }
+
+        /* CONTROLS */
+
+        .controls {
+            margin-top: 25px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            padding: 13px 23px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, .15);
+            background: rgba(255, 255, 255, .06);
+            color: white;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .control-btn:hover,
+        .control-btn.active {
+            background: #ff3b30;
+            border-color: #ff3b30;
+            transform: translateY(-2px);
+        }
+
+        /* COLOR PICKER */
+
+        .color-panel {
+            margin-top: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: .2s;
+        }
+
+        .color:hover {
+            transform: scale(1.2);
+            border-color: white;
+        }
+
+        .red {
+            background: #e60000;
+        }
+
+        .blue {
+            background: #1264d8;
+        }
+
+        .green {
+            background: #0c9b60;
+        }
+
+        .yellow {
+            background: #e5b900;
+        }
+
+        .white {
+            background: #eee;
+        }
+
+        /* SPEED */
+
+        .speed-panel {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .speed-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .progress {
+            width: 100%;
+            height: 10px;
+            background: #222;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #ff3b30;
+            transition: width .2s;
+        }
+
+        /* MODAL */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .75);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-box {
+            width: min(500px, 90%);
+            padding: 30px;
+            border-radius: 25px;
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, .15);
+        }
+
+        .modal-box h2 {
+            margin-bottom: 20px;
+        }
+
+        .modal-box p {
+            color: #aaa;
+            line-height: 1.7;
+        }
+
+        .close {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            background: #ff3b30;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width: 800px) {
+
+            .hero-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .car-area {
+                min-height: 350px;
+                transform: scale(.8);
+            }
+        }
+
+        @media(max-width: 500px) {
+
+            nav {
+                padding: 0 5%;
+            }
+
+            .hero {
+                padding: 35px 5%;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .car-area {
+                transform: scale(.6);
+                min-height: 280px;
+                margin-left: -20px;
+                margin-right: -20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">VELOCITY<span>.</span></div>
+        <button onclick="openModal()">About Car</button>
+    </nav>
+
+    <section class="hero">
+
+        <div class="hero-top">
+            <div>
+                <div class="small-title">Premium Performance</div>
+                <h1 class="car-name" id="carName">
+                    APEX <span>X1</span>
+                </h1>
+            </div>
+
+            <div class="price" id="price">
+                $325,000
+            </div>
+        </div>
+
+        <!-- CAR -->
+
+        <div class="car-area">
+
+            <div class="car" id="car">
+
+                <div class="roof"></div>
+                <div class="window"></div>
+
+                <div class="car-body" id="carBody"></div>
+
+                <div class="light left"></div>
+                <div class="light right"></div>
+
+                <div class="wheel back"></div>
+                <div class="wheel front"></div>
+
+            </div>
+
+        </div>
+
+        <!-- CAR INFORMATION -->
+
+        <div class="info-grid">
+
+            <div class="info-card">
+                <small>ENGINE</small>
+                <h2 id="engine">4.0L V8</h2>
+            </div>
+
+            <div class="info-card">
+                <small>HORSEPOWER</small>
+                <h2 id="horsepower">720 HP</h2>
+            </div>
+
+            <div class="info-card">
+                <small>0-100 KM/H</small>
+                <h2 id="acceleration">2.9 sec</h2>
+            </div>
+
+            <div class="info-card">
+                <small>TOP SPEED</small>
+                <h2 id="topSpeed">340 KM/H</h2>
+            </div>
+
+        </div>
+
+        <!-- CONTROLS -->
+
+        <div class="controls">
+
+            <button class="control-btn active" onclick="selectCar(0)">
+                APEX X1
+            </button>
+
+            <button class="control-btn" onclick="selectCar(1)">
+                VORTEX GT
+            </button>
+
+            <button class="control-btn" onclick="selectCar(2)">
+                TITAN R
+            </button>
+
+            <button class="control-btn" onclick="driveCar()">
+                🏁 Launch
+            </button>
+
+        </div>
+
+        <!-- COLORS -->
+
+        <div class="color-panel">
+
+            <span>Paint:</span>
+
+            <div class="color red" onclick="changeColor('#e60000')"></div>
+            <div class="color blue" onclick="changeColor('#1264d8')"></div>
+            <div class="color green" onclick="changeColor('#0c9b60')"></div>
+            <div class="color yellow" onclick="changeColor('#e5b900')"></div>
+            <div class="color white" onclick="changeColor('#eeeeee')"></div>
+
+        </div>
+
+        <!-- SPEED -->
+
+        <div class="speed-panel">
+
+            <div class="speed-row">
+                <span>Launch Control</span>
+                <strong id="speed">0 KM/H</strong>
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar" id="speedBar"></div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MODAL -->
+
+    <div class="modal" id="modal">
+
+        <div class="modal-box">
+
+            <h2 id="modalTitle">APEX X1</h2>
+
+            <p id="modalText">
+                A futuristic high-performance supercar designed for
+                extreme acceleration, aerodynamic efficiency and
+                breathtaking performance.
+            </p>
+
+            <button class="close" onclick="closeModal()">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const cars = [
+
+            {
+                name: "APEX",
+                model: "X1",
+                price: "$325,000",
+                engine: "4.0L V8",
+                horsepower: "720 HP",
+                acceleration: "2.9 sec",
+                topSpeed: "340 KM/H"
+            },
+
+            {
+                name: "VORTEX",
+                model: "GT",
+                price: "$410,000",
+                engine: "5.2L V10",
+                horsepower: "820 HP",
+                acceleration: "2.5 sec",
+                topSpeed: "355 KM/H"
+            },
+
+            {
+                name: "TITAN",
+                model: "R",
+                price: "$520,000",
+                engine: "6.0L V12",
+                horsepower: "950 HP",
+                acceleration: "2.2 sec",
+                topSpeed: "390 KM/H"
+            }
+
+        ];
+
+        let currentCar = 0;
+
+
+        /* CHANGE CAR */
+
+        function selectCar(index) {
+
+            currentCar = index;
+
+            const car = cars[index];
+
+            document.getElementById("carName").innerHTML =
+                `${car.name} <span>${car.model}</span>`;
+
+            document.getElementById("price").textContent =
+                car.price;
+
+            document.getElementById("engine").textContent =
+                car.engine;
+
+            document.getElementById("horsepower").textContent =
+                car.horsepower;
+
+            document.getElementById("acceleration").textContent =
+                car.acceleration;
+
+            document.getElementById("topSpeed").textContent =
+                car.topSpeed;
+
+            document.getElementById("modalTitle").textContent =
+                `${car.name} ${car.model}`;
+
+            document.querySelectorAll(".control-btn")
+                .forEach(btn => btn.classList.remove("active"));
+
+            document.querySelectorAll(".control-btn")[index]
+                .classList.add("active");
+
+        }
+
+
+        /* CHANGE PAINT */
+
+        function changeColor(color) {
+
+            const body = document.getElementById("carBody");
+
+            body.style.setProperty("--carColor", color);
+            body.style.setProperty("--carGlow", color);
+
+        }
+
+
+        /* LAUNCH */
+
+        function driveCar() {
+
+            const car = document.getElementById("car");
+
+            car.classList.add("driving");
+
+            let speed = 0;
+
+            const maxSpeed =
+                parseInt(cars[currentCar].topSpeed);
+
+            const interval = setInterval(() => {
+
+                speed += Math.floor(Math.random() * 12) + 5;
+
+                if (speed >= maxSpeed) {
+
+                    speed = maxSpeed;
+
+                    clearInterval(interval);
+
+                    setTimeout(() => {
+                        car.classList.remove("driving");
+                    }, 1000);
+                }
+
+                document.getElementById("speed")
+                    .textContent = speed + " KM/H";
+
+                document.getElementById("speedBar")
+                    .style.width =
+                    (speed / maxSpeed * 100) + "%";
+
+            }, 100);
+
+        }
+
+
+        /* MODAL */
+
+        function openModal() {
+
+            document.getElementById("modal")
+                .style.display = "flex";
+
+        }
+
+        function closeModal() {
+
+            document.getElementById("modal")
+                .style.display = "none";
+
+        }
+
+
+        /* CLOSE MODAL WHEN CLICKING OUTSIDE */
+
+        document.getElementById("modal")
+            .addEventListener("click", function (e) {
+
+                if (e.target === this) {
+                    closeModal();
+                }
+
+            });
+
+    </script>
+
+</body>
+
+</html>
