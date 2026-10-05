@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developer Portfolio</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+    scroll-behavior:smooth;
+}
+
+:root{
+    --bg:#0b0f19;
+    --card:#121827;
+    --text:#ffffff;
+    --muted:#9ca3af;
+    --accent:#00e5ff;
+    --border:#263044;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    transition:.3s;
+}
+
+body.light{
+    --bg:#f5f7fb;
+    --card:#ffffff;
+    --text:#111827;
+    --muted:#64748b;
+    --border:#dbe1ea;
+}
+
+/* NAVBAR */
+
+nav{
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index:100;
+    padding:18px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(11,15,25,.85);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+}
+
+.logo{
+    font-size:25px;
+    font-weight:bold;
+    color:var(--accent);
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:28px;
+}
+
+nav a{
+    color:var(--text);
+    text-decoration:none;
+    font-size:15px;
+}
+
+nav a:hover{
+    color:var(--accent);
+}
+
+#theme{
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+    padding:8px 12px;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+/* HERO */
+
+.hero{
+    min-height:100vh;
+    padding:150px 8% 80px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:50px;
+}
+
+.hero-text{
+    max-width:650px;
+}
+
+.hero h4{
+    color:var(--accent);
+    margin-bottom:15px;
+}
+
+.hero h1{
+    font-size:clamp(45px,7vw,80px);
+    line-height:1;
+    margin-bottom:20px;
+}
+
+.hero h1 span{
+    color:var(--accent);
+}
+
+.hero p{
+    color:var(--muted);
+    line-height:1.7;
+    font-size:18px;
+    margin-bottom:30px;
+}
+
+.typing{
+    color:var(--accent);
+}
+
+.btn{
+    display:inline-block;
+    padding:13px 25px;
+    background:var(--accent);
+    color:#001014;
+    text-decoration:none;
+    font-weight:bold;
+    border-radius:8px;
+    margin-right:10px;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 30px rgba(0,229,255,.25);
+}
+
+.btn.outline{
+    background:transparent;
+    color:var(--text);
+    border:1px solid var(--border);
+}
+
+/* HERO CARD */
+
+.profile-card{
+    width:320px;
+    height:320px;
+    border-radius:30px;
+    background:linear-gradient(135deg,#111827,#172033);
+    border:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 0 70px rgba(0,229,255,.1);
+    animation:float 4s ease-in-out infinite;
+}
+
+.profile-card div{
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background:var(--accent);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:70px;
+}
+
+@keyframes float{
+    50%{
+        transform:translateY(-15px);
+    }
+}
+
+/* SECTIONS */
+
+section{
+    padding:90px 8%;
+}
+
+.title{
+    text-align:center;
+    margin-bottom:50px;
+}
+
+.title h2{
+    font-size:40px;
+}
+
+.title p{
+    color:var(--muted);
+    margin-top:10px;
+}
+
+/* SKILLS */
+
+.skills{
+    max-width:800px;
+    margin:auto;
+}
+
+.skill{
+    margin-bottom:25px;
+}
+
+.skill-info{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:8px;
+}
+
+.skill-info span:last-child{
+    color:var(--accent);
+}
+
+.bar{
+    height:10px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress{
+    height:100%;
+    width:0;
+    background:var(--accent);
+    border-radius:20px;
+    transition:1.5s;
+}
+
+/* PROJECTS */
+
+.projects{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+}
+
+.project{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:25px;
+    transition:.3s;
+}
+
+.project:hover{
+    transform:translateY(-8px);
+    border-color:var(--accent);
+}
+
+.project-icon{
+    font-size:40px;
+    margin-bottom:20px;
+}
+
+.project h3{
+    margin-bottom:10px;
+}
+
+.project p{
+    color:var(--muted);
+    line-height:1.6;
+    margin-bottom:20px;
+}
+
+.project button{
+    padding:9px 15px;
+    border:1px solid var(--accent);
+    background:transparent;
+    color:var(--accent);
+    border-radius:6px;
+    cursor:pointer;
+}
+
+/* CONTACT */
+
+.contact{
+    text-align:center;
+    background:var(--card);
+}
+
+.contact p{
+    color:var(--muted);
+    margin:15px auto 25px;
+    max-width:550px;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    color:var(--muted);
+    border-top:1px solid var(--border);
+}
+
+/* MOBILE */
+
+@media(max-width:800px){
+
+    nav ul{
+        display:none;
+    }
+
+    .hero{
+        flex-direction:column;
+        text-align:center;
+        padding-top:130px;
+    }
+
+    .profile-card{
+        width:250px;
+        height:250px;
+    }
+
+    .projects{
+        grid-template-columns:1fr;
+    }
+
+    section{
+        padding:70px 6%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">&lt;Dev/&gt;</div>
+
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <button id="theme">🌙</button>
+</nav>
+
+
+<!-- HERO -->
+
+<section class="hero" id="home">
+
+    <div class="hero-text">
+
+        <h4>HELLO, I'M</h4>
+
+        <h1>
+            Rahul <span>Kumar</span>
+        </h1>
+
+        <h2>
+            I'm a <span class="typing"></span>
+        </h2>
+
+        <p>
+            I build modern, responsive and interactive websites
+            using HTML, CSS and JavaScript.
+        </p>
+
+        <a href="#projects" class="btn">View Projects</a>
+
+        <a href="#contact" class="btn outline">Contact Me</a>
+
+    </div>
+
+    <div class="profile-card">
+        <div>👨‍💻</div>
+    </div>
+
+</section>
+
+
+<!-- SKILLS -->
+
+<section id="skills">
+
+    <div class="title">
+        <h2>My Skills</h2>
+        <p>Technologies I am practicing</p>
+    </div>
+
+    <div class="skills">
+
+        <div class="skill">
+            <div class="skill-info">
+                <span>HTML</span>
+                <span>90%</span>
+            </div>
+
+            <div class="bar">
+                <div class="progress" data-width="90%"></div>
+            </div>
+        </div>
+
+
+        <div class="skill">
+            <div class="skill-info">
+                <span>CSS</span>
+                <span>85%</span>
+            </div>
+
+            <div class="bar">
+                <div class="progress" data-width="85%"></div>
+            </div>
+        </div>
+
+
+        <div class="skill">
+            <div class="skill-info">
+                <span>JavaScript</span>
+                <span>75%</span>
+            </div>
+
+            <div class="bar">
+                <div class="progress" data-width="75%"></div>
+            </div>
+        </div>
+
+
+        <div class="skill">
+            <div class="skill-info">
+                <span>Java</span>
+                <span>70%</span>
+            </div>
+
+            <div class="bar">
+                <div class="progress" data-width="70%"></div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PROJECTS -->
+
+<section id="projects">
+
+    <div class="title">
+        <h2>Featured Projects</h2>
+        <p>Some things I've built</p>
+    </div>
+
+    <div class="projects">
+
+        <div class="project">
+            <div class="project-icon">🎵</div>
+
+            <h3>Music Player</h3>
+
+            <p>
+                A modern music player with playlist,
+                controls and animated interface.
+            </p>
+
+            <button onclick="showProject('Music Player')">
+                View Project
+            </button>
+        </div>
+
+
+        <div class="project">
+            <div class="project-icon">🌌</div>
+
+            <h3>Solar Explorer</h3>
+
+            <p>
+                Interactive solar system experience
+                built with CSS animations and JavaScript.
+            </p>
+
+            <button onclick="showProject('Solar Explorer')">
+                View Project
+            </button>
+        </div>
+
+
+        <div class="project">
+            <div class="project-icon">🏋️</div>
+
+            <h3>Fitness Tracker</h3>
+
+            <p>
+                A responsive fitness dashboard showing
+                workouts, calories and progress.
+            </p>
+
+            <button onclick="showProject('Fitness Tracker')">
+                View Project
+            </button>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CONTACT -->
+
+<section class="contact" id="contact">
+
+    <div class="title">
+        <h2>Let's Build Something</h2>
+
+        <p>
+            Have an idea for a project?
+            Let's turn it into reality.
+        </p>
+
+        <button class="btn" onclick="contactMe()">
+            Say Hello 👋
+        </button>
+    </div>
+
+</section>
+
+
+<footer>
+    © 2026 Rahul Kumar • Built with HTML, CSS & JavaScript
+</footer>
+
+
+<script>
+
+/* TYPING ANIMATION */
+
+const words = [
+    "Frontend Developer",
+    "Java Developer",
+    "Software Developer",
+    "Full Stack Developer"
+];
+
+let wordIndex = 0;
+let charIndex = 0;
+let deleting = false;
+
+const typing = document.querySelector(".typing");
+
+function typeEffect(){
+
+    const word = words[wordIndex];
+
+    if(!deleting){
+
+        typing.textContent = word.substring(0,charIndex++);
+
+        if(charIndex > word.length){
+
+            deleting = true;
+
+            setTimeout(typeEffect,1200);
+
+            return;
+        }
+
+    }else{
+
+        typing.textContent = word.substring(0,charIndex--);
+
+        if(charIndex === 0){
+
+            deleting = false;
+
+            wordIndex++;
+
+            if(wordIndex >= words.length){
+                wordIndex = 0;
+            }
+        }
+    }
+
+    setTimeout(typeEffect,deleting ? 50 : 100);
+}
+
+typeEffect();
+
+
+/* DARK / LIGHT MODE */
+
+const theme = document.getElementById("theme");
+
+theme.addEventListener("click",()=>{
+
+    document.body.classList.toggle("light");
+
+    if(document.body.classList.contains("light")){
+        theme.textContent = "☀️";
+    }else{
+        theme.textContent = "🌙";
+    }
+
+});
+
+
+/* SKILL ANIMATION */
+
+const progressBars = document.querySelectorAll(".progress");
+
+window.addEventListener("scroll",()=>{
+
+    const skillsSection =
+        document.querySelector("#skills");
+
+    const position =
+        skillsSection.getBoundingClientRect().top;
+
+    if(position < window.innerHeight - 100){
+
+        progressBars.forEach(bar=>{
+            bar.style.width = bar.dataset.width;
+        });
+
+    }
+
+});
+
+
+/* PROJECT BUTTON */
+
+function showProject(name){
+
+    alert(
+        "🚀 " + name +
+        " project selected!\n\nYou can connect this button to your project page."
+    );
+
+}
+
+
+/* CONTACT BUTTON */
+
+function contactMe(){
+
+    alert(
+        "👋 Thanks for reaching out!\n\n" +
+        "You can add your email or social links here."
+    );
+
+}
+
+</script>
+
+</body>
+</html>
