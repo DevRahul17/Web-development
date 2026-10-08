@@ -1,0 +1,1009 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Banking Dashboard</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #0b1220;
+    color: #fff;
+    min-height: 100vh;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 240px;
+    background: #111a2e;
+    padding: 25px 18px;
+    border-right: 1px solid #24304a;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    color: #5ee7df;
+}
+
+.logo span {
+    color: #fff;
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.nav button {
+    background: transparent;
+    border: none;
+    color: #aeb9cc;
+    padding: 13px;
+    text-align: left;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.nav button:hover,
+.nav button.active {
+    background: #1c2a45;
+    color: #5ee7df;
+}
+
+/* MAIN */
+
+.main {
+    flex: 1;
+    padding: 30px;
+    overflow-x: hidden;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 30px;
+}
+
+.header p {
+    color: #8d9ab0;
+    margin-top: 6px;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #5ee7df, #3b82f6);
+    display: grid;
+    place-items: center;
+    color: #07111f;
+    font-weight: bold;
+}
+
+/* BALANCE */
+
+.balance-card {
+    background: linear-gradient(135deg, #162c4b, #123c4b);
+    padding: 30px;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    position: relative;
+    overflow: hidden;
+}
+
+.balance-card::after {
+    content: "";
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(94, 231, 223, 0.08);
+    right: -70px;
+    top: -70px;
+}
+
+.balance-label {
+    color: #aab7ca;
+}
+
+.balance {
+    font-size: 42px;
+    margin: 10px 0 20px;
+}
+
+.card-number {
+    color: #8fa1b8;
+    letter-spacing: 2px;
+}
+
+.balance-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.action-btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.deposit {
+    background: #5ee7df;
+    color: #07111f;
+}
+
+.withdraw {
+    background: #263650;
+    color: white;
+}
+
+/* STATS */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: #111a2e;
+    border: 1px solid #24304a;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.stat-card p {
+    color: #8d9ab0;
+    margin-bottom: 8px;
+}
+
+.stat-card h2 {
+    font-size: 25px;
+}
+
+.income {
+    color: #4ade80;
+}
+
+.expense {
+    color: #fb7185;
+}
+
+/* CONTENT */
+
+.content {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 20px;
+}
+
+.panel {
+    background: #111a2e;
+    border: 1px solid #24304a;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.panel-header h2 {
+    font-size: 20px;
+}
+
+.search {
+    background: #1a263c;
+    border: 1px solid #2b3b59;
+    color: white;
+    padding: 9px 12px;
+    border-radius: 8px;
+    outline: none;
+}
+
+/* TRANSACTIONS */
+
+.transaction {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid #24304a;
+}
+
+.transaction:last-child {
+    border-bottom: none;
+}
+
+.transaction-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.transaction-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    background: #1d2b45;
+}
+
+.transaction-name {
+    font-weight: bold;
+}
+
+.transaction-date {
+    color: #7f8ca3;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.amount {
+    font-weight: bold;
+}
+
+.positive {
+    color: #4ade80;
+}
+
+.negative {
+    color: #fb7185;
+}
+
+.delete-btn {
+    margin-left: 10px;
+    background: transparent;
+    border: none;
+    color: #fb7185;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* CHART */
+
+.chart {
+    height: 230px;
+    display: flex;
+    align-items: end;
+    justify-content: space-around;
+    gap: 10px;
+    padding: 20px 5px;
+}
+
+.bar-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    gap: 8px;
+}
+
+.bar {
+    width: 30px;
+    border-radius: 6px 6px 0 0;
+    background: linear-gradient(to top, #3b82f6, #5ee7df);
+    transition: 0.4s;
+}
+
+.bar:hover {
+    transform: scaleY(1.05);
+    opacity: 0.8;
+}
+
+.day {
+    color: #77869e;
+    font-size: 12px;
+}
+
+/* MODAL */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.modal-box {
+    width: 360px;
+    background: #111a2e;
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid #2a3a57;
+}
+
+.modal-box h2 {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    color: #aeb9cc;
+    margin-bottom: 7px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 11px;
+    background: #1a263c;
+    border: 1px solid #2b3b59;
+    color: white;
+    border-radius: 8px;
+    outline: none;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.form-buttons button {
+    flex: 1;
+    padding: 11px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.add {
+    background: #5ee7df;
+}
+
+.cancel {
+    background: #263650;
+    color: white;
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 900px) {
+
+    .sidebar {
+        width: 75px;
+    }
+
+    .logo span,
+    .nav button span {
+        display: none;
+    }
+
+    .content {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 650px) {
+
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 12px;
+    }
+
+    .logo {
+        margin-bottom: 10px;
+    }
+
+    .nav {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .main {
+        padding: 18px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        gap: 10px;
+    }
+
+    .header h1 {
+        font-size: 23px;
+    }
+
+    .balance {
+        font-size: 34px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            💳 <span>FinBank</span>
+        </div>
+
+        <div class="nav">
+
+            <button class="active">
+                🏠 <span>Dashboard</span>
+            </button>
+
+            <button>
+                💳 <span>Cards</span>
+            </button>
+
+            <button>
+                📊 <span>Analytics</span>
+            </button>
+
+            <button>
+                💸 <span>Payments</span>
+            </button>
+
+            <button>
+                ⚙️ <span>Settings</span>
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <header class="header">
+
+            <div>
+                <h1>Good Evening, Rahul 👋</h1>
+                <p>Here's your financial overview</p>
+            </div>
+
+            <div class="profile">
+                <div class="avatar">RK</div>
+            </div>
+
+        </header>
+
+
+        <!-- BALANCE CARD -->
+
+        <section class="balance-card">
+
+            <div class="balance-label">
+                Available Balance
+            </div>
+
+            <div class="balance" id="balance">
+                ₹84,520.00
+            </div>
+
+            <div class="card-number">
+                •••• •••• •••• 4829
+            </div>
+
+            <div class="balance-actions">
+
+                <button class="action-btn deposit" onclick="openModal('Income')">
+                    + Deposit
+                </button>
+
+                <button class="action-btn withdraw" onclick="openModal('Expense')">
+                    − Withdraw
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- STATS -->
+
+        <section class="stats">
+
+            <div class="stat-card">
+                <p>Total Income</p>
+                <h2 class="income" id="income">
+                    ₹42,800
+                </h2>
+            </div>
+
+            <div class="stat-card">
+                <p>Total Expenses</p>
+                <h2 class="expense" id="expense">
+                    ₹18,250
+                </h2>
+            </div>
+
+            <div class="stat-card">
+                <p>Savings</p>
+                <h2 id="savings">
+                    ₹24,550
+                </h2>
+            </div>
+
+        </section>
+
+
+        <!-- CONTENT -->
+
+        <section class="content">
+
+            <!-- TRANSACTIONS -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h2>Recent Transactions</h2>
+
+                    <input
+                        class="search"
+                        id="search"
+                        type="text"
+                        placeholder="Search..."
+                        oninput="searchTransactions()"
+                    >
+
+                </div>
+
+                <div id="transactions"></div>
+
+            </div>
+
+
+            <!-- CHART -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+                    <h2>Weekly Spending</h2>
+                    <span>₹</span>
+                </div>
+
+                <div class="chart">
+
+                    <div class="bar-wrapper">
+                        <div class="bar" style="height: 45%;"></div>
+                        <span class="day">Mon</span>
+                    </div>
+
+                    <div class="bar-wrapper">
+                        <div class="bar" style="height: 65%;"></div>
+                        <span class="day">Tue</span>
+                    </div>
+
+                    <div class="bar-wrapper">
+                        <div class="bar" style="height: 35%;"></div>
+                        <span class="day">Wed</span>
+                    </div>
+
+                    <div class="bar-wrapper">
+                        <div class="bar" style="height: 80%;"></div>
+                        <span class="day">Thu</span>
+                    </div>
+
+                    <div class="bar-wrapper">
+                        <div class="bar" style="height: 55%;"></div>
+                        <span class="day">Fri</span>
+                    </div>
+
+                    <div class="bar-wrapper">
+                        <div class="bar" style="height: 90%;"></div>
+                        <span class="day">Sat</span>
+                    </div>
+
+                    <div class="bar-wrapper">
+                        <div class="bar" style="height: 40%;"></div>
+                        <span class="day">Sun</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- MODAL -->
+
+<div class="modal" id="modal">
+
+    <div class="modal-box">
+
+        <h2 id="modalTitle">Add Transaction</h2>
+
+        <div class="form-group">
+
+            <label>Transaction Name</label>
+
+            <input
+                type="text"
+                id="transactionName"
+                placeholder="e.g. Shopping"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Amount</label>
+
+            <input
+                type="number"
+                id="transactionAmount"
+                placeholder="Enter amount"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Type</label>
+
+            <select id="transactionType">
+                <option value="Expense">Expense</option>
+                <option value="Income">Income</option>
+            </select>
+
+        </div>
+
+        <div class="form-buttons">
+
+            <button class="add" onclick="addTransaction()">
+                Add Transaction
+            </button>
+
+            <button class="cancel" onclick="closeModal()">
+                Cancel
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let balance = 84520;
+
+let income = 42800;
+
+let expense = 18250;
+
+
+let transactions = [
+
+    {
+        name: "Salary",
+        amount: 35000,
+        type: "Income",
+        icon: "💰",
+        date: "Today"
+    },
+
+    {
+        name: "Amazon Shopping",
+        amount: 2499,
+        type: "Expense",
+        icon: "🛒",
+        date: "Yesterday"
+    },
+
+    {
+        name: "Electricity Bill",
+        amount: 1850,
+        type: "Expense",
+        icon: "💡",
+        date: "2 Oct"
+    },
+
+    {
+        name: "Freelance Payment",
+        amount: 7800,
+        type: "Income",
+        icon: "💻",
+        date: "1 Oct"
+    },
+
+    {
+        name: "Food & Restaurant",
+        amount: 650,
+        type: "Expense",
+        icon: "🍔",
+        date: "30 Sep"
+    }
+
+];
+
+
+const transactionContainer =
+    document.getElementById("transactions");
+
+
+function displayTransactions(list = transactions) {
+
+    transactionContainer.innerHTML = "";
+
+    list.forEach((transaction, index) => {
+
+        const div = document.createElement("div");
+
+        div.className = "transaction";
+
+        div.innerHTML = `
+
+            <div class="transaction-left">
+
+                <div class="transaction-icon">
+                    ${transaction.icon}
+                </div>
+
+                <div>
+
+                    <div class="transaction-name">
+                        ${transaction.name}
+                    </div>
+
+                    <div class="transaction-date">
+                        ${transaction.date}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div>
+
+                <span class="amount ${
+                    transaction.type === "Income"
+                    ? "positive"
+                    : "negative"
+                }">
+
+                    ${
+                        transaction.type === "Income"
+                        ? "+"
+                        : "-"
+                    }
+
+                    ₹${transaction.amount.toLocaleString()}
+
+                </span>
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteTransaction(${index})"
+                >
+                    ✕
+                </button>
+
+            </div>
+
+        `;
+
+        transactionContainer.appendChild(div);
+
+    });
+
+}
+
+
+function updateDashboard() {
+
+    document.getElementById("balance").textContent =
+        "₹" + balance.toLocaleString("en-IN", {
+            minimumFractionDigits: 2
+        });
+
+    document.getElementById("income").textContent =
+        "₹" + income.toLocaleString("en-IN");
+
+    document.getElementById("expense").textContent =
+        "₹" + expense.toLocaleString("en-IN");
+
+    document.getElementById("savings").textContent =
+        "₹" + (income - expense).toLocaleString("en-IN");
+
+}
+
+
+function openModal(type) {
+
+    document.getElementById("modal").style.display = "flex";
+
+    document.getElementById("transactionType").value = type;
+
+    document.getElementById("modalTitle").textContent =
+        type === "Income"
+        ? "Add Deposit"
+        : "Add Expense";
+
+}
+
+
+function closeModal() {
+
+    document.getElementById("modal").style.display = "none";
+
+    document.getElementById("transactionName").value = "";
+
+    document.getElementById("transactionAmount").value = "";
+
+}
+
+
+function addTransaction() {
+
+    const name =
+        document.getElementById("transactionName").value.trim();
+
+    const amount =
+        Number(document.getElementById("transactionAmount").value);
+
+    const type =
+        document.getElementById("transactionType").value;
+
+
+    if (!name || amount <= 0) {
+
+        alert("Please enter valid transaction details.");
+
+        return;
+
+    }
+
+
+    transactions.unshift({
+
+        name: name,
+
+        amount: amount,
+
+        type: type,
+
+        icon: type === "Income" ? "💰" : "💳",
+
+        date: "Just now"
+
+    });
+
+
+    if (type === "Income") {
+
+        income += amount;
+
+        balance += amount;
+
+    } else {
+
+        expense += amount;
+
+        balance -= amount;
+
+    }
+
+
+    updateDashboard();
+
+    displayTransactions();
+
+    closeModal();
+
+}
+
+
+function deleteTransaction(index) {
+
+    const transaction = transactions[index];
+
+    if (transaction.type === "Income") {
+
+        income -= transaction.amount;
+
+        balance -= transaction.amount;
+
+    } else {
+
+        expense -= transaction.amount;
+
+        balance += transaction.amount;
+
+    }
+
+
+    transactions.splice(index, 1);
+
+    updateDashboard();
+
+    displayTransactions();
+
+}
+
+
+function searchTransactions() {
+
+    const query =
+        document.getElementById("search").value.toLowerCase();
+
+    const filtered =
+        transactions.filter(transaction =>
+            transaction.name.toLowerCase().includes(query)
+        );
+
+    displayTransactions(filtered);
+
+}
+
+
+displayTransactions();
+
+updateDashboard();
+
+</script>
+
+</body>
+</html>
+```
