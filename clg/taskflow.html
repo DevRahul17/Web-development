@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaskFlow | Kanban Board</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #0b1120;
+    color: #e5e7eb;
+    min-height: 100vh;
+    padding: 30px;
+}
+
+.container {
+    max-width: 1250px;
+    margin: auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #a78bfa;
+}
+
+.subtitle {
+    color: #94a3b8;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.add-btn {
+    background: #7c3aed;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+button:hover {
+    filter: brightness(1.2);
+    transform: translateY(-1px);
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 28px;
+}
+
+.stat {
+    background: #151e30;
+    border: 1px solid #263248;
+    border-radius: 13px;
+    padding: 20px;
+}
+
+.stat p {
+    color: #94a3b8;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.stat h2 {
+    font-size: 28px;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+}
+
+.column {
+    background: #111a2b;
+    border: 1px solid #263248;
+    border-radius: 14px;
+    padding: 16px;
+    min-height: 350px;
+}
+
+.column.drag-over {
+    border-color: #a78bfa;
+    background: #192239;
+}
+
+.column-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.column-header h3 {
+    font-size: 15px;
+}
+
+.count {
+    background: #263248;
+    padding: 5px 9px;
+    border-radius: 7px;
+    font-size: 12px;
+}
+
+.task-list {
+    min-height: 260px;
+}
+
+.task {
+    background: #1b263a;
+    border: 1px solid #304058;
+    border-radius: 11px;
+    padding: 15px;
+    margin-bottom: 12px;
+    cursor: grab;
+    animation: appear 0.25s ease;
+}
+
+.task:active {
+    cursor: grabbing;
+}
+
+.task.dragging {
+    opacity: 0.35;
+}
+
+.task h4 {
+    font-size: 14px;
+    margin-bottom: 9px;
+    overflow-wrap: anywhere;
+}
+
+.task p {
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.priority {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 5px 8px;
+    border-radius: 5px;
+    margin-bottom: 12px;
+}
+
+.high {
+    background: #451b2b;
+    color: #fb7185;
+}
+
+.medium {
+    background: #45351a;
+    color: #fbbf24;
+}
+
+.low {
+    background: #153a35;
+    color: #5eead4;
+}
+
+.task-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    gap: 8px;
+}
+
+.task-footer small {
+    color: #64748b;
+    font-size: 11px;
+}
+
+.delete-btn {
+    color: #fb7185;
+    background: transparent;
+    font-size: 18px;
+    padding: 3px 7px;
+}
+
+.empty {
+    color: #64748b;
+    text-align: center;
+    font-size: 12px;
+    padding: 35px 5px;
+    border: 1px dashed #304058;
+    border-radius: 10px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000b;
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: #151e30;
+    border: 1px solid #304058;
+    width: 100%;
+    max-width: 430px;
+    padding: 25px;
+    border-radius: 16px;
+    animation: appear 0.2s ease;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    font-size: 21px;
+}
+
+label {
+    display: block;
+    color: #cbd5e1;
+    font-size: 13px;
+    margin: 14px 0 7px;
+}
+
+input, textarea, select {
+    width: 100%;
+    background: #0b1120;
+    color: white;
+    border: 1px solid #304058;
+    border-radius: 8px;
+    padding: 12px;
+    outline: none;
+    font: inherit;
+    font-size: 13px;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #a78bfa;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 85px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.form-actions button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.save-btn {
+    background: #7c3aed;
+    color: white;
+}
+
+.cancel-btn {
+    background: #263248;
+    color: white;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 850px) {
+    .board {
+        grid-template-columns: 1fr;
+    }
+
+    .column {
+        min-height: 220px;
+    }
+
+    .task-list {
+        min-height: 100px;
+    }
+}
+
+@media (max-width: 500px) {
+    body {
+        padding: 16px;
+    }
+
+    .stats {
+        gap: 8px;
+    }
+
+    .stat {
+        padding: 13px;
+    }
+
+    .stat h2 {
+        font-size: 22px;
+    }
+
+    .stat p {
+        font-size: 11px;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+    <header>
+        <div>
+            <div class="logo">✦ TaskFlow</div>
+            <p class="subtitle">Plan smarter. Get things done.</p>
+        </div>
+
+        <button class="add-btn" id="openModal">
+            + Add New Task
+        </button>
+    </header>
+
+    <section class="stats">
+        <div class="stat">
+            <p>Total Tasks</p>
+            <h2 id="totalCount">0</h2>
+        </div>
+        <div class="stat">
+            <p>In Progress</p>
+            <h2 id="progressCount">0</h2>
+        </div>
+        <div class="stat">
+            <p>Completed</p>
+            <h2 id="completedCount">0</h2>
+        </div>
+    </section>
+
+    <main class="board">
+
+        <section class="column" data-status="todo">
+            <div class="column-header">
+                <h3>📌 To Do</h3>
+                <span class="count" id="todoCount">0</span>
+            </div>
+            <div class="task-list" id="todoList"></div>
+        </section>
+
+        <section class="column" data-status="progress">
+            <div class="column-header">
+                <h3>⚡ In Progress</h3>
+                <span class="count" id="progressColumnCount">0</span>
+            </div>
+            <div class="task-list" id="progressList"></div>
+        </section>
+
+        <section class="column" data-status="done">
+            <div class="column-header">
+                <h3>✅ Completed</h3>
+                <span class="count" id="doneCount">0</span>
+            </div>
+            <div class="task-list" id="doneList"></div>
+        </section>
+
+    </main>
+</div>
+
+<!-- Add Task Modal -->
+<div class="modal" id="taskModal">
+    <div class="modal-content">
+        <h2>Create New Task</h2>
+
+        <form id="taskForm">
+            <label for="taskTitle">Task Title *</label>
+            <input id="taskTitle" type="text"
+                   placeholder="e.g. Build portfolio website"
+                   maxlength="100" required>
+
+            <label for="taskDescription">Description</label>
+            <textarea id="taskDescription"
+                      placeholder="What needs to be done?"
+                      maxlength="500"></textarea>
+
+            <label for="taskPriority">Priority</label>
+            <select id="taskPriority">
+                <option value="high">🔴 High</option>
+                <option value="medium" selected>🟡 Medium</option>
+                <option value="low">🟢 Low</option>
+            </select>
+
+            <label for="taskStatus">Move to column</label>
+            <select id="taskStatus">
+                <option value="todo">To Do</option>
+                <option value="progress">In Progress</option>
+                <option value="done">Completed</option>
+            </select>
+
+            <div class="form-actions">
+                <button type="button" class="cancel-btn"
+                        id="closeModal">Cancel</button>
+                <button type="submit" class="save-btn">
+                    Create Task
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+const columns = {
+    todo: document.getElementById("todoList"),
+    progress: document.getElementById("progressList"),
+    done: document.getElementById("doneList")
+};
+
+const modal = document.getElementById("taskModal");
+const form = document.getElementById("taskForm");
+
+let tasks = [];
+let draggedTaskId = null;
+
+// Load saved tasks
+try {
+    const saved = JSON.parse(localStorage.getItem("taskflow-tasks"));
+    if (Array.isArray(saved)) {
+        tasks = saved.filter(task =>
+            task &&
+            typeof task.id === "string" &&
+            typeof task.title === "string" &&
+            ["todo", "progress", "done"].includes(task.status) &&
+            ["high", "medium", "low"].includes(task.priority)
+        );
+    }
+} catch (error) {
+    tasks = [];
+}
+
+// Save tasks in browser
+function saveTasks() {
+    localStorage.setItem("taskflow-tasks", JSON.stringify(tasks));
+}
+
+// Create a safe text element
+function makeText(tag, text, className) {
+    const element = document.createElement(tag);
+    element.textContent = text;
+    if (className) element.className = className;
+    return element;
+}
+
+// Render the board
+function renderTasks() {
+    Object.values(columns).forEach(column => {
+        column.replaceChildren();
+    });
+
+    tasks.forEach(task => {
+        const card = document.createElement("article");
+        card.className = "task";
+        card.draggable = true;
+        card.dataset.id = task.id;
+
+        const priority = makeText(
+            "span",
+            task.priority.toUpperCase() + " PRIORITY",
+            "priority " + task.priority
+        );
+
+        const title = makeText("h4", task.title);
+        const description = makeText(
+            "p",
+            task.description || "No description provided."
+        );
+
+        const footer = document.createElement("div");
+        footer.className = "task-footer";
+
+        const date = makeText("small", "📅 " + task.date);
+        const deleteButton = makeText("button", "×", "delete-btn");
+        deleteButton.type = "button";
+        deleteButton.title = "Delete task";
+        deleteButton.setAttribute("aria-label", "Delete " + task.title);
+
+        deleteButton.addEventListener("click", () => {
+            tasks = tasks.filter(item => item.id !== task.id);
+            saveTasks();
+            renderTasks();
+        });
+
+        footer.append(date, deleteButton);
+        card.append(priority, title, description, footer);
+
+        card.addEventListener("dragstart", event => {
+            draggedTaskId = task.id;
+            card.classList.add("dragging");
+            event.dataTransfer.setData("text/plain", task.id);
+            event.dataTransfer.effectAllowed = "move";
+        });
+
+        card.addEventListener("dragend", () => {
+            draggedTaskId = null;
+            card.classList.remove("dragging");
+            document.querySelectorAll(".column").forEach(col => {
+                col.classList.remove("drag-over");
+            });
+        });
+
+        columns[task.status].appendChild(card);
+    });
+
+    // Display empty states and column counts
+    Object.entries(columns).forEach(([status, column]) => {
+        const count = tasks.filter(task => task.status === status).length;
+
+        const countIds = {
+            todo: "todoCount",
+            progress: "progressColumnCount",
+            done: "doneCount"
+        };
+
+        document.getElementById(countIds[status]).textContent = count;
+
+        if (count === 0) {
+            column.appendChild(
+                makeText("div", "Drop tasks here", "empty")
+            );
+        }
+    });
+
+    document.getElementById("totalCount").textContent = tasks.length;
+
+    document.getElementById("progressCount").textContent =
+        tasks.filter(task => task.status === "progress").length;
+
+    document.getElementById("completedCount").textContent =
+        tasks.filter(task => task.status === "done").length;
+}
+
+// Modal controls
+document.getElementById("openModal").addEventListener("click", () => {
+    modal.classList.add("show");
+    document.getElementById("taskTitle").focus();
+});
+
+function closeModal() {
+    modal.classList.remove("show");
+    form.reset();
+}
+
+document.getElementById("closeModal").addEventListener("click", closeModal);
+
+modal.addEventListener("click", event => {
+    if (event.target === modal) closeModal();
+});
+
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape") closeModal();
+});
+
+// Add a new task
+form.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const title = document.getElementById("taskTitle").value.trim();
+    const description =
+        document.getElementById("taskDescription").value.trim();
+
+    if (!title) return;
+
+    const task = {
+        id: crypto.randomUUID
+            ? crypto.randomUUID()
+            : Date.now().toString() + Math.random().toString(36).slice(2),
+        title,
+        description,
+        priority: document.getElementById("taskPriority").value,
+        status: document.getElementById("taskStatus").value,
+        date: new Date().toLocaleDateString()
+    };
+
+    tasks.unshift(task);
+    saveTasks();
+    renderTasks();
+    closeModal();
+});
+
+// Drag and drop between columns
+document.querySelectorAll(".column").forEach(column => {
+    column.addEventListener("dragover", event => {
+        event.preventDefault();
+        column.classList.add("drag-over");
+        event.dataTransfer.dropEffect = "move";
+    });
+
+    column.addEventListener("dragleave", event => {
+        if (!column.contains(event.relatedTarget)) {
+            column.classList.remove("drag-over");
+        }
+    });
+
+    column.addEventListener("drop", event => {
+        event.preventDefault();
+        column.classList.remove("drag-over");
+
+        const taskId =
+            event.dataTransfer.getData("text/plain") || draggedTaskId;
+
+        const task = tasks.find(item => item.id === taskId);
+        if (!task) return;
+
+        task.status = column.dataset.status;
+
+        saveTasks();
+        renderTasks();
+    });
+});
+
+// Initial render
+renderTasks();
+</script>
+</body>
+</html>
