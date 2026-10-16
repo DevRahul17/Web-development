@@ -1,0 +1,410 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rahul Kumar | Portfolio</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+:root {
+  --bg: #0b1020;
+  --card: #151d32;
+  --text: #f1f5ff;
+  --muted: #aab4cc;
+  --accent: #8b5cf6;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  transition: 0.3s;
+}
+
+body.light {
+  --bg: #f3f5fc;
+  --card: #ffffff;
+  --text: #172033;
+  --muted: #626b80;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 8%;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  border-bottom: 1px solid #8883;
+  z-index: 10;
+}
+
+.logo {
+  color: var(--accent);
+  font-size: 22px;
+  font-weight: bold;
+}
+
+nav {
+  display: flex;
+  gap: 22px;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--text);
+}
+
+nav a:hover {
+  color: var(--accent);
+}
+
+#themeBtn {
+  border: none;
+  padding: 9px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.hero {
+  min-height: 80vh;
+  padding: 70px 8%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.hero-content {
+  max-width: 650px;
+}
+
+.tag {
+  color: var(--accent);
+  letter-spacing: 3px;
+  font-size: 12px;
+}
+
+h1 {
+  font-size: clamp(34px, 5vw, 55px);
+  line-height: 1.3;
+  margin: 15px 0;
+}
+
+h1 span, h2 span {
+  color: var(--accent);
+}
+
+.hero h2 {
+  margin-bottom: 15px;
+}
+
+p {
+  color: var(--muted);
+}
+
+.hero-icon {
+  font-size: clamp(90px, 15vw, 170px);
+  animation: float 3s infinite ease-in-out;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 22px;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 9px;
+  background: var(--accent);
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  background: #7041df;
+}
+
+section:not(.hero) {
+  padding: 60px 8%;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 30px;
+}
+
+.card {
+  background: var(--card);
+  padding: 25px;
+  border: 1px solid #8883;
+  border-radius: 16px;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent);
+}
+
+.skills, .projects {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.skills .card {
+  text-align: center;
+  font-weight: bold;
+}
+
+.project h3 {
+  margin-bottom: 10px;
+}
+
+.project button {
+  margin-top: 18px;
+  padding: 10px 15px;
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--text);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.project button:hover {
+  background: var(--accent);
+  color: white;
+}
+
+#contact {
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  padding: 22px;
+  border-top: 1px solid #8883;
+  color: var(--muted);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@media (max-width: 700px) {
+  header {
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 15px 5%;
+  }
+
+  nav {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .hero {
+    flex-direction: column-reverse;
+    text-align: center;
+    padding: 50px 6%;
+  }
+
+  .skills, .projects {
+    grid-template-columns: 1fr;
+  }
+
+  section:not(.hero) {
+    padding: 45px 6%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">Rahul.dev</div>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <button id="themeBtn">☀️</button>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-content">
+    <p class="tag">WELCOME TO MY PORTFOLIO</p>
+
+    <h1>Hello, I'm <span>Rahul Kumar</span></h1>
+
+    <h2>I'm a <span id="typing"></span></h2>
+
+    <p>
+      A Computer Science Engineering student passionate about
+      web development, Java, and problem solving. I love building
+      creative projects and learning new technologies.
+    </p>
+
+    <a href="#projects" class="btn">Explore My Work →</a>
+  </div>
+
+  <div class="hero-icon">💻</div>
+</section>
+
+<section id="about">
+  <h2 class="section-title">About <span>Me</span></h2>
+
+  <div class="card">
+    <p>
+      I'm an aspiring software developer working toward becoming
+      a full-stack developer. I enjoy creating responsive websites,
+      practicing programming, and improving my technical skills
+      through hands-on projects.
+    </p>
+  </div>
+</section>
+
+<section id="skills">
+  <h2 class="section-title">My <span>Skills</span></h2>
+
+  <div class="skills">
+    <div class="card">🌐 HTML</div>
+    <div class="card">🎨 CSS</div>
+    <div class="card">⚡ JavaScript</div>
+    <div class="card">☕ Java</div>
+    <div class="card">🐍 Python</div>
+    <div class="card">💻 C / C++</div>
+  </div>
+</section>
+
+<section id="projects">
+  <h2 class="section-title">My <span>Projects</span></h2>
+
+  <div class="projects">
+    <div class="card project">
+      <h3>🎯 Quiz App</h3>
+      <p>An interactive quiz application with scores.</p>
+      <button data-project="Quiz App">View Project</button>
+    </div>
+
+    <div class="card project">
+      <h3>🕒 Digital Clock</h3>
+      <p>A real-time digital clock using JavaScript.</p>
+      <button data-project="Digital Clock">View Project</button>
+    </div>
+
+    <div class="card project">
+      <h3>🧮 Calculator</h3>
+      <p>A calculator with a modern user interface.</p>
+      <button data-project="Calculator">View Project</button>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2 class="section-title">Let's <span>Connect</span></h2>
+
+  <div class="card">
+    <p>Have an idea or want to collaborate? Let's connect!</p>
+    <a href="mailto:your-email@example.com" class="btn">
+      Contact Me
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>© <span id="year"></span> Rahul Kumar | Built with ❤️</p>
+</footer>
+
+<script>
+// Typing animation
+const typing = document.getElementById("typing");
+
+const roles = [
+  "Frontend Developer",
+  "Java Programmer",
+  "Software Developer"
+];
+
+let roleIndex = 0;
+let charIndex = 0;
+let deleting = false;
+
+function typeEffect() {
+  const role = roles[roleIndex];
+
+  typing.textContent = role.substring(0, charIndex);
+
+  if (!deleting) {
+    charIndex++;
+
+    if (charIndex > role.length) {
+      deleting = true;
+      setTimeout(typeEffect, 1000);
+      return;
+    }
+  } else {
+    charIndex--;
+
+    if (charIndex < 0) {
+      charIndex = 0;
+      deleting = false;
+      roleIndex = (roleIndex + 1) % roles.length;
+    }
+  }
+
+  setTimeout(typeEffect, deleting ? 45 : 100);
+}
+
+typeEffect();
+
+// Light and dark theme
+const themeBtn = document.getElementById("themeBtn");
+
+themeBtn.addEventListener("click", () => {
+  document.body.classList.toggle("light");
+
+  themeBtn.textContent =
+    document.body.classList.contains("light") ? "🌙" : "☀️";
+});
+
+// Automatic year
+document.getElementById("year").textContent =
+  new Date().getFullYear();
+
+// Project button interaction
+document.querySelectorAll("[data-project]").forEach(button => {
+  button.addEventListener("click", () => {
+    const project = button.dataset.project;
+
+    alert(
+      project + " selected! Replace this button action with your project URL."
+    );
+  });
+});
+</script>
+
+</body>
+</html>
