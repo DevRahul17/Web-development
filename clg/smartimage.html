@@ -1,0 +1,585 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Image Gallery</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #f5f7fb;
+  --card: #ffffff;
+  --text: #182033;
+  --muted: #6b7280;
+  --accent: #6c63ff;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: 0.3s;
+}
+
+body.dark {
+  --bg: #111827;
+  --card: #1f2937;
+  --text: #f9fafb;
+  --muted: #cbd5e1;
+}
+
+header {
+  padding: 25px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  background: var(--card);
+  box-shadow: 0 3px 15px #0000000b;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+button, input {
+  font: inherit;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.theme-btn {
+  background: var(--accent);
+  color: white;
+  padding: 11px 16px;
+  border-radius: 10px;
+}
+
+.hero {
+  text-align: center;
+  padding: 45px 15px 25px;
+}
+
+.hero h1 {
+  font-size: clamp(30px, 5vw, 46px);
+  margin-bottom: 12px;
+}
+
+.hero h1 span {
+  color: var(--accent);
+}
+
+.hero p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.controls {
+  max-width: 1200px;
+  margin: 15px auto 30px;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.search {
+  padding: 13px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--text);
+  outline: none;
+  width: min(100%, 320px);
+}
+
+.search:focus {
+  border-color: var(--accent);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter {
+  padding: 10px 15px;
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--text);
+}
+
+.filter.active,
+.filter:hover {
+  background: var(--accent);
+  color: white;
+}
+
+.gallery {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px 50px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.photo {
+  background: var(--card);
+  border-radius: 17px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px #0000000c;
+  animation: appear 0.5s ease both;
+  transition: transform 0.3s;
+}
+
+.photo:hover {
+  transform: translateY(-6px);
+}
+
+.image-wrap {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+  background: #e5e7eb;
+}
+
+.image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: zoom-in;
+  transition: transform 0.5s;
+}
+
+.photo:hover img {
+  transform: scale(1.07);
+}
+
+.image-actions {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #ffffffed;
+  color: #111827;
+  font-size: 19px;
+}
+
+.icon-btn:hover {
+  transform: scale(1.1);
+}
+
+.icon-btn.fav {
+  color: #ef4444;
+}
+
+.info {
+  padding: 17px;
+}
+
+.info h3 {
+  margin-bottom: 7px;
+}
+
+.info p {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.tag {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 6px 10px;
+  background: #6c63ff18;
+  color: var(--accent);
+  border-radius: 7px;
+  font-size: 12px;
+}
+
+.empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 50px 10px;
+  color: var(--muted);
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: var(--muted);
+}
+
+/* Preview modal */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000000e8;
+  z-index: 10;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+  color: white;
+}
+
+.modal img {
+  max-width: 100%;
+  max-height: 72vh;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.modal h3 {
+  margin: 15px 0;
+}
+
+.modal-controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.modal-controls button,
+.close {
+  background: var(--accent);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 9px;
+}
+
+.close {
+  position: absolute;
+  right: 25px;
+  top: 20px;
+  font-size: 25px;
+  padding: 5px 13px;
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 800px) {
+  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 520px) {
+  .gallery { grid-template-columns: 1fr; }
+  .image-wrap { height: 260px; }
+  .controls { align-items: stretch; }
+  .search { width: 100%; }
+  .filters { justify-content: center; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">Snap<span>Gallery.</span></div>
+  <button class="theme-btn" id="themeBtn">🌙 Dark Mode</button>
+</header>
+
+<section class="hero">
+  <h1>Explore Your <span>World</span> 📸</h1>
+  <p>A smart gallery to discover, search and save your favorite moments.</p>
+</section>
+
+<section class="controls">
+  <input
+    type="search"
+    id="search"
+    class="search"
+    placeholder="🔍 Search images..."
+    aria-label="Search images"
+  >
+
+  <div class="filters">
+    <button class="filter active" data-category="all">All Photos</button>
+    <button class="filter" data-category="nature">Nature</button>
+    <button class="filter" data-category="city">Cities</button>
+    <button class="filter" data-category="animals">Animals</button>
+    <button class="filter" data-category="favorites">❤️ Favorites</button>
+  </div>
+</section>
+
+<main class="gallery" id="gallery"></main>
+
+<footer>
+  Made with ❤️ using HTML, CSS & JavaScript
+</footer>
+
+<div class="modal" id="modal" role="dialog"
+     aria-modal="true" aria-label="Image preview">
+  <button class="close" id="closeBtn" aria-label="Close preview">×</button>
+  <div class="modal-content">
+    <img id="modalImg" src="" alt="">
+    <h3 id="modalTitle"></h3>
+    <div class="modal-controls">
+      <button id="prevBtn">← Previous</button>
+      <button id="nextBtn">Next →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const photos = [
+  {
+    title: "Mountain Paradise",
+    category: "nature",
+    description: "Peaceful mountain landscapes.",
+    url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=900"
+  },
+  {
+    title: "Ocean Waves",
+    category: "nature",
+    description: "Blue waters and endless horizons.",
+    url: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=900"
+  },
+  {
+    title: "City Lights",
+    category: "city",
+    description: "A beautiful city after dark.",
+    url: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=900"
+  },
+  {
+    title: "Modern Architecture",
+    category: "city",
+    description: "Amazing urban architecture.",
+    url: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=900"
+  },
+  {
+    title: "Wild Fox",
+    category: "animals",
+    description: "A curious fox in the wild.",
+    url: "https://images.unsplash.com/photo-1474511320723-9a56873867b5?w=900"
+  },
+  {
+    title: "Cute Cat",
+    category: "animals",
+    description: "A little friend with a big personality.",
+    url: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=900"
+  },
+  {
+    title: "Green Forest",
+    category: "nature",
+    description: "Explore nature's green paradise.",
+    url: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=900"
+  },
+  {
+    title: "New York",
+    category: "city",
+    description: "The beauty of a busy metropolis.",
+    url: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=900"
+  },
+  {
+    title: "Majestic Lion",
+    category: "animals",
+    description: "The king of the animal kingdom.",
+    url: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=900"
+  }
+];
+
+const gallery = document.getElementById("gallery");
+const search = document.getElementById("search");
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modalImg");
+
+let activeCategory = "all";
+let favorites = new Set();
+let visiblePhotos = [];
+let currentIndex = 0;
+
+function renderGallery() {
+  const query = search.value.toLowerCase().trim();
+
+  visiblePhotos = photos
+    .map((photo, index) => ({ ...photo, index }))
+    .filter(photo => {
+      const matchesCategory =
+        activeCategory === "all" ||
+        (activeCategory === "favorites"
+          ? favorites.has(photo.index)
+          : photo.category === activeCategory);
+
+      const matchesSearch =
+        photo.title.toLowerCase().includes(query) ||
+        photo.description.toLowerCase().includes(query) ||
+        photo.category.toLowerCase().includes(query);
+
+      return matchesCategory && matchesSearch;
+    });
+
+  gallery.innerHTML = "";
+
+  if (visiblePhotos.length === 0) {
+    gallery.innerHTML =
+      '<div class="empty"><h2>No photos found 😕</h2><p>Try another search or category.</p></div>';
+    return;
+  }
+
+  visiblePhotos.forEach((photo) => {
+    const isFav = favorites.has(photo.index);
+    const card = document.createElement("article");
+    card.className = "photo";
+
+    const wrap = document.createElement("div");
+    wrap.className = "image-wrap";
+
+    const img = document.createElement("img");
+    img.src = photo.url;
+    img.alt = photo.title;
+    img.loading = "lazy";
+    img.addEventListener("click", () => openModal(photo.index));
+
+    const actions = document.createElement("div");
+    actions.className = "image-actions";
+
+    const zoom = document.createElement("button");
+    zoom.className = "icon-btn";
+    zoom.textContent = "⛶";
+    zoom.setAttribute("aria-label", "Zoom " + photo.title);
+    zoom.addEventListener("click", () => openModal(photo.index));
+
+    const fav = document.createElement("button");
+    fav.className = "icon-btn" + (isFav ? " fav" : "");
+    fav.textContent = isFav ? "♥" : "♡";
+    fav.setAttribute("aria-label", "Toggle favorite");
+    fav.addEventListener("click", () => {
+      if (favorites.has(photo.index)) {
+        favorites.delete(photo.index);
+      } else {
+        favorites.add(photo.index);
+      }
+      renderGallery();
+    });
+
+    actions.append(zoom, fav);
+    wrap.append(img, actions);
+
+    const info = document.createElement("div");
+    info.className = "info";
+
+    const title = document.createElement("h3");
+    title.textContent = photo.title;
+
+    const desc = document.createElement("p");
+    desc.textContent = photo.description;
+
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.textContent = photo.category.toUpperCase();
+
+    info.append(title, desc, tag);
+    card.append(wrap, info);
+    gallery.appendChild(card);
+  });
+}
+
+document.querySelectorAll(".filter").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelector(".filter.active").classList.remove("active");
+    button.classList.add("active");
+    activeCategory = button.dataset.category;
+    renderGallery();
+  });
+});
+
+search.addEventListener("input", renderGallery);
+
+document.getElementById("themeBtn").addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  const dark = document.body.classList.contains("dark");
+  document.getElementById("themeBtn").textContent =
+    dark ? "☀️ Light Mode" : "🌙 Dark Mode";
+});
+
+function openModal(photoIndex) {
+  currentIndex = visiblePhotos.findIndex(p => p.index === photoIndex);
+  if (currentIndex < 0) return;
+  updateModal();
+  modal.classList.add("show");
+}
+
+function updateModal() {
+  const photo = visiblePhotos[currentIndex];
+  if (!photo) return;
+  modalImg.src = photo.url;
+  modalImg.alt = photo.title;
+  document.getElementById("modalTitle").textContent = photo.title;
+}
+
+function navigate(direction) {
+  if (!visiblePhotos.length) return;
+  currentIndex =
+    (currentIndex + direction + visiblePhotos.length) %
+    visiblePhotos.length;
+  updateModal();
+}
+
+document.getElementById("prevBtn").addEventListener("click", () => navigate(-1));
+document.getElementById("nextBtn").addEventListener("click", () => navigate(1));
+
+function closeModal() {
+  modal.classList.remove("show");
+}
+
+document.getElementById("closeBtn").addEventListener("click", closeModal);
+
+modal.addEventListener("click", event => {
+  if (event.target === modal) closeModal();
+});
+
+document.addEventListener("keydown", event => {
+  if (!modal.classList.contains("show")) return;
+  if (event.key === "Escape") closeModal();
+  if (event.key === "ArrowLeft") navigate(-1);
+  if (event.key === "ArrowRight") navigate(1);
+});
+
+renderGallery();
+</script>
+
+</body>
+</html>
