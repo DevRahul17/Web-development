@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter App</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #141e30, #243b55);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+            width: 320px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+
+        #count {
+            font-size: 65px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #00e5ff;
+            transition: transform 0.2s;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            color: white;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.15);
+        }
+
+        .increase {
+            background: #16a34a;
+        }
+
+        .decrease {
+            background: #dc2626;
+        }
+
+        .reset {
+            background: #2563eb;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #d1d5db;
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                width: 90%;
+                padding: 25px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>🔢 Counter App</h1>
+
+        <div id="count">0</div>
+
+        <div class="buttons">
+            <button class="decrease" onclick="decrease()">−</button>
+            <button class="reset" onclick="reset()">Reset</button>
+            <button class="increase" onclick="increase()">+</button>
+        </div>
+
+        <p id="message">Click a button to start!</p>
+    </div>
+
+    <script>
+        let counter = 0;
+
+        const countDisplay = document.getElementById("count");
+        const message = document.getElementById("message");
+
+        function updateCounter() {
+            countDisplay.textContent = counter;
+
+            // Animate the number
+            countDisplay.style.transform = "scale(1.2)";
+
+            setTimeout(() => {
+                countDisplay.style.transform = "scale(1)";
+            }, 150);
+
+            if (counter === 0) {
+                message.textContent = "Counter is at zero!";
+            } else {
+                message.textContent = "Keep counting! 🎉";
+            }
+        }
+
+        function increase() {
+            counter++;
+            updateCounter();
+        }
+
+        function decrease() {
+            if (counter > 0) {
+                counter--;
+                updateCounter();
+            } else {
+                message.textContent = "Counter cannot go below zero!";
+            }
+        }
+
+        function reset() {
+            counter = 0;
+            updateCounter();
+            message.textContent = "Counter has been reset! 🔄";
+        }
+    </script>
+
+</body>
+</html>
