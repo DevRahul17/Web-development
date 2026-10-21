@@ -1,0 +1,439 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Notes App</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #10121b;
+    color: #fff;
+    min-height: 100vh;
+    padding: 30px 6%;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.logo span {
+    color: #a78bfa;
+}
+
+#search {
+    padding: 13px 17px;
+    width: 280px;
+    max-width: 100%;
+    border: 1px solid #303447;
+    border-radius: 12px;
+    background: #1b1e2b;
+    color: white;
+    outline: none;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+.editor {
+    background: #1b1e2b;
+    padding: 22px;
+    border: 1px solid #303447;
+    border-radius: 18px;
+    margin-bottom: 35px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 13px;
+    margin-bottom: 13px;
+    background: #10121b;
+    color: white;
+    border: 1px solid #35394d;
+    border-radius: 10px;
+    outline: none;
+    font: inherit;
+}
+
+textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.colors {
+    display: flex;
+    gap: 12px;
+    margin: 5px 0 18px;
+    flex-wrap: wrap;
+}
+
+.color {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+}
+
+.color.active {
+    outline: 2px solid white;
+    outline-offset: 3px;
+}
+
+button {
+    padding: 11px 16px;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: .2s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+#saveBtn {
+    background: #a78bfa;
+    color: #171226;
+}
+
+#cancelBtn {
+    background: #35394d;
+    color: white;
+    margin-left: 8px;
+    display: none;
+}
+
+.stats {
+    color: #a6a9ba;
+    margin-bottom: 18px;
+}
+
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 18px;
+}
+
+.note {
+    color: #171923;
+    padding: 20px;
+    border-radius: 15px;
+    min-height: 190px;
+    display: flex;
+    flex-direction: column;
+    overflow-wrap: anywhere;
+    animation: appear .3s ease;
+    box-shadow: 0 8px 25px #0002;
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.note h3 {
+    margin-bottom: 12px;
+    font-size: 19px;
+}
+
+.note p {
+    line-height: 1.6;
+    white-space: pre-wrap;
+    flex: 1;
+}
+
+.note small {
+    margin-top: 15px;
+    opacity: .7;
+}
+
+.note-actions {
+    display: flex;
+    gap: 7px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.note-actions button {
+    background: #ffffff99;
+    color: #20202a;
+    font-size: 12px;
+    padding: 8px 10px;
+}
+
+.empty {
+    color: #999db2;
+    text-align: center;
+    padding: 35px 10px;
+    grid-column: 1 / -1;
+}
+
+@media(max-width: 600px) {
+    body { padding: 22px 5%; }
+    .logo { font-size: 23px; }
+    #search { width: 100%; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">📝 Smart<span>Notes</span></div>
+    <input id="search" type="search"
+           placeholder="🔍 Search your notes...">
+</header>
+
+<section class="editor">
+    <h2 id="formHeading">Create a New Note ✨</h2>
+
+    <input id="title" type="text"
+           placeholder="Note title...">
+
+    <textarea id="content"
+              placeholder="Write your thoughts here..."></textarea>
+
+    <p style="margin-bottom:12px">Choose a note color</p>
+
+    <div class="colors">
+        <div class="color active" data-color="#fde68a"
+             style="background:#fde68a"></div>
+        <div class="color" data-color="#bbf7d0"
+             style="background:#bbf7d0"></div>
+        <div class="color" data-color="#bfdbfe"
+             style="background:#bfdbfe"></div>
+        <div class="color" data-color="#fbcfe8"
+             style="background:#fbcfe8"></div>
+        <div class="color" data-color="#ddd6fe"
+             style="background:#ddd6fe"></div>
+    </div>
+
+    <button id="saveBtn">＋ Add Note</button>
+    <button id="cancelBtn">Cancel Edit</button>
+</section>
+
+<h2>Your Notes 📚</h2>
+<div class="stats" id="stats">0 notes saved</div>
+
+<div class="notes-grid" id="notesGrid"></div>
+
+<script>
+const titleInput = document.getElementById("title");
+const contentInput = document.getElementById("content");
+const searchInput = document.getElementById("search");
+const notesGrid = document.getElementById("notesGrid");
+const saveBtn = document.getElementById("saveBtn");
+const cancelBtn = document.getElementById("cancelBtn");
+const formHeading = document.getElementById("formHeading");
+const stats = document.getElementById("stats");
+
+let notes = [];
+
+try {
+    notes = JSON.parse(localStorage.getItem("smartNotes")) || [];
+    if (!Array.isArray(notes)) notes = [];
+} catch {
+    notes = [];
+}
+
+let selectedColor = "#fde68a";
+let editingId = null;
+
+document.querySelectorAll(".color").forEach(color => {
+    color.addEventListener("click", () => {
+        document.querySelectorAll(".color").forEach(c =>
+            c.classList.remove("active")
+        );
+
+        color.classList.add("active");
+        selectedColor = color.dataset.color;
+    });
+});
+
+function saveToStorage() {
+    localStorage.setItem("smartNotes", JSON.stringify(notes));
+}
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+function addOrUpdateNote() {
+    const title = titleInput.value.trim();
+    const content = contentInput.value.trim();
+
+    if (!title || !content) {
+        alert("Please enter both a title and note content!");
+        return;
+    }
+
+    if (editingId !== null) {
+        notes = notes.map(note =>
+            note.id === editingId
+                ? { ...note, title, content, color: selectedColor }
+                : note
+        );
+    } else {
+        notes.unshift({
+            id: Date.now() + Math.random(),
+            title,
+            content,
+            color: selectedColor,
+            pinned: false,
+            date: new Date().toLocaleDateString()
+        });
+    }
+
+    saveToStorage();
+    resetForm();
+    renderNotes();
+}
+
+function resetForm() {
+    titleInput.value = "";
+    contentInput.value = "";
+    editingId = null;
+    selectedColor = "#fde68a";
+
+    document.querySelectorAll(".color").forEach(c => {
+        c.classList.toggle(
+            "active", c.dataset.color === selectedColor
+        );
+    });
+
+    saveBtn.textContent = "＋ Add Note";
+    cancelBtn.style.display = "none";
+    formHeading.textContent = "Create a New Note ✨";
+}
+
+function renderNotes() {
+    const query = searchInput.value.toLowerCase().trim();
+
+    const filteredNotes = notes
+        .filter(note =>
+            note.title.toLowerCase().includes(query) ||
+            note.content.toLowerCase().includes(query)
+        )
+        .sort((a, b) => Number(b.pinned) - Number(a.pinned));
+
+    stats.textContent =
+        `${notes.length} note${notes.length !== 1 ? "s" : ""} saved`;
+
+    if (filteredNotes.length === 0) {
+        notesGrid.innerHTML = `
+            <div class="empty">
+                <h3>📭 No notes found</h3>
+                <p style="margin-top:10px">
+                    Create a note or try another search.
+                </p>
+            </div>`;
+        return;
+    }
+
+    notesGrid.innerHTML = filteredNotes.map(note => `
+        <article class="note"
+                 style="background:${escapeHTML(note.color)}">
+            <h3>${note.pinned ? "📌 " : ""}${escapeHTML(note.title)}</h3>
+            <p>${escapeHTML(note.content)}</p>
+            <small>📅 ${escapeHTML(note.date || "Recently saved")}</small>
+
+            <div class="note-actions">
+                <button data-action="pin" data-id="${note.id}">
+                    ${note.pinned ? "Unpin" : "📌 Pin"}
+                </button>
+                <button data-action="edit" data-id="${note.id}">
+                    ✏️ Edit
+                </button>
+                <button data-action="delete" data-id="${note.id}">
+                    🗑️ Delete
+                </button>
+            </div>
+        </article>
+    `).join("");
+}
+
+notesGrid.addEventListener("click", event => {
+    const button = event.target.closest("button");
+    if (!button) return;
+
+    const id = Number(button.dataset.id);
+    const action = button.dataset.action;
+    const note = notes.find(n => n.id === id);
+
+    if (!note) return;
+
+    if (action === "delete") {
+        if (confirm("Are you sure you want to delete this note?")) {
+            notes = notes.filter(n => n.id !== id);
+
+            if (editingId === id) resetForm();
+
+            saveToStorage();
+            renderNotes();
+        }
+    }
+
+    if (action === "pin") {
+        note.pinned = !note.pinned;
+        saveToStorage();
+        renderNotes();
+    }
+
+    if (action === "edit") {
+        editingId = id;
+        titleInput.value = note.title;
+        contentInput.value = note.content;
+        selectedColor = note.color;
+
+        document.querySelectorAll(".color").forEach(c => {
+            c.classList.toggle(
+                "active", c.dataset.color === selectedColor
+            );
+        });
+
+        saveBtn.textContent = "💾 Update Note";
+        cancelBtn.style.display = "inline-block";
+        formHeading.textContent = "Edit Your Note ✏️";
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        titleInput.focus();
+    }
+});
+
+saveBtn.addEventListener("click", addOrUpdateNote);
+cancelBtn.addEventListener("click", resetForm);
+searchInput.addEventListener("input", renderNotes);
+
+renderNotes();
+</script>
+
+</body>
+</html>
