@@ -1,0 +1,416 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Water Intake Tracker</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #dff6ff, #b8e8fc, #e4f8ff);
+    color: #12304a;
+}
+
+.container {
+    width: 100%;
+    max-width: 440px;
+    background: rgba(255, 255, 255, 0.92);
+    padding: 30px 25px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 15px 45px rgba(20, 110, 160, 0.16);
+}
+
+.icon {
+    font-size: 45px;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 27px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #71869a;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.goal-box {
+    background: #edf9ff;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 22px;
+}
+
+.goal-box label {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 10px;
+    color: #57748a;
+}
+
+.goal-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.goal-control button {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 10px;
+    background: #cceeff;
+    color: #087eae;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.goal-control strong {
+    font-size: 21px;
+    min-width: 80px;
+}
+
+.glass {
+    width: 125px;
+    height: 180px;
+    margin: 0 auto 20px;
+    border: 5px solid #75c9ed;
+    border-top: 0;
+    border-radius: 0 0 28px 28px;
+    position: relative;
+    overflow: hidden;
+    background: #f2fbff;
+    clip-path: polygon(0 0, 100% 0, 87% 100%, 13% 100%);
+}
+
+.water {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(180deg, #6bd5ff, #139bd9);
+    transition: height 0.6s ease;
+}
+
+.water::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 20px;
+    top: -10px;
+    left: -50%;
+    border-radius: 40%;
+    background: rgba(255, 255, 255, 0.4);
+    animation: wave 3s linear infinite;
+}
+
+@keyframes wave {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.amount {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.amount span {
+    font-size: 16px;
+    color: #7c91a4;
+}
+
+.status {
+    font-size: 14px;
+    color: #71869a;
+    margin-bottom: 20px;
+}
+
+.progress-track {
+    width: 100%;
+    height: 10px;
+    background: #e2eff5;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #24b8ec, #087fcb);
+    border-radius: 20px;
+    transition: width 0.4s ease;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    color: #72889a;
+    font-size: 12px;
+    margin-bottom: 22px;
+}
+
+h3 {
+    font-size: 15px;
+    margin-bottom: 13px;
+}
+
+.glasses {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.glass-btn {
+    border: 2px solid #d5edf8;
+    background: #f4fbff;
+    border-radius: 13px;
+    padding: 12px 3px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.glass-btn .emoji {
+    font-size: 24px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.glass-btn small {
+    color: #71869a;
+    font-size: 11px;
+}
+
+.glass-btn:hover {
+    transform: translateY(-3px);
+    border-color: #31b9ed;
+}
+
+.glass-btn.active {
+    background: #d9f4ff;
+    border-color: #159ed5;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.buttons button {
+    flex: 1;
+    border: none;
+    border-radius: 12px;
+    padding: 13px 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.add-btn {
+    background: #079bd8;
+    color: white;
+}
+
+.add-btn:hover {
+    background: #087eb5;
+}
+
+.reset-btn {
+    background: #edf3f7;
+    color: #536b7d;
+}
+
+.message {
+    min-height: 20px;
+    font-size: 13px;
+    color: #0789bd;
+    margin-top: 15px;
+}
+
+@media (max-width: 380px) {
+    .container {
+        padding: 24px 16px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="icon">💧</div>
+    <h1>Water Tracker</h1>
+    <p class="subtitle">Stay hydrated. Feel amazing!</p>
+
+    <div class="goal-box">
+        <label>YOUR DAILY WATER GOAL</label>
+        <div class="goal-control">
+            <button onclick="changeGoal(-250)" aria-label="Decrease goal">−</button>
+            <strong id="goal">2000 ml</strong>
+            <button onclick="changeGoal(250)" aria-label="Increase goal">+</button>
+        </div>
+    </div>
+
+    <div class="glass">
+        <div class="water" id="water"></div>
+    </div>
+
+    <div class="amount">
+        <span id="drank">0</span>
+        <span> / <span id="totalGoal">2000</span> ml</span>
+    </div>
+
+    <p class="status" id="status">Let's start drinking water!</p>
+
+    <div class="progress-track">
+        <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="progress-text">
+        <span>Daily progress</span>
+        <strong id="percentage">0%</strong>
+    </div>
+
+    <h3>Choose your water amount</h3>
+
+    <div class="glasses">
+        <button class="glass-btn active" onclick="selectWater(150, this)">
+            <span class="emoji">🥛</span>
+            <small>150 ml</small>
+        </button>
+
+        <button class="glass-btn" onclick="selectWater(250, this)">
+            <span class="emoji">🥤</span>
+            <small>250 ml</small>
+        </button>
+
+        <button class="glass-btn" onclick="selectWater(350, this)">
+            <span class="emoji">🧋</span>
+            <small>350 ml</small>
+        </button>
+
+        <button class="glass-btn" onclick="selectWater(500, this)">
+            <span class="emoji">🍶</span>
+            <small>500 ml</small>
+        </button>
+    </div>
+
+    <div class="buttons">
+        <button class="add-btn" onclick="addWater()">
+            + Add Water
+        </button>
+        <button class="reset-btn" onclick="resetTracker()">
+            ↻ Reset
+        </button>
+    </div>
+
+    <p class="message" id="message" aria-live="polite"></p>
+
+</div>
+
+<script>
+let drank = 0;
+let goal = 2000;
+let selectedAmount = 150;
+
+function selectWater(amount, button) {
+    selectedAmount = amount;
+
+    document.querySelectorAll(".glass-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    document.getElementById("message").textContent =
+        amount + " ml selected. Click Add Water!";
+}
+
+function addWater() {
+    drank += selectedAmount;
+    updateTracker();
+
+    document.getElementById("message").textContent =
+        "Great job! Added " + selectedAmount + " ml 💧";
+}
+
+function changeGoal(amount) {
+    goal = Math.max(250, Math.min(5000, goal + amount));
+    updateTracker();
+
+    document.getElementById("message").textContent =
+        "Your daily goal is now " + goal + " ml.";
+}
+
+function updateTracker() {
+    const percent = Math.round((drank / goal) * 100);
+    const visualPercent = Math.min(100, (drank / goal) * 100);
+
+    document.getElementById("drank").textContent = drank;
+    document.getElementById("goal").textContent = goal + " ml";
+    document.getElementById("totalGoal").textContent = goal;
+    document.getElementById("percentage").textContent = percent + "%";
+    document.getElementById("progress").style.width =
+        visualPercent + "%";
+    document.getElementById("water").style.height =
+        visualPercent + "%";
+
+    const status = document.getElementById("status");
+
+    if (drank === 0) {
+        status.textContent = "Let's start drinking water!";
+    } else if (drank < goal * 0.5) {
+        status.textContent = "Good start! Keep it up 💙";
+    } else if (drank < goal) {
+        status.textContent = "You're making great progress! 🌊";
+    } else {
+        status.textContent = "Daily goal reached! Amazing! 🎉";
+    }
+}
+
+function resetTracker() {
+    drank = 0;
+    selectedAmount = 150;
+
+    document.querySelectorAll(".glass-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    document.querySelector(".glass-btn").classList.add("active");
+
+    updateTracker();
+
+    document.getElementById("message").textContent =
+        "Tracker reset. Start fresh! 💧";
+}
+
+updateTracker();
+</script>
+
+</body>
+</html>
